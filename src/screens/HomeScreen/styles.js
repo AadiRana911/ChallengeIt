@@ -9,6 +9,14 @@ export default StyleSheet.create({
         padding: 10,
         borderRadius: 5,
       },
+      playButton: {
+        opacity: 0.7,
+        fontSize: 70, 
+        color: 'white', 
+        position: 'absolute', 
+        left: Dimensions.get('window').width/2-35, 
+        top: Dimensions.get('window').height/2-35
+      },
       mediaPlayer: {
         position: 'absolute',
         top: 0,
@@ -16,8 +24,25 @@ export default StyleSheet.create({
         bottom: 0,
         right: 0,
         backgroundColor: 'black',
-        height: Dimensions.get('window').height,
-        width: Dimensions.get('window').width
-
       },
+      imageStyle: {
+        height: 60,
+        width: 60,
+        // alignSelf: 'center',
+        borderRadius: 30,
+        borderWidth: 2,
+        borderColor: 'white',
+        position: 'absolute',
+        top: Dimensions.get('window').height/6,
+        left: Dimensions.get('window').width-80,
+      },
+      textStyle: {
+        fontSize: 18,
+      },
+      switchTextView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Dimensions.get('window').height/8,
+      }
 });

@@ -4,7 +4,7 @@ import {View, Text} from 'react-native';
 const NotificationScreen = () => {
     return(
         <View>
-            <Text>AddScreen</Text>
+            <Text>NotificationsScreen</Text>
         </View>
     );
 }

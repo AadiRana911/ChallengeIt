@@ -1,6 +1,7 @@
 import React from 'react';
+import {View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './src/screens/HomeScreen'
 import AddScreen from './src/screens/AddScreen'
@@ -8,18 +9,20 @@ import CommentsScreen from './src/screens/CommentsScreen'
 import NotificationScreen from './src/screens/NotificationScreen'
 import UserScreen from './src/screens/UserScreen'
 
-const Tab = createBottomTabNavigator();
+
+
+const Stack = createStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator barStyle={{backgroundColor: 'transparent'}}>
-        <Tab.Screen name = "Home" component = {HomeScreen}></Tab.Screen>
-        <Tab.Screen name = "Notifications" component = {NotificationScreen}></Tab.Screen>
-        <Tab.Screen name = "Add" component = {AddScreen}></Tab.Screen>
-        <Tab.Screen name = "Comments" component = {CommentsScreen}></Tab.Screen>
-        <Tab.Screen name = "User" component = {UserScreen}></Tab.Screen>
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} options = {{headerShown: false}} />
+        <Stack.Screen name="Notifications" component={NotificationScreen} options = {{headerShown: false}} />
+        <Stack.Screen name="Add" component={AddScreen} options = {{headerShown: false}} />
+        <Stack.Screen name="Comments" component={CommentsScreen} options = {{headerShown: false}} />
+        <Stack.Screen name="User" component={UserScreen} options = {{headerShown: false}} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
