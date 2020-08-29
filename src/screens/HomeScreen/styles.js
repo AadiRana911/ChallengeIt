@@ -19,6 +19,7 @@ export default StyleSheet.create({
       },
       mediaPlayer: {
         position: 'absolute',
+        width: Dimensions.get('window').width,
         top: 0,
         left: 0,
         bottom: 0,
@@ -31,7 +32,14 @@ export default StyleSheet.create({
         // alignSelf: 'center',
         borderRadius: 30,
         borderWidth: 2,
+        position: 'absolute',
         borderColor: 'white',
+        top: Dimensions.get('window').height/6,
+        left: Dimensions.get('window').width-80,
+      },
+      AnimatedViewStyle: {
+        backgroundColor: 'red',
+        // alignSelf: 'center',
         position: 'absolute',
         top: Dimensions.get('window').height/6,
         left: Dimensions.get('window').width-80,
