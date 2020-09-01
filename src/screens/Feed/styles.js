@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     // flex: 1,
@@ -17,6 +18,15 @@ export default StyleSheet.create({
     color: 'white',
     top: 0,
     left: 0,
+  },
+  box: {
+    backgroundColor: 'tomato',
+    marginLeft: -12,
+    marginTop: -12,
+    width: width / 4,
+    height: height / 5,
+    borderRadius: 2,
+    borderColor: '#000',
   },
   mediaPlayer: {
     position: 'absolute',
