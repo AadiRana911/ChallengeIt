@@ -247,6 +247,16 @@ const Feed = ({navigation}) => {
           initialPage={0}>
           {vids.map((item, index) => {
             return (
+              <ViewPager
+          onPageSelected={(e) => {
+            setActive(e.nativeEvent.position);
+            setPaused(false);
+          }}
+          orientation="horizontal"
+          style={{height: '100%'}}
+          initialPage={0}>
+          {vids.map((item, index) => {
+            return (
               <Video
                 key={index}
                 paused={paused}
@@ -256,6 +266,9 @@ const Feed = ({navigation}) => {
                 resizeMode="cover"
                 repeat={true}
               />
+            );
+          })}
+        </ViewPager>
             );
           })}
         </ViewPager>
