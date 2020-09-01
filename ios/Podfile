@@ -8,6 +8,8 @@ target 'ChallengeIt' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNShare', :path => '../node_modules/react-native-share'
+
   target 'ChallengeItTests' do
     inherit! :complete
     # Pods for testing

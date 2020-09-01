@@ -6,7 +6,7 @@ import TabBar from '../../components/navigation';
 
 class HomeScreen extends Component {
   render() {
-    return <Feed />;
+    return <Feed navigation={this.props.navigation} />;
   }
 }
 

@@ -19,8 +19,16 @@ import {primaryColor} from '../../components/colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import TabBar from '../../components/navigation';
 import ProfileScreen from '../ProfileScreen';
+import {useFocusEffect} from '@react-navigation/native';
 
-const Feed = ({navigation, video}) => {
+const Feed = ({navigation}) => {
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = setPaused(false);
+
+      return () => unsubscribe;
+    }, []),
+  );
   let player;
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -36,22 +44,23 @@ const Feed = ({navigation, video}) => {
   const [vids] = useState([
     {
       id: 0,
-      vid: require('../../assets/Videos/sample.mp4'),
+      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
     },
     {
       id: 1,
-      vid: require('../../assets/Videos/sample.mp4'),
+      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
     },
     {
       id: 2,
-      vid: require('../../assets/Videos/sample.mp4'),
+      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
     },
     {
       id: 3,
-      vid: require('../../assets/Videos/sample.mp4'),
+      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
     },
   ]);
   const [active, setActive] = useState(0);
+
   const {width, height} = Dimensions.get('window');
   const xImg = width - 80;
   const xStrip = width - 56;
@@ -241,7 +250,7 @@ const Feed = ({navigation, video}) => {
               <Video
                 key={index}
                 paused={paused}
-                source={item.vid}
+                source={{uri: item.vid}}
                 style={styles.mediaPlayer}
                 volume={10}
                 resizeMode="cover"
@@ -275,6 +284,8 @@ const Feed = ({navigation, video}) => {
         <Text style={[styles.textStyle, {color: 'white'}]}>|</Text>
         <TouchableWithoutFeedback
           onPress={() => {
+            setPaused(true);
+            navigation.navigate('Challenges');
             setIsText1Active(false);
           }}>
           <Text
