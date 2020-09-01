@@ -21,9 +21,8 @@ var _default = _reactNative.StyleSheet.create({
     opacity: 0.7,
     fontSize: 70,
     color: 'white',
-    position: 'absolute',
-    left: _reactNative.Dimensions.get('window').width / 2 - 35,
-    top: _reactNative.Dimensions.get('window').height / 2 - 35
+    top: 0,
+    left: 0
   },
   mediaPlayer: {
     position: 'absolute',

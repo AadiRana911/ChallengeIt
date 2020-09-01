@@ -13,18 +13,6 @@ import ProfileScreen from './src/screens/ProfileScreen'
 
 const Stack = createStackNavigator();
 
-const config = {
-  animation: 'spring',
-  config: {
-    stiffness: 1000000000,
-    damping: 5000000000,
-    mass: 0,
-    overshootClamping: true,
-    restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01,
-  },
-};
-
 function App() {
   return (
     <NavigationContainer>
@@ -34,7 +22,6 @@ function App() {
         <Stack.Screen name="Add" component={AddScreen} options = {{headerShown: false}} />
         <Stack.Screen name="Comments" component={CommentsScreen} options = {{headerShown: false}} />
         <Stack.Screen name="User" component={UserScreen} options = {{headerShown: false}} />
-        <Stack.Screen name="Profile" component={ProfileScreen} options = {{headerShown: false, gestureDirection: 'horizontal-inverted', transitionSpec: {open: config, close: config,},}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

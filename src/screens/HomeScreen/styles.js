@@ -12,10 +12,9 @@ export default StyleSheet.create({
       playButton: {
         opacity: 0.7,
         fontSize: 70, 
-        color: 'white', 
-        position: 'absolute', 
-        left: Dimensions.get('window').width/2-35, 
-        top: Dimensions.get('window').height/2-35
+        color: 'white',
+        top: 0,
+        left: 0
       },
       mediaPlayer: {
         position: 'absolute',

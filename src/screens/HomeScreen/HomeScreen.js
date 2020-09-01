@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image, TouchableWithoutFeedback, Dimensions, Animated, TouchableOpacity} from 'react-native';
 import Video from 'react-native-video';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -17,9 +17,11 @@ const HomeScreen = ({navigation}) => {
     const [duration, setDuration] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [paused, setPaused] = useState(false);
+    const [nextPaused, setNextPaused] = useState(true);
     const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
     const [screenType, setScreenType] = useState('content');
     const [isText1Active, setIsText1Active] = useState(true);
+    const [isCurrentScreenEnabled, setIsCurrentScreenEnabled] = useState(true);
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     const [gestureName, setGestureName] = useState('none');
     const {width, height} = Dimensions.get('window');
@@ -27,8 +29,11 @@ const HomeScreen = ({navigation}) => {
     const xStrip =  width - 56;
     const xScreen =  width + 40;
     const [translateXImg, setTranslateXImg] = useState(new Animated.Value(0));
+    const [translateXCurrentImg, setTranslateXCurrentImg] = useState(new Animated.Value(0));
+    const [translateYImg, setTranslateYImg] = useState(new Animated.Value(0));
     const [translateXStrip, setTranslateXStrip] = useState(new Animated.Value(0));
     const [translateXScreen, setTranslateXScreen] = useState(new Animated.Value(0));
+    const [translateXCurrentScreen, setTranslateXCurrentScreen] = useState(new Animated.Value(0));
 
     onSeek = seek => videoPlayer.seek(seek);
     onPaused = playerState => {
@@ -86,19 +91,43 @@ const HomeScreen = ({navigation}) => {
             break;
         }
       }
-
-    const handleImageSlide = () => {
+    const handleImageSlideX = () => {
         Animated.spring(translateXImg, {
-            toValue: -width+100,
+            toValue: -width+width/4.4,
             duration: 5000,
-            useNativeDriver: true
+            useNativeDriver: true,
+            tension: 10,
+        }).start();
+    }
+    const handleImageSlideY = () => {
+        Animated.spring(translateYImg, {
+            toValue: height/6.2,
+            duration: 5000,
+            useNativeDriver: true,
+            tension: 10,
+        }).start();
+    }
+
+    const handleCurrentImageSlideX = () => {
+        Animated.spring(translateXCurrentImg, {
+            toValue: 100,
+            duration: 5000,
+            useNativeDriver: true,
+        }).start();
+    }
+    const handleCurrentImageSlideXReverse = () => {
+        Animated.spring(translateXCurrentImg, {
+            toValue: 0,
+            duration: 5000,
+            useNativeDriver: true,
         }).start();
     }
     const handleStripSlide = () => {
         Animated.spring(translateXStrip, {
-            toValue: -(width+50050),
-            duration: 5000,
+            toValue: -(width*2-width/5.2+width/13.71428),
+            duration: 5,
             useNativeDriver: true,
+            tension: 1,
         }).start();
     }
     const handleScreenSlide = () => {
@@ -109,9 +138,60 @@ const HomeScreen = ({navigation}) => {
         }).start();
     }
 
+    const handleImageSlideXReverse = () => {
+        Animated.spring(translateXImg, {
+            toValue: 0,
+            duration: 5000,
+            useNativeDriver: true,
+            tension: 10,
+        }).start();
+    }
+    const handleImageSlideYReverse = () => {
+        Animated.spring(translateYImg, {
+            toValue: 0,
+            duration: 5000,
+            useNativeDriver: true,
+            tension: 10,
+        }).start();
+    }
+    const handleStripSlideReverse = () => {
+        Animated.spring(translateXStrip, {
+            toValue: 0,
+            duration: 5,
+            useNativeDriver: true,
+            tension: 10,
+        }).start();
+    }
+    const handleScreenSlideReverse = () => {
+        Animated.spring(translateXScreen, {
+            toValue: 0,
+            duration: 5000,
+            useNativeDriver: true
+        }).start();
+    }
+    const animateReverse = () => {
+        handleImageSlideXReverse();
+        handleImageSlideYReverse();
+        handleCurrentImageSlideXReverse();
+        handleStripSlideReverse();
+        handleScreenSlideReverse();
+        setIsCurrentScreenEnabled(true);
+        setNextPaused(true);
+        setPaused(false);
+    }
+    const animate = () => {
+        handleImageSlideX();
+        handleImageSlideY();
+        handleCurrentImageSlideX();
+        handleStripSlide();
+        handleScreenSlide();
+        setIsCurrentScreenEnabled(false);
+        setPaused(true);
+        setNextPaused(false)
+    }
     return (
-        <View style = {[styles.container]}>
-        
+        <View style = {[styles.container,]}>
+            {console.log('kjdhakjshdkjash=>>>>>>>>>>>',translateXCurrentScreen)}
             <TouchableWithoutFeedback onPress = {() => setPaused(!paused)}>
                 <Video
                     paused={paused}
@@ -122,7 +202,7 @@ const HomeScreen = ({navigation}) => {
                     repeat = {true}
                 />
             </TouchableWithoutFeedback>
-            <LinearGradient colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.01)']} style = {[styles.switchTextView]}>
+            <LinearGradient colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']} style = {[styles.switchTextView]}>
                 <TouchableWithoutFeedback onPress = {() => {setIsText1Active(true)}}>
                     <Text style = {[styles.textStyle, {marginRight: 10, color: isText1Active ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.5)'}]}>Trending</Text>
                 </TouchableWithoutFeedback>
@@ -131,10 +211,13 @@ const HomeScreen = ({navigation}) => {
                     <Text style = {[styles.textStyle, {marginLeft: 10, color: !isText1Active ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.5)'}]}>All Challenges</Text>
                 </TouchableWithoutFeedback>
             </LinearGradient>
-            <ProfileScreen 
+            {paused && <TouchableOpacity activeOpacity = {1} style = {[{position: 'absolute', left: width/2-35, top: height/2-35}]} onPress = {() => setPaused(!paused)} ><Entypo name = 'controller-play' color = 'white' style = {[styles.playButton]}/></TouchableOpacity>}
+            <ProfileScreen
                     translateScreen = {translateXScreen}
                     translateXImg = {translateXImg}
-                    paused={paused}
+                    translateYImg = {translateYImg}
+                    paused={nextPaused}
+                    setPaused={setNextPaused}
                     source={require('../../assets/Videos/sample.mp4')}
                     style={styles.mediaPlayer}
                     volume={10}
@@ -146,19 +229,19 @@ const HomeScreen = ({navigation}) => {
                     style = {{
                         // backgroundColor: 'red',
                         position: 'absolute',
-                        top: Dimensions.get('window').height/3+30,
-                        left: Dimensions.get('window').width-80,
+                        top: height/3+height/27,
+                        left: width-width/5.2,
                         // width: 40
                     }} 
                     config = {config}
-                    onSwipeLeft={() => {handleImageSlide(),handleStripSlide(),handleScreenSlide(),console.log(width, height)}}>
+                    onSwipeLeft={animate}>
                     <Animated.View 
                     style = {{
                         top: 1,
-                        left:30,
+                        left:width/13.71428,
                         position: 'absolute',
-                        width: 50000,
-                        height: 58,
+                        width: width,
+                        height: width/7.09359,
                         backgroundColor: primaryColor,
                         transform: [{translateX: translateXStrip}]
                     }} />
@@ -166,11 +249,11 @@ const HomeScreen = ({navigation}) => {
                         source = {require('../../assets/images/samplechallenger.jpg')} 
                         style = {{
                             borderRadius: 30,
-                            borderWidth: 2,
+                            borderWidth: width/205.714,
                             // position: 'absolute',
-                            height: 60,
-                            width: 60,
-                            transform: [{translateX: translateXImg}],
+                            height: width/6.857,
+                            width: width/6.857,
+                            transform: [{translateX: translateXCurrentImg},],
                             borderColor: 'white',
                             // top: Dimensions.get('window').height/6,
                             // left: Dimensions.get('window').width-80,
@@ -178,18 +261,7 @@ const HomeScreen = ({navigation}) => {
                         resizeMode = 'cover'
                         />                   
                 </GestureRecognizer>
-                {/* <GestureRecognizer onSwipeLeft={() => handleSlide(xImg),() => console.log(translateX)}>
-                        <View style = {{top: Dimensions.get('window').height/6+1,left: Dimensions.get('window').width-56,width: 110, height: 58, backgroundColor: primaryColor}}></View>
-                        <Image source = {require('../../assets/images/samplechallenger.jpg')} style = {styles.imageStyle} resizeMode = 'cover'/>
-                        <ProfileScreen />                    
-                </GestureRecognizer> */}
-
-                
-                {paused && <Entypo name = 'controller-play' color = 'white' style = {styles.playButton}/>}
-
-                
-                
-                <TabBar navigation = {navigation}/>
+                <TabBar navigation = {navigation} params = {'Home'} animateReverse = {animateReverse} />
                 
             {/* <MediaControls
                  duration={duration}

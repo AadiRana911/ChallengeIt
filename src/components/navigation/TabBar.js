@@ -8,10 +8,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-const TabBar = ({navigation}) => {
+const TabBar = ({navigation, params, animateReverse}) => {
     return (
         <View style = {styles.container}>
-            <TouchableOpacity onPress = {() => navigation.navigate('Home')}>
+            <TouchableOpacity onPress = {params !== 'Home' ? () => navigation.navigate('Home') : () => animateReverse()}>
                 <MaterialCommunityIcons name = {'fire'} style = {{fontSize: 34, color: primaryColor}}/>
             </TouchableOpacity>
 
