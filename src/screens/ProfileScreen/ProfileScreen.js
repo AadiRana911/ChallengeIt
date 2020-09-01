@@ -42,10 +42,10 @@ const ProfileScreen = ({translateScreen, paused, setPaused, translateXImg, trans
         }
     }
     return (
-        <Animated.ScrollView style = {{height: height, width: width, position: 'absolute',backgroundColor: 'white', left: width,transform: [{translateX: translateScreen}], paddingTop: 10, paddingHorizontal: 10, flex: 1}} contentContainerStyle ={{flexGrow: 1}}>
+        <Animated.ScrollView style = {[styles.container, {transform: [{translateX: translateScreen}]}]} contentContainerStyle ={{flexGrow: 1}}>
             
-            <View style = {{backgroundColor: 'red', width: width-20, height: height/2.5}}>
-            <TouchableWithoutFeedback style = {{backgroundColor: 'red', width: width-20, height: height/3}} onPress = {() => setPaused(!paused)}>
+            <View style = {styles.videoContainer}>
+            <TouchableWithoutFeedback style = {styles.videoTouchableContainer} onPress = {() => setPaused(!paused)}>
                 <Video
                     paused={paused}
                     source={{uri: 'https://www.w3schools.com/html/mov_bbb.mp4'}}
@@ -56,27 +56,15 @@ const ProfileScreen = ({translateScreen, paused, setPaused, translateXImg, trans
                 />
             </TouchableWithoutFeedback>
             <Animated.Image 
-                        source = {require('../../assets/images/samplechallenger.jpg')} 
-                        style = {{
-                            borderRadius: 30,
-                            borderWidth: width/205.714,
-                            // position: 'absolute',
-                            height: width/6.857,
-                            width: width/6.857,
-                            top: height/3+height/27,
-                            left: width-width/5.2,
-                            transform: [{translateX: translateXImg}, {translateY: translateYImg}],
-                            borderColor: 'white',
-                            // top: Dimensions.get('window').height/6,
-                            // left: Dimensions.get('window').width-80,
-                        }} 
-                        resizeMode = 'cover'
-                        />
+                source = {require('../../assets/images/samplechallenger.jpg')} 
+                style = {[styles.imageStyle, {transform: [{translateX: translateXImg}, {translateY: translateYImg}],}]} 
+                resizeMode = 'cover'
+            />
             {paused && <TouchableWithoutFeedback onPress = {() => setPaused(!paused)}>
                 <Entypo name = 'controller-play' color = 'white' style = {styles.playButton}/>
             </TouchableWithoutFeedback>}
             </View>
-            <View style = {{top: 25, flexDirection: 'row',justifyContent: 'space-between'}}>
+            <View style = {styles.screenIconContainer}>
                 <View style = {{alignItems: 'center'}}>
                     <TouchableOpacity>
                         <MaterialIcons name = 'videocam' style = {{fontSize: width/16.45714}}/>
@@ -104,18 +92,18 @@ const ProfileScreen = ({translateScreen, paused, setPaused, translateXImg, trans
                 </View>
             </View>
             {/* <Text style = {{top: height/25}}>Icons go here</Text> */}
-            <View style = {{flexDirection: 'row', left: width/5.14285, top: height/10,justifyContent: 'space-between',}}>
+            <View style = {styles.userNameContainer}>
                 <Text style = {{color: 'black', fontSize: width/20.57143}}>Zaheer01</Text>
-                <TouchableOpacity style = {{backgroundColor: 'orange',paddingHorizontal: width/27.8, paddingVertical: 3, borderRadius: 50,marginRight: width/4.57142}}  onPress = {() => toggleFollowState()}>
+                <TouchableOpacity style = {styles.followButtonStyle}  onPress = {() => toggleFollowState()}>
                     <Text style = {{fontSize: width/26.57143, color: 'white', alignSelf: 'center',}}>{followState}</Text>
                 </TouchableOpacity>
             </View>
-            <View style = {{flexDirection: 'row', justifyContent: 'space-around', top: height/5, borderColor: 'rgba(125,125,125,0.2)', shadowOpacity: 1,elevation: 1, shadowColor: '#000', shadowRadius: 5, shadowOffset: {width: 0, height: 12}}}>
-                <View style = {{alignItems: 'center', width: '50%'}}>
+            <View style = {styles.userStatsContainer}>
+                <View style = {styles.individualStatContainer}>
                     <Text>Challenges</Text>
                     <Text>{totalChallenges}</Text>
                 </View>
-                <View style = {{alignItems: 'center', width: '50%',backgrounColor: 'red', borderLeftWidth: 1, borderColor: 'rgba(125,125,125,0.2)',}}>
+                <View style = {[styles.individualStatContainer, { borderLeftWidth: 1, borderColor: 'rgba(125,125,125,0.2)',}]}>
                     <Text>Accepted</Text>
                     <Text>{acceptedChallenges}</Text>
                 </View>
@@ -131,7 +119,7 @@ const ProfileScreen = ({translateScreen, paused, setPaused, translateXImg, trans
                     renderItem = {({item}) => {
                     return(
                         <Image
-                            style={{height: height/6.8, width: width/3.475, marginRight: 20, marginBottom: 20}}
+                            style={styles.thumbnailStyle}
                             source={{uri: item.url}}
                         />                    
                     )
