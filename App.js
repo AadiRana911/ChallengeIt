@@ -36,7 +36,7 @@ function App() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="Chat"
+           name="Chat"
           component={Chat}
           options={{headerShown: false}}
         />

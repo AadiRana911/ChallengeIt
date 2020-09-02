@@ -32,36 +32,38 @@ import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
 import RBSheet from 'react-native-raw-bottom-sheet';
 const Challenges = ({navigation}) => {
+
+  useEffect(() => {
+    (async () => {
+      requestMultiple(
+        (Platform.OS = 'android' && [
+          PERMISSIONS.ANDROID.CAMERA,
+          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        ]),
+      ).then((res) => {
+        if (
+          res[PERMISSIONS.ANDROID.CAMERA] == 'granted' &&
+          res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
+          res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
+        ) {
+        } else {
+          Alert.alert('ChallengeIt', 'Please allow all permission', [
+            {
+              text: 'OPEN SETTINGS',
+              onPress: () => Linking.openSettings(),
+            },
+          ]);
+        }
+      });
+    })();
+  }, []);
+
   const rbsheet = createRef();
   const optionSheet = createRef();
   const playListRef = createRef();
   const reportRef = createRef();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     requestMultiple(
-  //       (Platform.OS = 'android' && [
-  //         PERMISSIONS.ANDROID.CAMERA,
-  //         PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-  //         PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-  //       ]),
-  //     ).then((res) => {
-  //       if (
-  //         res[PERMISSIONS.ANDROID.CAMERA] == 'granted' &&
-  //         res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
-  //         res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
-  //       ) {
-  //       } else {
-  //         Alert.alert('ChallengeIt', 'Please allow all permission', [
-  //           {
-  //             text: 'OPEN SETTINGS',
-  //             onPress: () => Linking.openSettings(),
-  //           },
-  //         ]);
-  //       }
-  //     });
-  //   })();
-  // }, []);
 
   const [isclapped, setClapp] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);

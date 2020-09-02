@@ -2,9 +2,9 @@ import {StyleSheet, Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
-    // flex: 1,
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
+    flex: 1,
+    // height,
+    // width,
   },
   toolbar: {
     marginTop: 30,
@@ -29,13 +29,13 @@ export default StyleSheet.create({
     borderColor: '#000',
   },
   mediaPlayer: {
-    position: 'absolute',
-    width: Dimensions.get('window').width,
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    // height: '100%',
+    // position: 'absolute',
+    width,
+    // top: 0,
+    // left: 0,
+    // bottom: 0,
+    // right: 0,
+    height: '100%',
 
     backgroundColor: 'black',
   },
