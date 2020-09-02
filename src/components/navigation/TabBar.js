@@ -7,8 +7,23 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
+import ImagePicker from 'react-native-image-crop-picker';
+import LinearGradient from 'react-native-linear-gradient';
 const TabBar = ({navigation, params, animateReverse}) => {
+  const _captureVideo = async () => {
+    try {
+      ImagePicker.openCamera({
+        mediaType: 'video',
+      }).then((result) => {
+        navigation.navigate('Add', {video: result});
+        // setTimeout(() => {
+        //   setImages(medai);
+        // }, 200);
+      });
+    } catch (E) {
+      console.log(E);
+    }
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -30,14 +45,14 @@ const TabBar = ({navigation, params, animateReverse}) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Add')}>
+      <TouchableOpacity onPress={() => _captureVideo()}>
         <MaterialCommunityIcons
           name={'plus-circle'}
           style={{fontSize: 36, color: primaryColor}}
         />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Comments')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
         <Entypo name={'message'} style={{fontSize: 28, color: primaryColor}} />
       </TouchableOpacity>
 

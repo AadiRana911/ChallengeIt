@@ -240,7 +240,7 @@ const Feed = ({navigation}) => {
         <ViewPager
           onPageSelected={(e) => {
             setActive(e.nativeEvent.position);
-            setPaused(false);
+            setPaused(true);
           }}
           orientation="vertical"
           style={{height: '100%'}}
@@ -248,27 +248,27 @@ const Feed = ({navigation}) => {
           {vids.map((item, index) => {
             return (
               <ViewPager
-          onPageSelected={(e) => {
-            setActive(e.nativeEvent.position);
-            setPaused(false);
-          }}
-          orientation="horizontal"
-          style={{height: '100%'}}
-          initialPage={0}>
-          {vids.map((item, index) => {
-            return (
-              <Video
-                key={index}
-                paused={paused}
-                source={{uri: item.vid}}
-                style={styles.mediaPlayer}
-                volume={10}
-                resizeMode="cover"
-                repeat={true}
-              />
-            );
-          })}
-        </ViewPager>
+                onPageSelected={(e) => {
+                  setActive(e.nativeEvent.position);
+                  setPaused(true);
+                }}
+                orientation="horizontal"
+                style={{height: '100%'}}
+                initialPage={0}>
+                {vids.map((item, index) => {
+                  return (
+                    <Video
+                      key={index}
+                      paused={true}
+                      source={{uri: item.vid}}
+                      style={styles.mediaPlayer}
+                      volume={10}
+                      resizeMode="cover"
+                      repeat={true}
+                    />
+                  );
+                })}
+              </ViewPager>
             );
           })}
         </ViewPager>
