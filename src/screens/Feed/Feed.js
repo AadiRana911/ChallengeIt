@@ -1,12 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,} from 'react';
 import {
+  StyleSheet,
   View,
   Text,
   Image,
   TouchableWithoutFeedback,
   Dimensions,
-  Animated,
   TouchableOpacity,
+  FlatList,
+  Animated
 } from 'react-native';
 import Video from 'react-native-video';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -20,6 +22,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import TabBar from '../../components/navigation';
 import ProfileScreen from '../ProfileScreen';
 import {useFocusEffect} from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { PanGestureHandler } from 'react-native-gesture-handler';
+import { usePanGestureHandler, withOffset } from 'react-native-redash'
+import Animate from 'react-native-reanimated'
 
 const Feed = ({navigation}) => {
   useFocusEffect(
@@ -59,6 +65,26 @@ const Feed = ({navigation}) => {
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
     },
   ]);
+
+  const [videos] = useState([
+    {
+      id: 0,
+      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    },
+    {
+      id: 1,
+      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    },
+    {
+      id: 2,
+      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    },
+    {
+      id: 3,
+      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    },
+  ]);
+
   const [active, setActive] = useState(0);
 
   const {width, height} = Dimensions.get('window');
@@ -232,12 +258,32 @@ const Feed = ({navigation}) => {
     setPaused(true);
     setNextPaused(false);
   };
+  
   return (
     <View style={{flex: 1}}>
-      <TouchableWithoutFeedback
-        onPress={() => setPaused(!paused)}
-        style={styles.container}>
-        <ViewPager
+          <Animate.View style = {StyleSheet.absoluteFill}>
+            <Animate.View style={[styles.container, {width: width * vids.length, flexDirection: 'row',}]} snapToInterval = {width} deccelerationRate = 'fast' horizontal>
+            
+            {vids.map((source) => (
+              <TouchableWithoutFeedback
+                onPress={() => setPaused(!paused)}
+              >
+              <Video 
+              key = {source}
+              paused={paused}
+              source={{uri: source.vid}}
+              style={styles.mediaPlayer}
+              volume={10}
+              resizeMode="cover"
+              repeat={true}
+            />
+            </TouchableWithoutFeedback>
+
+            ))}
+            <View style = {{width: 5000}}></View>
+            </Animate.View>
+          </Animate.View>
+        {/* <ViewPager
           onPageSelected={(e) => {
             setActive(e.nativeEvent.position);
             setPaused(false);
@@ -245,34 +291,46 @@ const Feed = ({navigation}) => {
           orientation="vertical"
           style={{height: '100%'}}
           initialPage={0}>
-          {vids.map((item, index) => {
+          {videos.map((item, index) => {
             return (
-              <ViewPager
-          onPageSelected={(e) => {
-            setActive(e.nativeEvent.position);
-            setPaused(false);
-          }}
-          orientation="horizontal"
-          style={{height: '100%'}}
-          initialPage={0}>
-          {vids.map((item, index) => {
-            return (
-              <Video
-                key={index}
-                paused={paused}
-                source={{uri: item.vid}}
-                style={styles.mediaPlayer}
-                volume={10}
-                resizeMode="cover"
-                repeat={true}
+              <FlatList
+                horizontal
+                style={{height: '100%', width: '100%', flex: 1}}
+                contentContainerStyle = {{flexGrow: 1}}
+                data = {vids}
+                keyExtractor = {(item, index) => item + index.toString()}
+                renderItem = {({item}) => {
+                  // {console.log('item is',item.vid)}
+                  return(
+                    <Video 
+                      key={index}
+                      paused={paused}
+                      source={{uri: item.vid}}
+                      style={styles.mediaPlayer}
+                      volume={10}
+                      resizeMode="cover"
+                      repeat={true}
+                    />
+                  );
+                  
+                }}
               />
+                //{vids.map((item, index) => {
+                  //return (
+                    //<Video
+                      //key={index}
+                      //paused={paused}
+                      //source={{uri: item.vid}}
+                      //style={styles.mediaPlayer}
+                      //volume={10}
+                      //resizeMode="cover"
+                      //repeat={true}
+                    ///>
+                  //);
+                //})}
             );
           })}
-        </ViewPager>
-            );
-          })}
-        </ViewPager>
-      </TouchableWithoutFeedback>
+        </ViewPager> */}
 
       <LinearGradient
         colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
@@ -344,11 +402,9 @@ const Feed = ({navigation}) => {
 
       <GestureRecognizer
         style={{
-          // backgroundColor: 'red',
           position: 'absolute',
           top: height / 3 + height / 27,
           left: width - width / 5.2,
-          // width: 40
         }}
         config={config}
         onSwipeLeft={animate}>
@@ -368,13 +424,10 @@ const Feed = ({navigation}) => {
           style={{
             borderRadius: 30,
             borderWidth: width / 205.714,
-            // position: 'absolute',
             height: width / 6.857,
             width: width / 6.857,
             transform: [{translateX: translateXCurrentImg}],
             borderColor: 'white',
-            // top: Dimensions.get('window').height/6,
-            // left: Dimensions.get('window').width-80,
           }}
           resizeMode="cover"
         />

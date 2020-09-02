@@ -27,31 +27,31 @@ import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
 
 const Challenges = ({navigation}) => {
-  // useEffect(() => {
-  //   (async () => {
-  //     requestMultiple(
-  //       (Platform.OS = 'android' && [
-  //         PERMISSIONS.ANDROID.CAMERA,
-  //         PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-  //         PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-  //       ]),
-  //     ).then((res) => {
-  //       if (
-  //         res[PERMISSIONS.ANDROID.CAMERA] == 'granted' &&
-  //         res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
-  //         res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
-  //       ) {
-  //       } else {
-  //         Alert.alert('ChallengeIt', 'Please allow all permission', [
-  //           {
-  //             text: 'OPEN SETTINGS',
-  //             onPress: () => Linking.openSettings(),
-  //           },
-  //         ]);
-  //       }
-  //     });
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      requestMultiple(
+        (Platform.OS = 'android' && [
+          PERMISSIONS.ANDROID.CAMERA,
+          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        ]),
+      ).then((res) => {
+        if (
+          res[PERMISSIONS.ANDROID.CAMERA] == 'granted' &&
+          res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
+          res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
+        ) {
+        } else {
+          Alert.alert('ChallengeIt', 'Please allow all permission', [
+            {
+              text: 'OPEN SETTINGS',
+              onPress: () => Linking.openSettings(),
+            },
+          ]);
+        }
+      });
+    })();
+  }, []);
 
   const [isclapped, setClapp] = useState(false);
   const [camVisible, setCamVisible] = useState(false);
