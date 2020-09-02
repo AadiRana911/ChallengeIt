@@ -35,11 +35,6 @@ function App() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="Comments"
-          component={CommentsScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
           name="User"
           component={UserScreen}
           options={{headerShown: false}}

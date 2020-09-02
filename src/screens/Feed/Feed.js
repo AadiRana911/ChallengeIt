@@ -13,19 +13,18 @@ import {
 import Video from 'react-native-video';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import styles from './styles';
-import {PLAYER_STATES} from 'react-native-media-controls';
+import {MediaControls, PLAYER_STATES} from 'react-native-media-controls';
 import LinearGradient from 'react-native-linear-gradient';
 import ViewPager from '@react-native-community/viewpager';
 
 import {primaryColor} from '../../components/colors';
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import TabBar from '../../components/navigation';
 import ProfileScreen from '../ProfileScreen';
 import {useFocusEffect} from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { PanGestureHandler } from 'react-native-gesture-handler';
-import { usePanGestureHandler, withOffset } from 'react-native-redash'
-import Animate from 'react-native-reanimated'
+import { PanGestureHandler, State } from "react-native-gesture-handler";
 
 const Feed = ({navigation}) => {
   useFocusEffect(
@@ -45,45 +44,57 @@ const Feed = ({navigation}) => {
   const [screenType, setScreenType] = useState('content');
   const [isText1Active, setIsText1Active] = useState(true);
   const [isCurrentScreenEnabled, setIsCurrentScreenEnabled] = useState(true);
-  const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
   const [gestureName, setGestureName] = useState('none');
-  const [vids] = useState([
+  let direction = undefined;
+  let vids = [
     {
       id: 0,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      paused: false,
     },
     {
       id: 1,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      paused: true,
     },
     {
       id: 2,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      paused: true,     
     },
     {
       id: 3,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      paused: true,
     },
-  ]);
+  ];
 
-  const [videos] = useState([
+  const videos = [
     {
-      id: 0,
-      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      id: 4,
+      vid: require('../../assets/Videos/sample.mp4'),
+      paused: true,
+
     },
     {
-      id: 1,
-      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      id: 5,
+      vid: require('../../assets/Videos/sample.mp4'),
+      paused: true,
+
     },
     {
-      id: 2,
-      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      id: 6,
+      vid: require('../../assets/Videos/sample.mp4'),
+      paused: true,
+
     },
     {
-      id: 3,
-      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      id: 7,
+      vid: require('../../assets/Videos/sample.mp4'),
+      paused: true,
+
     },
-  ]);
+  ];
 
   const [active, setActive] = useState(0);
 
@@ -104,38 +115,6 @@ const Feed = ({navigation}) => {
     new Animated.Value(0),
   );
 
-  onSeek = (seek) => videoPlayer.seek(seek);
-  onPaused = (playerState) => {
-    setPaused(!paused);
-    setPlayerState(playerState);
-  };
-  onReplay = () => {
-    //Handler for Replay
-    setPlayerState(PLAYER_STATES.PLAYING);
-    videoPlayer.seek(0);
-  };
-  onProgress = (data) => {
-    // Video Player will continue progress even if the video already ended
-    if (!isLoading && playerState !== PLAYER_STATES.ENDED) {
-      setCurrentTime(data.currentTime);
-    }
-  };
-
-  onLoad = (data) => {
-    setDuration(data.duration);
-    setIsLoading(false);
-  };
-  onLoadStart = () => setIsLoading(true);
-  // onEnd = () => setPlayerState(PLAYER_STATES.ENDED);
-  onError = () => alert('Oh! ', error);
-  enterFullScreen = () => {};
-
-  renderToolbar = () => (
-    <View>
-      <Text> toolbar </Text>
-    </View>
-  );
-  onSeeking = (currentTime) => setCurrentTime(currentTime);
 
   const config = {
     velocityThreshold: 0.3,
@@ -261,29 +240,15 @@ const Feed = ({navigation}) => {
   
   return (
     <View style={{flex: 1}}>
-          <Animate.View style = {StyleSheet.absoluteFill}>
-            <Animate.View style={[styles.container, {width: width * vids.length, flexDirection: 'row',}]} snapToInterval = {width} deccelerationRate = 'fast' horizontal>
-            
-            {vids.map((source) => (
-              <TouchableWithoutFeedback
-                onPress={() => setPaused(!paused)}
-              >
-              <Video 
-              key = {source}
-              paused={paused}
-              source={{uri: source.vid}}
-              style={styles.mediaPlayer}
-              volume={10}
-              resizeMode="cover"
-              repeat={true}
-            />
-            </TouchableWithoutFeedback>
-
-            ))}
-            <View style = {{width: 5000}}></View>
-            </Animate.View>
-          </Animate.View>
-        {/* <ViewPager
+        <GestureRecognizer
+        styles = {{flex:1, backgroundColor: 'red'}}
+        config={config}
+        onSwipeLeft={() => {direction = 'left', console.log(direction)}}
+        onSwipeRight={() => {direction = 'right', console.log(direction)}}
+        onSwipeUp={() => {direction = 'up', console.log(direction)}}
+        onSwipeDown={() => {direction = 'down', console.log(direction)}}
+        >
+        <ViewPager
           onPageSelected={(e) => {
             setActive(e.nativeEvent.position);
             setPaused(false);
@@ -291,46 +256,37 @@ const Feed = ({navigation}) => {
           orientation="vertical"
           style={{height: '100%'}}
           initialPage={0}>
-          {videos.map((item, index) => {
-            return (
-              <FlatList
-                horizontal
-                style={{height: '100%', width: '100%', flex: 1}}
-                contentContainerStyle = {{flexGrow: 1}}
-                data = {vids}
-                keyExtractor = {(item, index) => item + index.toString()}
-                renderItem = {({item}) => {
-                  // {console.log('item is',item.vid)}
-                  return(
-                    <Video 
-                      key={index}
-                      paused={paused}
-                      source={{uri: item.vid}}
-                      style={styles.mediaPlayer}
-                      volume={10}
-                      resizeMode="cover"
-                      repeat={true}
-                    />
-                  );
-                  
-                }}
-              />
-                //{vids.map((item, index) => {
-                  //return (
-                    //<Video
-                      //key={index}
-                      //paused={paused}
-                      //source={{uri: item.vid}}
-                      //style={styles.mediaPlayer}
-                      //volume={10}
-                      //resizeMode="cover"
-                      //repeat={true}
-                    ///>
-                  //);
-                //})}
-            );
-          })}
-        </ViewPager> */}
+          {videos.map((item1, index1) => (
+            <ViewPager
+              onPageSelected={(e) => {
+                setActive(e.nativeEvent.position);
+                setPaused(false);
+              }}
+              orientation="horizontal"
+              style={{height: '100%'}}
+              initialPage={0}>
+              {vids.map((item, index) => (
+                /* console.log(direction === 'left' || 'right' ? item1 : item , `Direction is: ${direction}`) */
+
+                <TouchableWithoutFeedback
+                  onPress={() => item.paused = !item.paused}
+                  key = {item.id}
+                >
+                  <Video
+                    key={index}
+                    paused={direction === 'left' || 'right' ? item.paused :  item1.paused}
+                    source={direction === 'left' || 'right' ? {uri: item.vid} : item1.vid}
+                    style={styles.mediaPlayer}
+                    volume={10}
+                    resizeMode="cover"
+                    repeat={true}
+                  />
+                </TouchableWithoutFeedback>
+              ))}
+            </ViewPager>
+          ))}
+        </ViewPager>
+        </GestureRecognizer>
 
       <LinearGradient
         colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
@@ -393,7 +349,6 @@ const Feed = ({navigation}) => {
         translateYImg={translateYImg}
         paused={nextPaused}
         setPaused={setNextPaused}
-        source={require('../../assets/Videos/sample.mp4')}
         style={styles.mediaPlayer}
         volume={10}
         resizeMode="cover"
@@ -432,6 +387,39 @@ const Feed = ({navigation}) => {
           resizeMode="cover"
         />
       </GestureRecognizer>
+      <View style = {{position: 'absolute', height: height/4, width: width/8, top: height/1.55, left: width-60, justifyContent: 'space-between', alignItems: 'flex-end', }}>
+        <Entypo name = 'dots-three-horizontal' style = {{fontSize: 30, color: 'white'}}/>
+        <View style = {{alignItems: 'center', justifyContent: 'center'}}>
+          <Image source = {require('../../assets/images/clap.png')} style = {{tintColor: primaryColor, height: 30, width: 30}}/>
+          <Text style = {{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+        </View>
+        <View style = {{alignItems: 'center', justifyContent: 'center'}}>
+          <MaterialCommunityIcons name = 'download' style = {{fontSize: 30, color: 'white'}}/>
+          <Text style = {{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+        </View>
+        <View style = {{alignItems: 'center', justifyContent: 'center'}}>
+          <Entypo name = 'forward' style = {{fontSize: 30, color: 'white'}} />
+          <Text style = {{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+        </View>
+      </View>
+      <View style = {{height: 100, width: 100, position: 'absolute', top: height/1.25, left: width/15, width: '80%', alignItems: 'center', flexDirection: 'row'}}>
+        <Image
+          source={require('../../assets/images/samplechallenger.jpg')}
+          style={{
+            borderRadius: 30,
+            borderWidth: width / 205.714,
+            height: width / 6.857,
+            width: width / 6.857,
+            borderColor: 'white',
+            marginRight: 10
+          }}
+          resizeMode="cover"
+        />
+        <View>
+          <Text style={{color: 'white', fontSize: width / 22}}>Zaheer01</Text>
+          <Text style={{color: 'white', fontSize: width / 30}}>This is my tribute to challenge</Text>
+        </View>
+      </View>
       <TabBar
         navigation={navigation}
         params={'Home'}
@@ -439,18 +427,17 @@ const Feed = ({navigation}) => {
       />
 
       {/* <MediaControls
-                 duration={duration}
-                isLoading={isLoading}
-                mainColor="#333"
-                onFullScreen={onFullScreen}
-                onPaused={onPaused}
-                onReplay={onReplay}
-                onSeek={onSeek}
-                onSeeking={onSeeking}
-                playerState={playerState}
-                progress={currentTime}
-                toolbar={renderToolbar()}
-            />  */}
+          duration={duration}
+          isLoading={isLoading}
+          mainColor="#333"
+          onPaused={onPaused}
+          onReplay={onReplay}
+          onSeek={onSeek}
+          onSeeking={onSeeking}
+          playerState={playerState}
+          progress={currentTime}
+          toolbar={renderToolbar()}
+      />  */}
     </View>
   );
 };

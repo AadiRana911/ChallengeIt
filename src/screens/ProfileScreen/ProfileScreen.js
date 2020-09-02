@@ -27,7 +27,6 @@ const ProfileScreen = ({
   setPaused,
   translateXImg,
   translateYImg,
-  source,
 }) => {
   const [followState, setFollowState] = useState('follow');
   const [responses, setResponses] = useState(0);
