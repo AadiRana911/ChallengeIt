@@ -251,11 +251,12 @@ const Feed = ({navigation}) => {
         <ViewPager
           onPageSelected={(e) => {
             setActive(e.nativeEvent.position);
-            setPaused(false);
+            setPaused(true);
           }}
           orientation="vertical"
           style={{height: '100%'}}
           initialPage={0}>
+
           {videos.map((item1, index1) => (
             <ViewPager
               onPageSelected={(e) => {
@@ -285,6 +286,7 @@ const Feed = ({navigation}) => {
               ))}
             </ViewPager>
           ))}
+
         </ViewPager>
         </GestureRecognizer>
 

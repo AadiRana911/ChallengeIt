@@ -6,12 +6,13 @@ import Camera from './src/screens/Camera';
 
 import HomeScreen from './src/screens/HomeScreen';
 import AddScreen from './src/screens/AddScreen';
-import CommentsScreen from './src/screens/CommentsScreen';
+import Chat from './src/screens/Chat';
 import NotificationScreen from './src/screens/NotificationScreen';
 import UserScreen from './src/screens/UserScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import Challenges from './src/screens/Challenges';
 import Feed from './src/screens/Feed';
+import User from './src/screens/User';
 
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
@@ -35,7 +36,12 @@ function App() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="User"
+           name="Chat"
+          component={Chat}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="UserScreen"
           component={UserScreen}
           options={{headerShown: false}}
         />
@@ -47,6 +53,11 @@ function App() {
         <Stack.Screen
           name="Camera"
           component={Camera}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="User"
+          component={User}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
