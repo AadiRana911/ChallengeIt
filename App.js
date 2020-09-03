@@ -13,15 +13,19 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import Challenges from './src/screens/Challenges';
 import Feed from './src/screens/Feed';
 import User from './src/screens/User';
-import SignupScreen from './src/screens/SignupScreen'
-import {Component1, Component2, Component3} from './src/components/GettingStarted'
+import SignupScreen from './src/screens/SignupScreen';
+import {
+  Component1,
+  Component2,
+  Component3,
+} from './src/components/GettingStarted';
 
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Signup">
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
@@ -58,7 +62,7 @@ function App() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-           name="Chat"
+          name="Chat"
           component={Chat}
           options={{headerShown: false}}
         />
