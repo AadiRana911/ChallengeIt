@@ -43,6 +43,7 @@
     "react-native-textarea": "^1.0.4",
     "react-native-vector-icons": "^7.0.0",
     "react-native-video": "^5.1.0-alpha8",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "rn-placeholder": "^3.0.1"
   },
   "devDependencies": {

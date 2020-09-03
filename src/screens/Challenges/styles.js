@@ -11,6 +11,14 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
     borderRadius: 10,
   },
+  playButton: {
+    opacity: 0.8,
+    fontSize: 70,
+    color: 'white',
+    position: 'absolute',
+    left: 80,
+    top: 100,
+  },
   mediumText: {
     // fontFamily: Fonts.RobotoRegular,
     fontSize: 12,
