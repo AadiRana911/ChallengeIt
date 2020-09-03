@@ -14,9 +14,9 @@ class ProfilePlaceholder extends Component {
     return (
       <Card containerStyle={styles.cardStyle}>
         <ShimmerPlaceHolder
-          style={{height: 100, width: 105}}
+          style={{height: 100, width: 105, opacity: 0.3, backgroundColor: 'rgba(175,175,175,0.55)'}}
           autoRun
-          backgroundColorBehindBorder={'white'}
+          backgroundColorBehindBorder={'red'}
         />
       </Card>
     );
@@ -24,7 +24,7 @@ class ProfilePlaceholder extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, justifyContent: 'space-between'}}>
+      <View style={{flex: 1, justifyContent: 'space-around'}}>
         <View>
           <View
             style={{
@@ -57,7 +57,7 @@ class ProfilePlaceholder extends Component {
               height={40}
               style={{
                 borderRadius: 100,
-
+                opacity: 0.3,
                 marginVertical: 10,
               }}
               autoRun
@@ -137,6 +137,7 @@ const Line = ({style}) => {
       style={{
         marginBottom: 7,
         // marginLeft: 10,
+        opacity: 0.3,
         borderRadius: 100,
       }}
       autoRun
@@ -147,6 +148,7 @@ const Line = ({style}) => {
             height: 5,
             backgroundColor: 'rgba(154, 154, 154, 0.29)',
             overflow: 'hidden',
+            
           },
           style,
         ]}>
