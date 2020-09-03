@@ -12,6 +12,7 @@ import {
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from './styles'
 const Component2 = ({navigation}) => {
   const {height} = Dimensions.get('window');
   const [male, setMale] = useState(false);
@@ -19,7 +20,7 @@ const Component2 = ({navigation}) => {
   const [transgender, setTrans] = useState(false);
 
   return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'space-between'}}>
+    <SafeAreaView style={{flex: 1, justifyContent: 'space-between', backgroundColor: 'white'}}>
       <View>
         <View style={{margin: 20}}>
           <MaterialCommunityIcons
@@ -34,9 +35,9 @@ const Component2 = ({navigation}) => {
           </Text>
           <Text style={{fontSize: 15}}>Please choose your gender</Text>
         </View>
-        <View style={styles.genderContainer}>
+        <View style={style.genderContainer}>
           <TouchableOpacity
-            style={styles.gender}
+            style={style.gender}
             activeOpacity={0.7}
             onPress={() => {
               setMale(!male);
@@ -45,12 +46,12 @@ const Component2 = ({navigation}) => {
             }}>
             <Image
               source={require('../../assets/images/male.png')}
-              style={[styles.genderImg, {tintColor: male ? 'red' : 'black'}]}
+              style={[style.genderImg, {tintColor: male ? 'red' : 'black'}]}
               resizeMode={'contain'}
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.gender}
+            style={style.gender}
             activeOpacity={0.7}
             onPress={() => {
               setFemale(!female);
@@ -59,12 +60,12 @@ const Component2 = ({navigation}) => {
             }}>
             <Image
               source={require('../../assets/images/female.png')}
-              style={[styles.genderImg, {tintColor: female ? 'red' : 'black'}]}
+              style={[style.genderImg, {tintColor: female ? 'red' : 'black'}]}
               resizeMode={'contain'}
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.gender}
+            style={style.gender}
             activeOpacity={0.7}
             onPress={() => {
               setFemale(false);
@@ -74,7 +75,7 @@ const Component2 = ({navigation}) => {
             <Image
               source={require('../../assets/images/trans-icon.png')}
               style={[
-                styles.genderImg,
+                style.genderImg,
                 {tintColor: transgender ? 'red' : 'black'},
               ]}
               resizeMode={'contain'}
@@ -82,17 +83,27 @@ const Component2 = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
+      <View>
+      <View style = {{alignSelf: 'center', width: '30%', height: 20, justifyContent: 'space-around', flexDirection: 'row', marginBottom: 10}}>
+        <View style = {[styles.paginationView]}></View>
+        <View style = {[styles.paginationView, {backgroundColor: primaryColor, borderColor: primaryColor}]}></View>
+        <View style = {[styles.paginationView]}></View>
+        <View style = {styles.paginationView}></View>
+        <View style = {styles.paginationView}></View>
+      </View>
       <TouchableOpacity
-        style={styles.nextButtonStyle}
+        style={style.nextButtonStyle}
         onPress={() => navigation.navigate('C3')}>
         <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
           Next
         </Text>
       </TouchableOpacity>
+      </View>
+      
     </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
