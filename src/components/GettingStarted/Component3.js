@@ -7,7 +7,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const Component3 = ({navigation}) =>  {
     const [canIMove, setCanIMove] = useState(false);
     const {height} = Dimensions.get('window')
-
     return (
         <KeyboardAwareScrollView style = {{flex: 1, backgroundColor: 'red'}} contentContainerStyle = {{flexGrow: 1, backgroundColor: 'green'}}>
             <View style = {styles.container}>
@@ -32,7 +31,6 @@ const Component3 = ({navigation}) =>  {
                             
                        </View>
                     </View>
-
                 </View>
             </View>
             <View style = {{alignSelf: 'center', width: '30%', height: 20, justifyContent: 'space-around', flexDirection: 'row'}}>
