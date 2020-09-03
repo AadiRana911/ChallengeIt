@@ -12,7 +12,7 @@ import {
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from './styles'
+import styles from './styles';
 const Component2 = ({navigation}) => {
   const {height} = Dimensions.get('window');
   const [male, setMale] = useState(false);
@@ -20,13 +20,21 @@ const Component2 = ({navigation}) => {
   const [transgender, setTrans] = useState(false);
 
   return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'space-between', backgroundColor: 'white'}}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: 'white',
+      }}>
       <View>
         <View style={{margin: 20}}>
           <MaterialCommunityIcons
             name="keyboard-backspace"
             size={25}
             color="gray"
+            onPress={() => {
+              navigation.goBack();
+            }}
           />
         </View>
         <View style={{margin: 15}}>
@@ -84,22 +92,33 @@ const Component2 = ({navigation}) => {
         </View>
       </View>
       <View>
-      <View style = {{alignSelf: 'center', width: '30%', height: 20, justifyContent: 'space-around', flexDirection: 'row', marginBottom: 10}}>
-        <View style = {[styles.paginationView]}></View>
-        <View style = {[styles.paginationView, {backgroundColor: primaryColor, borderColor: primaryColor}]}></View>
-        <View style = {[styles.paginationView]}></View>
-        <View style = {styles.paginationView}></View>
-        <View style = {styles.paginationView}></View>
+        <View
+          style={{
+            alignSelf: 'center',
+            width: '30%',
+            height: 20,
+            justifyContent: 'space-around',
+            flexDirection: 'row',
+            marginBottom: 10,
+          }}>
+          <View style={[styles.paginationView]}></View>
+          <View
+            style={[
+              styles.paginationView,
+              {backgroundColor: primaryColor, borderColor: primaryColor},
+            ]}></View>
+          <View style={[styles.paginationView]}></View>
+          <View style={styles.paginationView}></View>
+          {/* <View style = {styles.paginationView}></View> */}
+        </View>
+        <TouchableOpacity
+          style={style.nextButtonStyle}
+          onPress={() => navigation.navigate('C3')}>
+          <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
+            Next
+          </Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={style.nextButtonStyle}
-        onPress={() => navigation.navigate('C3')}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
-          Next
-        </Text>
-      </TouchableOpacity>
-      </View>
-      
     </SafeAreaView>
   );
 };
