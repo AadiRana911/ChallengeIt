@@ -18,6 +18,7 @@ import {
   Component1,
   Component2,
   Component3,
+  Component4,
 } from './src/components/GettingStarted';
 
 const Stack = createStackNavigator();
@@ -44,6 +45,11 @@ function App() {
         <Stack.Screen
           name="C3"
           component={Component3}
+          options={{headerShown: false, animationEnabled: true}}
+        />
+        <Stack.Screen
+          name="C4"
+          component={Component4}
           options={{headerShown: false, animationEnabled: true}}
         />
         <Stack.Screen
