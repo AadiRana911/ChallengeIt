@@ -69,14 +69,14 @@ const Component4 = ({navigation}) => {
             flexDirection: 'row',
           }}>
           <View style={[styles.paginationView]}></View>
+          {/* <View style={styles.paginationView}></View> */}
+          <View style={styles.paginationView}></View>
           <View style={styles.paginationView}></View>
           <View
             style={[
               styles.paginationView,
               {backgroundColor: primaryColor, borderColor: primaryColor},
             ]}></View>
-          <View style={styles.paginationView}></View>
-          <View style={styles.paginationView}></View>
         </View>
         <TouchableOpacity
           style={styles.nextButtonStyle}
