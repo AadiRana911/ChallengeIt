@@ -44,7 +44,7 @@ const Component1 = ({navigation}) => {
         </View>
         <TouchableOpacity
           style={styles.nextButtonStyle}
-          onPress={() => navigation.navigate('C3')}>
+          onPress={() => navigation.navigate('C2')}>
           <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
             Next
           </Text>

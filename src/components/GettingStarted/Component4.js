@@ -7,13 +7,21 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import styles from './styles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-const Component3 = ({navigation}) => {
+import {useSafeArea} from 'react-native-safe-area-context';
+const Component4 = ({navigation}) => {
   const [canIMove, setCanIMove] = useState(false);
+  const [image, setImage] = useState('');
   const {height} = Dimensions.get('window');
+  const pickImage = () => {
+    ImagePicker.openPicker({}).then((image) => {
+      setImage(image.path);
+    });
+  };
 
   return (
     <KeyboardAwareScrollView
@@ -23,7 +31,7 @@ const Component3 = ({navigation}) => {
         <View
           style={{
             flex: 0.25,
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
             marginBottom: 40,
           }}>
           <View style={{marginBottom: 20}}>
@@ -32,37 +40,26 @@ const Component3 = ({navigation}) => {
               Sign up
             </Text>
             <Text style={{fontSize: 15}}>
-              Enter your email address to create account
+              tap to upload your profile picture
             </Text>
           </View>
-          <View>
-            <TextInput style={styles.textInputStyle} placeholder="First Name" />
-            <TextInput style={styles.textInputStyle} placeholder="Last Name" />
-            <View>
-              <TextInput
-                style={[styles.textInputStyle, {marginBottom: 5}]}
-                placeholder="User Name"
-              />
-              <Text style={{color: primaryColor}}>
-                This username is taken try another
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: '50%',
-                  justifyContent: 'space-between',
-                  marginTop: 10,
-                }}>
-                <Text>try</Text>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.suggestions}>ali031</Text>
-                  <Text style={styles.suggestions}>ali169</Text>
-                  <Text style={styles.suggestions}>ali003</Text>
-                </View>
-              </View>
-            </View>
-          </View>
+          {image === '' ? (
+            <TouchableOpacity
+              style={styles.gender}
+              onPress={() => {
+                pickImage();
+              }}
+            />
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                pickImage();
+              }}>
+              <Image source={{uri: image}} style={styles.gender} />
+            </TouchableOpacity>
+          )}
         </View>
+
         <View
           style={{
             alignSelf: 'center',
@@ -83,13 +80,13 @@ const Component3 = ({navigation}) => {
         </View>
         <TouchableOpacity
           style={styles.nextButtonStyle}
-          onPress={() => navigation.navigate('C4')}>
+          onPress={() => navigation.navigate('Home')}>
           <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
-            Next
+            Register
           </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
   );
 };
-export {Component3};
+export {Component4};
