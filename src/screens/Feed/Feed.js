@@ -1,4 +1,4 @@
-import React, {useState, useEffect,} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
-  Animated
+  Animated,
 } from 'react-native';
 import Video from 'react-native-video';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -19,12 +19,12 @@ import ViewPager from '@react-native-community/viewpager';
 
 import {primaryColor} from '../../components/colors';
 import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import TabBar from '../../components/navigation';
 import ProfileScreen from '../ProfileScreen';
 import {useFocusEffect} from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { PanGestureHandler, State } from "react-native-gesture-handler";
+import {ScrollView} from 'react-native-gesture-handler';
+import {PanGestureHandler, State} from 'react-native-gesture-handler';
 
 const Feed = ({navigation}) => {
   useFocusEffect(
@@ -60,7 +60,7 @@ const Feed = ({navigation}) => {
     {
       id: 2,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
-      paused: true,     
+      paused: true,
     },
     {
       id: 3,
@@ -74,25 +74,21 @@ const Feed = ({navigation}) => {
       id: 4,
       vid: require('../../assets/Videos/sample.mp4'),
       paused: true,
-
     },
     {
       id: 5,
       vid: require('../../assets/Videos/sample.mp4'),
       paused: true,
-
     },
     {
       id: 6,
       vid: require('../../assets/Videos/sample.mp4'),
       paused: true,
-
     },
     {
       id: 7,
       vid: require('../../assets/Videos/sample.mp4'),
       paused: true,
-
     },
   ];
 
@@ -114,7 +110,6 @@ const Feed = ({navigation}) => {
   const [translateXCurrentScreen, setTranslateXCurrentScreen] = useState(
     new Animated.Value(0),
   );
-
 
   const config = {
     velocityThreshold: 0.3,
@@ -237,17 +232,24 @@ const Feed = ({navigation}) => {
     setPaused(true);
     setNextPaused(false);
   };
-  
+
   return (
     <View style={{flex: 1}}>
-        <GestureRecognizer
-        styles = {{flex:1, backgroundColor: 'red'}}
+      <GestureRecognizer
+        styles={{flex: 1, backgroundColor: 'red'}}
         config={config}
-        onSwipeLeft={() => {direction = 'left', console.log(direction)}}
-        onSwipeRight={() => {direction = 'right', console.log(direction)}}
-        onSwipeUp={() => {direction = 'up', console.log(direction)}}
-        onSwipeDown={() => {direction = 'down', console.log(direction)}}
-        >
+        onSwipeLeft={() => {
+          (direction = 'left'), console.log(direction);
+        }}
+        onSwipeRight={() => {
+          (direction = 'right'), console.log(direction);
+        }}
+        onSwipeUp={() => {
+          (direction = 'up'), console.log(direction);
+        }}
+        onSwipeDown={() => {
+          (direction = 'down'), console.log(direction);
+        }}>
         <ViewPager
           onPageSelected={(e) => {
             setActive(e.nativeEvent.position);
@@ -256,7 +258,6 @@ const Feed = ({navigation}) => {
           orientation="vertical"
           style={{height: '100%'}}
           initialPage={0}>
-
           {videos.map((item1, index1) => (
             <ViewPager
               onPageSelected={(e) => {
@@ -270,13 +271,20 @@ const Feed = ({navigation}) => {
                 /* console.log(direction === 'left' || 'right' ? item1 : item , `Direction is: ${direction}`) */
 
                 <TouchableWithoutFeedback
-                  onPress={() => item.paused = !item.paused}
-                  key = {item.id}
-                >
+                  onPress={() => (item.paused = !item.paused)}
+                  key={item.id}>
                   <Video
                     key={index}
-                    paused={direction === 'left' || 'right' ? item.paused :  item1.paused}
-                    source={direction === 'left' || 'right' ? {uri: item.vid} : item1.vid}
+                    paused={
+                      direction === 'left' || 'right'
+                        ? item.paused
+                        : item1.paused
+                    }
+                    source={
+                      direction === 'left' || 'right'
+                        ? {uri: item.vid}
+                        : item1.vid
+                    }
                     style={styles.mediaPlayer}
                     volume={10}
                     resizeMode="cover"
@@ -286,9 +294,8 @@ const Feed = ({navigation}) => {
               ))}
             </ViewPager>
           ))}
-
         </ViewPager>
-        </GestureRecognizer>
+      </GestureRecognizer>
 
       <LinearGradient
         colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
@@ -389,22 +396,48 @@ const Feed = ({navigation}) => {
           resizeMode="cover"
         />
       </GestureRecognizer>
-      <View style = {{position: 'absolute', height: height/4, width: width/8, top: height/1.55, left: width-60, justifyContent: 'space-between', alignItems: 'flex-end', }}>
-        <Entypo name = 'dots-three-horizontal' style = {{fontSize: 30, color: 'white'}}/>
-        <View style = {{alignItems: 'center', justifyContent: 'center'}}>
-          <Image source = {require('../../assets/images/clap.png')} style = {{tintColor: primaryColor, height: 30, width: 30}}/>
-          <Text style = {{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+      <View
+        style={{
+          position: 'absolute',
+          height: height / 4,
+          width: width / 8,
+          top: height / 1.55,
+          left: width - 60,
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+        }}>
+        <Entypo
+          name="dots-three-horizontal"
+          style={{fontSize: 30, color: 'white'}}
+        />
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Image
+            source={require('../../assets/images/clap.png')}
+            style={{tintColor: primaryColor, height: 30, width: 30}}
+          />
+          <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
-        <View style = {{alignItems: 'center', justifyContent: 'center'}}>
-          <MaterialCommunityIcons name = 'download' style = {{fontSize: 30, color: 'white'}}/>
-          <Text style = {{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <MaterialCommunityIcons
+            name="download"
+            style={{fontSize: 30, color: 'white'}}
+          />
+          <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
-        <View style = {{alignItems: 'center', justifyContent: 'center'}}>
-          <Entypo name = 'forward' style = {{fontSize: 30, color: 'white'}} />
-          <Text style = {{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Entypo name="forward" style={{fontSize: 30, color: 'white'}} />
+          <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
       </View>
-      <View style = {{height: 100, width: 100, position: 'absolute', top: height/1.25, left: width/15, width: '80%', alignItems: 'center', flexDirection: 'row'}}>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: height / 6,
+          left: width / 20,
+          width: '80%',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}>
         <Image
           source={require('../../assets/images/samplechallenger.jpg')}
           style={{
@@ -413,13 +446,19 @@ const Feed = ({navigation}) => {
             height: width / 6.857,
             width: width / 6.857,
             borderColor: 'white',
-            marginRight: 10
+            marginRight: 10,
           }}
           resizeMode="cover"
         />
         <View>
           <Text style={{color: 'white', fontSize: width / 22}}>Zaheer01</Text>
-          <Text style={{color: 'white', fontSize: width / 30}}>This is my tribute to challenge</Text>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: width / 30,
+            }}>
+            This is my tribute to challenge
+          </Text>
         </View>
       </View>
       <TabBar
