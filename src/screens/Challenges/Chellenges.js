@@ -1,4 +1,4 @@
-import React, {useState, useEffect, createRef, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   Text,
   View,
@@ -9,7 +9,10 @@ import {
   Dimensions,
   Platform,
   Linking,
+  Alert,
 } from 'react-native';
+import Video from 'react-native-video';
+const {width, height} = Dimensions.get('window');
 import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 import ImagePicker from 'react-native-image-crop-picker';
 import styles from './styles';
@@ -21,7 +24,6 @@ import {more, dummy, clap} from '../../assets';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {primaryColor} from '../../components/colors';
-const width = Dimensions.get('window').width;
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -60,10 +62,11 @@ const Challenges = ({navigation}) => {
     })();
   }, []);
 
-  const rbsheet = createRef();
-  const optionSheet = createRef();
-  const playListRef = createRef();
-  const reportRef = createRef();
+  const rbsheet = useRef(null);
+  const optionSheet = useRef(null);
+  const playListRef = useRef(null);
+  const reportRef = useRef(null);
+  const avatarRef = useRef(null);
 
   const [isclapped, setClapp] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -117,7 +120,98 @@ const Challenges = ({navigation}) => {
       uri: 'https://randomuser.me/api/portraits/men/50.jpg',
     },
   ]);
-
+  const [videos, setVideos] = useState([
+    {
+      id: 1,
+      status: 'success',
+      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      name: 'Zeeshan',
+      to: 'Ali Khan',
+      km: '2 km away',
+      time: '3 hours ago',
+      claps: '3000',
+      views: '300',
+      isPaused: true,
+      shares: '200',
+    },
+    {
+      id: 2,
+      status: 'success',
+      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      name: 'Zeeshan',
+      to: 'Ali Khan',
+      km: '2 km away',
+      time: '3 hours ago',
+      claps: '3000',
+      views: '300',
+      isPaused: true,
+      shares: '200',
+    },
+    {
+      id: 3,
+      status: 'error',
+      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      name: 'Zeeshan',
+      to: 'Ali Khan',
+      km: '2 km away',
+      time: '3 hours ago',
+      claps: '3000',
+      views: '300',
+      isPaused: true,
+      shares: '200',
+    },
+    {
+      id: 4,
+      status: '',
+      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      name: 'Zeeshan',
+      to: 'Ali Khan',
+      km: '2 km away',
+      time: '3 hours ago',
+      claps: '3000',
+      views: '300',
+      isPaused: true,
+      shares: '200',
+    },
+    {
+      id: 5,
+      status: 'error',
+      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      name: 'Zeeshan',
+      to: 'Ali Khan',
+      km: '2 km away',
+      time: '3 hours ago',
+      claps: '3000',
+      views: '300',
+      isPaused: true,
+      shares: '200',
+    },
+    {
+      id: 6,
+      status: '',
+      uri: 'https://www.w3schools.com/html/mov_bbb.mp4g',
+      name: 'Zeeshan',
+      to: 'Ali Khan',
+      km: '2 km away',
+      time: '3 hours ago',
+      claps: '3000',
+      views: '300',
+      shares: '200',
+      isPaused: true,
+    },
+  ]);
+  const handleVideoPause = (id) => {
+    setVideos(
+      videos.map((item) => {
+        if (item.id === id.id)
+          return {
+            ...item,
+            isPaused: !item.isPaused,
+          };
+        return item;
+      }),
+    );
+  };
   const renderPosts = ({item, index}) => {
     return (
       <View key={index} activeOpacity={0.9} style={[styles.cardStyle]}>
@@ -148,11 +242,14 @@ const Challenges = ({navigation}) => {
                   color: 'red',
                 },
               ]}>
-              Zeeshan
+              {item.name}
             </Text>{' '}
             <Text style={[styles.largeText]}>Challenged </Text>
             <Text
-              style={[styles.largeText, {color: 'red'}]}>{`Ali Khan \n`}</Text>
+              style={[
+                styles.largeText,
+                {color: 'red'},
+              ]}>{`${item.to} \n`}</Text>
             <Text
               style={[
                 styles.mediumText,
@@ -162,7 +259,8 @@ const Challenges = ({navigation}) => {
                   // color: theme.colors.gray,
                 },
               ]}>
-              3 km away{'    '} 3 mins ago
+              {item.km}
+              {'    '} {item.time}
             </Text>
           </Text>
 
@@ -180,14 +278,44 @@ const Challenges = ({navigation}) => {
         </View>
 
         <View style={[styles.horizontalContainer, {marginTop: 15}]}></View>
-        <View>
-          <Image
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            handleVideoPause(item);
+          }}>
+          {/* <Image
             style={[styles.questionImage]}
             source={dummy}
             // resizeMode={'contain'}
+          /> */}
+          <Video
+            source={{uri: item.uri}}
+            paused={item.isPaused}
+            resizeMode="cover"
+            style={{height: 200, width: '100%', backgroundColor: 'black'}}
           />
-        </View>
-
+        </TouchableOpacity>
+        {item.isPaused && (
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              handleVideoPause(item);
+            }}
+            style={[
+              {
+                position: 'absolute',
+                left: Platform.OS === 'ios' ? 80 : 50,
+                top: 60,
+                // right: 50,
+              },
+            ]}>
+            <Entypo
+              name="controller-play"
+              color="white"
+              style={[styles.playButton]}
+            />
+          </TouchableOpacity>
+        )}
         <View
           style={[
             styles.horizontalContainer,
@@ -209,7 +337,9 @@ const Challenges = ({navigation}) => {
                   // left: '50%',
                 }}
               /> */}
-              <Text style={[styles.smallText, {marginTop: -3}]}>200</Text>
+              <Text style={[styles.smallText, {marginTop: -3}]}>
+                {item.views}
+              </Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => setClapp(!isclapped)}>
@@ -229,7 +359,9 @@ const Challenges = ({navigation}) => {
                   marginRight: 4,
                 }}
               />
-              <Text style={[styles.smallText, {marginTop: 2}]}>200</Text>
+              <Text style={[styles.smallText, {marginTop: 2}]}>
+                {item.shares}
+              </Text>
             </View>
           </TouchableOpacity>
           <View
@@ -242,7 +374,9 @@ const Challenges = ({navigation}) => {
                 name="share"
                 style={{fontSize: width / 18.70129, color: 'gray'}}
               />
-              <Text style={[styles.smallText, {marginTop: -3}]}>200</Text>
+              <Text style={[styles.smallText, {marginTop: -3}]}>
+                {item.views}
+              </Text>
             </TouchableOpacity>
           </View>
           <View
@@ -255,7 +389,9 @@ const Challenges = ({navigation}) => {
                 name="eye"
                 style={{fontSize: width / 18.70129, color: 'gray'}}
               />
-              <Text style={[styles.smallText, {marginTop: -3}]}>200</Text>
+              <Text style={[styles.smallText, {marginTop: -3}]}>
+                {item.views}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -323,7 +459,11 @@ const Challenges = ({navigation}) => {
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
-              <View key={index}>
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  avatarRef.current.open();
+                }}>
                 <Avatar
                   source={{
                     uri: item.uri,
@@ -342,7 +482,7 @@ const Challenges = ({navigation}) => {
                     right: item.status === 'error' ? 0 : 6,
                   }}
                 />
-              </View>
+              </TouchableOpacity>
             );
           }}
         />
@@ -384,12 +524,12 @@ const Challenges = ({navigation}) => {
           }}
         />
       </View>
-      {loading === true ? (
+      {loading === false ? (
         <ChallengePlaceholder type={'question'} />
       ) : (
         <View style={{flex: 0.9}}>
           <FlatList
-            data={new Array(10)}
+            data={videos}
             keyExtractor={(item, index) => item + index.toString()}
             renderItem={renderPosts}
           />
@@ -472,13 +612,13 @@ const Challenges = ({navigation}) => {
           onPress={() => {
             Snackbar.show({
               text: ' Saved to playlist',
-              duration: Snackbar.LENGTH_SHORT,
+              duration: Snackbar.LENGTH_LONG,
               action: {
                 text: 'Change',
                 textColor: 'tomato',
                 onPress: () => {
-                  playListRef.current.open();
                   optionSheet.current.close();
+                  playListRef.current.open();
                 },
               },
             });
@@ -639,6 +779,7 @@ const Challenges = ({navigation}) => {
           }}
         />
       </RBSheet>
+
       <RBSheet
         ref={playListRef}
         height={420}
@@ -902,6 +1043,65 @@ const Challenges = ({navigation}) => {
             Send
           </Text>
         </TouchableOpacity>
+      </RBSheet>
+
+      <RBSheet
+        ref={avatarRef}
+        height={150}
+        openDuration={250}
+        customStyles={{
+          container: {
+            borderTopRightRadius: 30,
+            borderTopLeftRadius: 30,
+            paddingTop: 10,
+          },
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            avatarRef.current.close();
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 4, padding: 10}]}>
+          <TouchableOpacity
+            style={[styles.iconStyle, {backgroundColor: 'teal'}]}>
+            <AntDesign
+              name="eye"
+              size={20}
+              color={'white'}
+              style={{alignSelf: 'center', margin: 5}}
+            />
+          </TouchableOpacity>
+          <Text
+            style={[
+              styles.large,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Lorem Ipsum dollar the sign
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          onPress={() => {
+            avatarRef.current.close();
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 4, padding: 10}]}>
+          <TouchableOpacity
+            style={[styles.iconStyle, {backgroundColor: 'tomato'}]}>
+            <MaterialIcons
+              name="videocam"
+              size={24}
+              color={'white'}
+              style={{alignSelf: 'center', margin: 5}}
+            />
+          </TouchableOpacity>
+          <Text
+            style={[
+              styles.large,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Lorem Ipsum Dollar the sign
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
       </RBSheet>
 
       {/* {isModalVisible && renderModal()} */}

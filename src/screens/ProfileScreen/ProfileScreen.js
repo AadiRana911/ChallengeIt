@@ -85,7 +85,7 @@ const ProfileScreen = ({
           style={styles.videoTouchableContainer}
           onPress={() => setPaused(!paused)}>
           <Video
-            paused={paused}
+            paused={true}
             source={{uri: 'https://www.w3schools.com/html/mov_bbb.mp4'}}
             style={styles.mediaPlayer}
             volume={1}

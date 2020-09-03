@@ -69,29 +69,6 @@ const Feed = ({navigation}) => {
     },
   ];
 
-  const videos = [
-    {
-      id: 4,
-      vid: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-      paused: true,
-    },
-    {
-      id: 5,
-      vid: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-      paused: true,
-    },
-    {
-      id: 6,
-      vid: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-      paused: true,
-    },
-    {
-      id: 7,
-      vid: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-      paused: true,
-    },
-  ];
-
   const [active, setActive] = useState(0);
 
   const {width, height} = Dimensions.get('window');
@@ -116,24 +93,6 @@ const Feed = ({navigation}) => {
     directionalOffsetThreshold: 80,
   };
 
-  const onSwipe = (gestureName, gestureState) => {
-    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
-    setGestureName(gestureName);
-    switch (gestureName) {
-      //   case SWIPE_UP:
-      //     this.setState({backgroundColor: 'red'});
-      //     break;
-      //   case SWIPE_DOWN:
-      //     this.setState({backgroundColor: 'green'});
-      //     break;
-      case SWIPE_LEFT:
-        navigation.navigate('Profile');
-        break;
-        //   case SWIPE_RIGHT:
-        //     this.setState({backgroundColor: 'yellow'});
-        break;
-    }
-  };
   const handleImageSlideX = () => {
     Animated.spring(translateXImg, {
       toValue: -width + width / 4.4,
@@ -233,81 +192,30 @@ const Feed = ({navigation}) => {
     setNextPaused(false);
   };
 
-  function videoManager (direction, vid1, vid2) {
-    switch(direction) {
-      case 'up':
-        return vid1;
-      case 'down':
-        return vid1;
-      case 'left':
-        return vid2;
-      case 'right':
-        return vid2;
-    }
-  }
   return (
     <View style={{flex: 1}}>
-      
-         <ViewPager
-          onPageSelected={(e) => {
-            setActive(e.nativeEvent.position);
-            setPaused(true);
-          }}
-          orientation="vertical"
-          style={{height: '100%'}}
-          initialPage={0}>
-          {videos.map((item1, index1) => (
-            <ViewPager
-              onPageSelected={(e) => {
-                setActive(e.nativeEvent.position);
-                setPaused(false);
-              }}
-              key = {index1}
-              orientation="horizontal"
-              style={{height: '100%'}}
-              initialPage={0}>
-              {vids.map((item, index) => (
-                <GestureRecognizer
-                  config={config}
-                  onSwipeLeft={() => {
-                    (setDirection('left')), console.log(direction);
-                  }}
-                  onSwipeRight={() => {
-                    (setDirection('right')), console.log(direction);
-                  }}
-                  onSwipeUp={() => {
-                    (setDirection('up')), console.log(direction);
-                  }}
-                  onSwipeDown={() => {
-                    (setDirection('down')), console.log(direction);
-                }}>
-                 <TouchableWithoutFeedback
-                    onPress={() => (item.paused = !item.paused)}
-                    key={item.id}
-                  >
-                    <Video
-                      key={index}
-                      paused={
-                        direction === 'left' || 'right'
-                          ? item.paused
-                          : item1.paused
-                      }
-                      source={
-                        {uri: videoManager(direction, item.vid, item1.vid)}
-                      }
-                      style={styles.mediaPlayer}
-                      volume={10}
-                      resizeMode="cover"
-                      repeat={true}
-                    />
-                  </TouchableWithoutFeedback>
-                </GestureRecognizer>
-
-              ))}
-            </ViewPager>
-          ))}
-        </ViewPager> 
-      
+      <ViewPager
+        onPageSelected={(e) => {
+          setActive(e.nativeEvent.position);
+          setPaused(true);
+        }}
+        orientation="vertical"
+        style={{height: '100%'}}
+        initialPage={0}>
+        {vids.map((item) => {
+          return (
+            <Video
+              paused={false}
+              source={{uri: item.vid}}
+              style={styles.mediaPlayer}
+              volume={1}
+              resizeMode="cover"
+              repeat={true}
+              muted
+            />
+          );
+        })}
+      </ViewPager>
 
       <LinearGradient
         colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
@@ -375,8 +283,7 @@ const Feed = ({navigation}) => {
         resizeMode="cover"
         repeat={true}
       />
-      
-      
+
       <GestureRecognizer
         style={{
           position: 'absolute',
@@ -474,12 +381,7 @@ const Feed = ({navigation}) => {
           </Text>
         </View>
       </View>
-      <TabBar
-        navigation={navigation}
-        params={'Home'}
-        animateReverse={animateReverse}
-      />
-    
+
       {/* <MediaControls
           duration={duration}
           isLoading={isLoading}
@@ -492,6 +394,11 @@ const Feed = ({navigation}) => {
           progress={currentTime}
           toolbar={renderToolbar()}
       />  */}
+      <TabBar
+        navigation={navigation}
+        params={'Home'}
+        animateReverse={animateReverse}
+      />
     </View>
   );
 };
