@@ -42,9 +42,9 @@ const Feed = ({navigation}) => {
   const [nextPaused, setNextPaused] = useState(true);
   const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
   const [screenType, setScreenType] = useState('content');
-  const [isText1Active, setIsText1Active] = useState(true);
   const [isCurrentScreenEnabled, setIsCurrentScreenEnabled] = useState(true);
-  const [gestureName, setGestureName] = useState('none');
+  const [isText1Active, setIsText1Active] = useState(true);
+
   let [direction, setDirection] = useState('up');
   let vids = [
     {
@@ -76,17 +76,16 @@ const Feed = ({navigation}) => {
   const xStrip = width - 56;
   const xScreen = width + 40;
   const [translateXImg, setTranslateXImg] = useState(new Animated.Value(0));
+  
+
   const [translateXCurrentImg, setTranslateXCurrentImg] = useState(
     new Animated.Value(0),
   );
   const [translateYImg, setTranslateYImg] = useState(new Animated.Value(0));
   const [translateXStrip, setTranslateXStrip] = useState(new Animated.Value(0));
-  const [translateXScreen, setTranslateXScreen] = useState(
-    new Animated.Value(0),
-  );
-  const [translateXCurrentScreen, setTranslateXCurrentScreen] = useState(
-    new Animated.Value(0),
-  );
+  const [translateXScreen, setTranslateXScreen] = useState(new Animated.Value(0));
+  const [translateBottomImageStripX] = useState(new Animated.Value(0));
+  const [translateBottomIconsX] = useState(new Animated.Value(0));
 
   const config = {
     velocityThreshold: 0.3,
@@ -104,6 +103,14 @@ const Feed = ({navigation}) => {
   const handleImageSlideY = () => {
     Animated.spring(translateYImg, {
       toValue: height / 6.2,
+      duration: 5000,
+      useNativeDriver: true,
+      tension: 10,
+    }).start();
+  };
+  const handleBottomImageStripX = () => {
+    Animated.spring(translateBottomImageStripX, {
+      toValue: -width,
       duration: 5000,
       useNativeDriver: true,
       tension: 10,
@@ -164,6 +171,14 @@ const Feed = ({navigation}) => {
       tension: 10,
     }).start();
   };
+  const handleBottomImageStripXReverse = () => {
+    Animated.spring(translateBottomImageStripX, {
+      toValue: 0,
+      duration: 5000,
+      useNativeDriver: true,
+      tension: 10,
+    }).start();
+  };
   const handleScreenSlideReverse = () => {
     Animated.spring(translateXScreen, {
       toValue: 0,
@@ -177,6 +192,7 @@ const Feed = ({navigation}) => {
     handleCurrentImageSlideXReverse();
     handleStripSlideReverse();
     handleScreenSlideReverse();
+    handleBottomImageStripXReverse();
     setIsCurrentScreenEnabled(true);
     setNextPaused(true);
     setPaused(false);
@@ -187,6 +203,7 @@ const Feed = ({navigation}) => {
     handleCurrentImageSlideX();
     handleStripSlide();
     handleScreenSlide();
+    handleBottomImageStripX();
     setIsCurrentScreenEnabled(false);
     setPaused(true);
     setNextPaused(false);
@@ -349,7 +366,7 @@ const Feed = ({navigation}) => {
           <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
       </View>
-      <View
+      <Animated.View
         style={{
           position: 'absolute',
           bottom: height / 8,
@@ -357,6 +374,7 @@ const Feed = ({navigation}) => {
           width: '80%',
           alignItems: 'center',
           flexDirection: 'row',
+          transform: [{translateX: translateBottomImageStripX}]
         }}>
         <Image
           source={require('../../assets/images/samplechallenger.jpg')}
@@ -380,7 +398,7 @@ const Feed = ({navigation}) => {
             This is my tribute to challenge
           </Text>
         </View>
-      </View>
+      </Animated.View>
 
       {/* <MediaControls
           duration={duration}

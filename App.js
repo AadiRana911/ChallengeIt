@@ -37,11 +37,11 @@ function App() {
           component={Component2}
           options={{headerShown: false, animationEnabled: true}}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="C3"
           component={Component3}
           options={{headerShown: false, animationEnabled: true}}
-        /> */}
+        />
         <Stack.Screen
           name="Home"
           component={Feed}

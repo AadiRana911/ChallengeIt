@@ -1,6 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native'
-const {height, width} = Dimensions.get('window')
+import {primaryColor} from '../colors';
 
+const {height, width} = Dimensions.get('window')
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -10,6 +11,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     textInputStyle: {
+        marginBottom: 15,
         backgroundColor: '#fff',
         shadowColor: '#000',
         shadowOffset: {width: 1, height: 0},
@@ -58,6 +60,19 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         borderWidth: 0.5,
         borderColor: '#eee'
+    },
+    suggestions: {
+        marginRight: 7,
+        color: primaryColor
+    },
+    paginationView: {
+        height: 15,
+        width: 15,
+        backgroundColor: 'white',
+        alignSelf: 'center',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'rgba(150,150,150,0.6)'
     }
 });
 export default styles;
