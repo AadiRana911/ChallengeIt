@@ -17,7 +17,7 @@ class ChallengePlaceholder extends Component {
           <ShimmerPlaceHolder
             width={50}
             height={50}
-            style={{width: 50, height: 50, borderRadius: 100}}
+            style={{width: 50, height: 50, borderRadius: 100, opacity: 0.3}}
             autoRun
             backgroundColorBehindBorder={'white'}
           />
@@ -45,6 +45,7 @@ class ChallengePlaceholder extends Component {
             width: '100%',
             height: 200,
             marginVertical: 10,
+            opacity: 0.3,
           }}
           autoRun
           backgroundColorBehindBorder={'white'}
@@ -92,6 +93,7 @@ class ChallengePlaceholder extends Component {
                   width: 50,
                   height: 50,
                   borderRadius: 100,
+                  opacity: 0.3,
                 }}
                 autoRun
                 backgroundColorBehindBorder={'white'}
@@ -104,6 +106,7 @@ class ChallengePlaceholder extends Component {
                   height: 50,
                   borderRadius: 100,
                   marginLeft: 10,
+                  opacity: 0.3,
                 }}
                 autoRun
                 backgroundColorBehindBorder={'white'}
@@ -116,6 +119,7 @@ class ChallengePlaceholder extends Component {
                   height: 50,
                   borderRadius: 100,
                   marginLeft: 10,
+                  opacity: 0.3,
                 }}
                 autoRun
                 backgroundColorBehindBorder={'white'}
@@ -128,6 +132,7 @@ class ChallengePlaceholder extends Component {
                   height: 50,
                   borderRadius: 100,
                   marginLeft: 10,
+                  opacity: 0.3,
                 }}
                 autoRun
                 backgroundColorBehindBorder={'white'}
@@ -140,6 +145,7 @@ class ChallengePlaceholder extends Component {
                   height: 50,
                   borderRadius: 100,
                   marginLeft: 10,
+                  opacity: 0.3,
                 }}
                 autoRun
                 backgroundColorBehindBorder={'white'}
@@ -152,6 +158,7 @@ class ChallengePlaceholder extends Component {
                   height: 50,
                   borderRadius: 100,
                   marginLeft: 10,
+                  opacity: 0.3,
                 }}
                 autoRun
                 backgroundColorBehindBorder={'white'}
@@ -164,23 +171,24 @@ class ChallengePlaceholder extends Component {
                   height: 50,
                   borderRadius: 100,
                   marginLeft: 10,
+                  opacity: 0.3,
                 }}
                 autoRun
                 backgroundColorBehindBorder={'white'}
               />
             </View>
-            <View style={{flexDirection: 'row', margin: 8}}>
+            <View style={{flexDirection: 'row', margin: 8,}}>
               <ShimmerPlaceHolder
                 width={SCREEN_WIDTH / 3}
                 height={40}
-                style={{borderRadius: 100}}
+                style={{borderRadius: 100, opacity: 0.3}}
                 autoRun
                 backgroundColorBehindBorder={'white'}
               />
               <ShimmerPlaceHolder
                 width={SCREEN_WIDTH / 3}
                 height={40}
-                style={{borderRadius: 100, marginLeft: 10}}
+                style={{borderRadius: 100, marginLeft: 10, opacity: 0.3}}
                 autoRun
                 backgroundColorBehindBorder={'white'}
               />
@@ -190,6 +198,7 @@ class ChallengePlaceholder extends Component {
                 style={{
                   borderRadius: 100,
                   marginLeft: 10,
+                  opacity: 0.3
                 }}
                 autoRun
                 backgroundColorBehindBorder={'white'}
@@ -223,6 +232,7 @@ const Line = ({style}) => {
         marginBottom: 7,
         marginLeft: 10,
         borderRadius: 100,
+        opacity: 0.3
       }}
       autoRun
       backgroundColorBehindBorder={'white'}>

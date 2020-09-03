@@ -13,6 +13,8 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import Challenges from './src/screens/Challenges';
 import Feed from './src/screens/Feed';
 import User from './src/screens/User';
+import SignupScreen from './src/screens/SignupScreen'
+import {Component1, Component2, Component3} from './src/components/GettingStarted'
 
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
@@ -20,6 +22,26 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={{headerShown: false, animationEnabled: true}}
+        />
+        <Stack.Screen
+          name="C1"
+          component={Component1}
+          options={{headerShown: false, animationEnabled: true}}
+        />
+        <Stack.Screen
+          name="C2"
+          component={Component2}
+          options={{headerShown: false, animationEnabled: true}}
+        />
+        {/* <Stack.Screen
+          name="C3"
+          component={Component3}
+          options={{headerShown: false, animationEnabled: true}}
+        /> */}
         <Stack.Screen
           name="Home"
           component={Feed}
