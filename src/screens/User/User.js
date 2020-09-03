@@ -65,7 +65,7 @@ const User = ({params, navigation}) => {
         'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRFU7U2h0umyF0P6E_yhTX45sGgPEQAbGaJ4g&usqp=CAU',
     },
   ];
-  return <ProfilePlaceholder />;
+  // return <ProfilePlaceholder />;
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.head}>
