@@ -45,7 +45,7 @@ const Feed = ({navigation}) => {
   const [isText1Active, setIsText1Active] = useState(true);
   const [isCurrentScreenEnabled, setIsCurrentScreenEnabled] = useState(true);
   const [gestureName, setGestureName] = useState('none');
-  let direction = undefined;
+  let [direction, setDirection] = useState('up');
   let vids = [
     {
       id: 0,
@@ -72,22 +72,22 @@ const Feed = ({navigation}) => {
   const videos = [
     {
       id: 4,
-      vid: require('../../assets/Videos/sample.mp4'),
+      vid: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       paused: true,
     },
     {
       id: 5,
-      vid: require('../../assets/Videos/sample.mp4'),
+      vid: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       paused: true,
     },
     {
       id: 6,
-      vid: require('../../assets/Videos/sample.mp4'),
+      vid: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       paused: true,
     },
     {
       id: 7,
-      vid: require('../../assets/Videos/sample.mp4'),
+      vid: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       paused: true,
     },
   ];
@@ -233,24 +233,22 @@ const Feed = ({navigation}) => {
     setNextPaused(false);
   };
 
+  function videoManager (direction, vid1, vid2) {
+    switch(direction) {
+      case 'up':
+        return vid1;
+      case 'down':
+        return vid1;
+      case 'left':
+        return vid2;
+      case 'right':
+        return vid2;
+    }
+  }
   return (
     <View style={{flex: 1}}>
-      <GestureRecognizer
-        styles={{flex: 1, backgroundColor: 'red'}}
-        config={config}
-        onSwipeLeft={() => {
-          (direction = 'left'), console.log(direction);
-        }}
-        onSwipeRight={() => {
-          (direction = 'right'), console.log(direction);
-        }}
-        onSwipeUp={() => {
-          (direction = 'up'), console.log(direction);
-        }}
-        onSwipeDown={() => {
-          (direction = 'down'), console.log(direction);
-        }}>
-        <ViewPager
+      
+         <ViewPager
           onPageSelected={(e) => {
             setActive(e.nativeEvent.position);
             setPaused(true);
@@ -264,38 +262,52 @@ const Feed = ({navigation}) => {
                 setActive(e.nativeEvent.position);
                 setPaused(false);
               }}
+              key = {index1}
               orientation="horizontal"
               style={{height: '100%'}}
               initialPage={0}>
               {vids.map((item, index) => (
-                /* console.log(direction === 'left' || 'right' ? item1 : item , `Direction is: ${direction}`) */
+                <GestureRecognizer
+                  config={config}
+                  onSwipeLeft={() => {
+                    (setDirection('left')), console.log(direction);
+                  }}
+                  onSwipeRight={() => {
+                    (setDirection('right')), console.log(direction);
+                  }}
+                  onSwipeUp={() => {
+                    (setDirection('up')), console.log(direction);
+                  }}
+                  onSwipeDown={() => {
+                    (setDirection('down')), console.log(direction);
+                }}>
+                 <TouchableWithoutFeedback
+                    onPress={() => (item.paused = !item.paused)}
+                    key={item.id}
+                  >
+                    <Video
+                      key={index}
+                      paused={
+                        direction === 'left' || 'right'
+                          ? item.paused
+                          : item1.paused
+                      }
+                      source={
+                        {uri: videoManager(direction, item.vid, item1.vid)}
+                      }
+                      style={styles.mediaPlayer}
+                      volume={10}
+                      resizeMode="cover"
+                      repeat={true}
+                    />
+                  </TouchableWithoutFeedback>
+                </GestureRecognizer>
 
-                <TouchableWithoutFeedback
-                  onPress={() => (item.paused = !item.paused)}
-                  key={item.id}>
-                  <Video
-                    key={index}
-                    paused={
-                      direction === 'left' || 'right'
-                        ? item.paused
-                        : item1.paused
-                    }
-                    source={
-                      direction === 'left' || 'right'
-                        ? {uri: item.vid}
-                        : item1.vid
-                    }
-                    style={styles.mediaPlayer}
-                    volume={10}
-                    resizeMode="cover"
-                    repeat={true}
-                  />
-                </TouchableWithoutFeedback>
               ))}
             </ViewPager>
           ))}
-        </ViewPager>
-      </GestureRecognizer>
+        </ViewPager> 
+      
 
       <LinearGradient
         colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
@@ -363,7 +375,8 @@ const Feed = ({navigation}) => {
         resizeMode="cover"
         repeat={true}
       />
-
+      
+      
       <GestureRecognizer
         style={{
           position: 'absolute',
@@ -401,7 +414,7 @@ const Feed = ({navigation}) => {
           position: 'absolute',
           height: height / 4,
           width: width / 8,
-          top: height / 1.55,
+          bottom: height / 10,
           left: width - 60,
           justifyContent: 'space-between',
           alignItems: 'flex-end',
@@ -432,7 +445,7 @@ const Feed = ({navigation}) => {
       <View
         style={{
           position: 'absolute',
-          bottom: height / 6,
+          bottom: height / 8,
           left: width / 20,
           width: '80%',
           alignItems: 'center',
@@ -466,7 +479,7 @@ const Feed = ({navigation}) => {
         params={'Home'}
         animateReverse={animateReverse}
       />
-
+    
       {/* <MediaControls
           duration={duration}
           isLoading={isLoading}
