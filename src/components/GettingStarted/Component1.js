@@ -42,9 +42,16 @@ const Component1 = ({navigation}) => {
             />
           </View>
         </View>
+        <View style = {{alignSelf: 'center', width: '30%', height: 20, justifyContent: 'space-around', flexDirection: 'row'}}>
+          <View style = {[styles.paginationView, {backgroundColor: primaryColor, borderColor: primaryColor}]}></View>
+          <View style = {styles.paginationView}></View>
+          <View style = {[styles.paginationView]}></View>
+          <View style = {styles.paginationView}></View>
+          <View style = {styles.paginationView}></View>
+        </View>
         <TouchableOpacity
           style={styles.nextButtonStyle}
-          onPress={() => navigation.navigate('C3')}>
+          onPress={() => navigation.navigate('C2')}>
           <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
             Next
           </Text>
