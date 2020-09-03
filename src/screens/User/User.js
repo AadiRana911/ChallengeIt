@@ -10,6 +10,8 @@ import {
 import styles from './styles';
 import {Divider} from 'react-native-paper';
 import TabBar from '../../components/navigation';
+import {ProfilePlaceholder} from '../../components/Placeholder';
+
 const User = ({params, navigation}) => {
   const [challenges, setChallenges] = useState(true);
   const [accepted, setAccepted] = useState(false);
@@ -63,6 +65,7 @@ const User = ({params, navigation}) => {
         'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRFU7U2h0umyF0P6E_yhTX45sGgPEQAbGaJ4g&usqp=CAU',
     },
   ];
+  return <ProfilePlaceholder />;
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.head}>
@@ -91,7 +94,7 @@ const User = ({params, navigation}) => {
           </Text>
         </View>
       </View>
-      <View style={{flexDirection: 'row', flex: 0.1}}>
+      <View style={{flexDirection: 'row', flex: 0.07}}>
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => {
@@ -134,17 +137,13 @@ const User = ({params, navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <View
-        style={{
-          flex: 0.6,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+      <View style={{flex: 0.6, justifyContent: 'center', alignItems: 'center'}}>
         <FlatList
           showsVerticalScrollIndicator={false}
           data={results}
           keyExtractor={(item) => item}
           numColumns={3}
+          contentContainerStyle={{margin: 10}}
           renderItem={({item}) => {
             return (
               <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
