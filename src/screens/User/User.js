@@ -91,7 +91,7 @@ const User = ({params, navigation}) => {
           </Text>
         </View>
       </View>
-      <View style={{flexDirection: 'row', flex: 0.07}}>
+      <View style={{flexDirection: 'row', flex: 0.1}}>
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => {
@@ -134,13 +134,17 @@ const User = ({params, navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{flex: 0.6}}>
+      <View
+        style={{
+          flex: 0.6,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <FlatList
           showsVerticalScrollIndicator={false}
           data={results}
           keyExtractor={(item) => item}
           numColumns={3}
-          contentContainerStyle={{margin: 10}}
           renderItem={({item}) => {
             return (
               <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
