@@ -5,21 +5,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   imageStyle: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
+    height: 100,
+    width: 100,
+    borderRadius: 50,
     borderWidth: 3,
     borderColor: '#eee',
   },
   head: {
-    flex: 0.5,
+    flex: 0.4,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   categoryContainer: {
     flex: 0.5,
     justifyContent: 'center',
-    padding: 7,
+    padding: 10,
     alignItems: 'center',
     // marginTop: 10,
   },
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   largeText: {
-    fontSize: 15,
+    fontSize: 17,
   },
   horizontalContainer: {
     flexDirection: 'row',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderRadius: 100,
     alignSelf: 'center',
-    marginVertical: 5,
+    marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   thumbnailStyle: {
-    height: 90,
-    width: 85,
+    height: 100,
+    width: 105,
     margin: 5,
 
     borderRadius: 10,

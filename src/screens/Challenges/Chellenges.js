@@ -31,8 +31,9 @@ import Modal from 'react-native-modal';
 import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
 import RBSheet from 'react-native-raw-bottom-sheet';
-const Challenges = ({navigation}) => {
+import {ChallengePlaceholder} from '../../components/Placeholder';
 
+const Challenges = ({navigation}) => {
   useEffect(() => {
     (async () => {
       requestMultiple(
@@ -64,7 +65,6 @@ const Challenges = ({navigation}) => {
   const playListRef = createRef();
   const reportRef = createRef();
 
-
   const [isclapped, setClapp] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [bilal, setBilal] = useState(false);
@@ -76,6 +76,8 @@ const Challenges = ({navigation}) => {
   const [cheat, setCheat] = useState(false);
   const [other, setOther] = useState(false);
   const [reportMsg, setReportMsg] = useState('');
+  const [loading, setLoading] = useState(true);
+
   const [buttons, setButton] = useState([
     {id: 0, name: 'New', isActive: true},
     {id: 1, name: 'week before', isActive: false},
@@ -301,6 +303,7 @@ const Challenges = ({navigation}) => {
       }),
     );
   };
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View
@@ -320,7 +323,7 @@ const Challenges = ({navigation}) => {
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
-              <View>
+              <View key={index}>
                 <Avatar
                   source={{
                     uri: item.uri,
@@ -331,7 +334,7 @@ const Challenges = ({navigation}) => {
                 />
 
                 <Badge
-                  status={item.status}
+                  status={item.status === '' ? 'primary' : item.status}
                   value={item.status === 'error' && 'live'}
                   containerStyle={{
                     position: 'absolute',
@@ -381,13 +384,18 @@ const Challenges = ({navigation}) => {
           }}
         />
       </View>
-      <View style={{flex: 0.9}}>
-        <FlatList
-          data={new Array(10)}
-          keyExtractor={(item, index) => item + index.toString()}
-          renderItem={renderPosts}
-        />
-      </View>
+      {loading === true ? (
+        <ChallengePlaceholder type={'question'} />
+      ) : (
+        <View style={{flex: 0.9}}>
+          <FlatList
+            data={new Array(10)}
+            keyExtractor={(item, index) => item + index.toString()}
+            renderItem={renderPosts}
+          />
+        </View>
+      )}
+
       <RBSheet
         ref={rbsheet}
         height={150}
