@@ -26,7 +26,7 @@ console.disableYellowBox = true;
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Signup">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Signup"
           component={SignupScreen}

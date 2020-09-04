@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
     fontSize: 70,
     color: 'white',
     position: 'absolute',
-    left: 80,
-    top: 100,
+    left: 350 / 2 - 35,
+    top: 350 / 2 - 35,
   },
   mediumText: {
     // fontFamily: Fonts.RobotoRegular,
