@@ -353,7 +353,7 @@ const Feed = ({navigation}) => {
         {vids.map((item) => {
           return (
             <Video
-              paused={paused}
+              paused={true}
               source={{uri: item.vid}}
               style={styles.mediaPlayer}
               volume={1}
@@ -448,19 +448,20 @@ const Feed = ({navigation}) => {
             transform: [{translateX: translateXStrip}],
           }}
         />
-        <TouchableOpacity onPress = {animate}>
-        <Animated.Image
-          source={require('../../assets/images/samplechallenger.jpg')}
-          style={{
-            borderRadius: 30,
-            borderWidth: width / 205.714,
-            height: width / 6.857,
-            width: width / 6.857,
-            transform: [{translateX: translateXCurrentImg}],
-            borderColor: 'white',
-          }}
-          resizeMode="cover"
-        /></TouchableOpacity>
+        <TouchableOpacity onPress={animate}>
+          <Animated.Image
+            source={require('../../assets/images/samplechallenger.jpg')}
+            style={{
+              borderRadius: 30,
+              borderWidth: width / 205.714,
+              height: width / 6.857,
+              width: width / 6.857,
+              transform: [{translateX: translateXCurrentImg}],
+              borderColor: 'white',
+            }}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
       </GestureRecognizer>
       <Animated.View
         style={{

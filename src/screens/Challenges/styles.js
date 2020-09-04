@@ -2,8 +2,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 import {Fonts} from '../../utils/Fonts';
 
-
-const {height,width} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -21,8 +20,8 @@ const styles = StyleSheet.create({
     fontSize: 70,
     color: 'white',
     position: 'absolute',
-    left: width/2-35,
-    top: height/3-35,
+    left: width / 2 - 35,
+    top: height / 4 - 35,
   },
   mediumText: {
     fontSize: 12,
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
   cardStyle: {
     flex: 1,
     margin: 10,
-    padding: 15,
+    // padding: 15,
     backgroundColor: 'white',
     // elevation: 10,
     // shadowColor: '#BDBDBD',

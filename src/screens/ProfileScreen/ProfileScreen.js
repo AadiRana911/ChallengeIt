@@ -86,7 +86,7 @@ const ProfileScreen = ({
           style={styles.videoTouchableContainer}
           onPress={() => setPaused(!paused)}>
           <Video
-            paused={paused}
+            paused={false}
             source={{uri: 'https://www.w3schools.com/html/mov_bbb.mp4'}}
             style={styles.mediaPlayer}
             volume={1}
@@ -127,7 +127,11 @@ const ProfileScreen = ({
           <TouchableOpacity>
             <Image
               source={require('../../assets/images/clap.png')}
-              style={{height: width / 18.70129, width: width / 18.70129, tintColor: '#f03c00'}}
+              style={{
+                height: width / 18.70129,
+                width: width / 18.70129,
+                tintColor: '#f03c00',
+              }}
             />
           </TouchableOpacity>
           <Text
@@ -200,7 +204,7 @@ const ProfileScreen = ({
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  color: '#f03c00'
+                  color: '#f03c00',
                 }}
               />
             </TouchableOpacity>
