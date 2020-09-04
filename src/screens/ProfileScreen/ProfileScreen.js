@@ -27,6 +27,7 @@ const ProfileScreen = ({
   setPaused,
   translateXImg,
   translateYImg,
+  navigation,
 }) => {
   const [followState, setFollowState] = useState('follow');
   const [responses, setResponses] = useState(0);
@@ -93,7 +94,11 @@ const ProfileScreen = ({
             // repeat = {true}
           />
         </TouchableWithoutFeedback>
+
         <Animated.Image
+          onPress={() => {
+            navigation.navigate('User');
+          }}
           source={require('../../assets/images/samplechallenger.jpg')}
           style={[
             styles.imageStyle,
@@ -106,6 +111,7 @@ const ProfileScreen = ({
           ]}
           resizeMode="cover"
         />
+
         {paused && (
           <TouchableWithoutFeedback onPress={() => setPaused(!paused)}>
             <Entypo
@@ -161,7 +167,11 @@ const ProfileScreen = ({
       </View>
       {/* <Text style = {{top: height/25}}>Icons go here</Text> */}
       <View style={styles.userNameContainer}>
-        <Text style={{color: 'black', fontSize: width / 20.57143}}>
+        <Text
+          style={{color: 'black', fontSize: width / 20.57143}}
+          onPress={() => {
+            navigation.navigate('User');
+          }}>
           Zaheer01
         </Text>
         <TouchableOpacity

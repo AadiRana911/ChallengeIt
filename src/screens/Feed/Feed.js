@@ -1,39 +1,42 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Image,
   TouchableWithoutFeedback,
   Dimensions,
   TouchableOpacity,
-  FlatList,
   PermissionsAndroid,
   ToastAndroid,
   Animated,
-  BackHandler
+  BackHandler,
+  Alert,
+  Platform,
 } from 'react-native';
-import OptionsMenu from "react-native-options-menu";
+import OptionsMenu from 'react-native-options-menu';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import {CheckBox} from 'react-native-elements';
+import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
+import Share from 'react-native-share';
+
 import Video from 'react-native-video';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import styles from './styles';
-import {MediaControls, PLAYER_STATES} from 'react-native-media-controls';
+import {PLAYER_STATES} from 'react-native-media-controls';
 import LinearGradient from 'react-native-linear-gradient';
 import ViewPager from '@react-native-community/viewpager';
 import Snackbar from 'react-native-snackbar';
-import Modal from 'react-native-modal';
-import RNFetchBlob from "rn-fetch-blob";
-
+import RNFetchBlob from 'rn-fetch-blob';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {primaryColor} from '../../components/colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import TabBar from '../../components/navigation';
 import ProfileScreen from '../ProfileScreen';
 import {useFocusEffect} from '@react-navigation/native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {PanGestureHandler, State} from 'react-native-gesture-handler';
-
+import {Divider} from 'react-native-paper';
 const Feed = ({navigation}) => {
+  const playListRef = useRef(null);
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = setPaused(false);
@@ -42,17 +45,19 @@ const Feed = ({navigation}) => {
     }, []),
   );
   let player;
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+
   const [paused, setPaused] = useState(false);
   const [nextPaused, setNextPaused] = useState(true);
-  const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
-  const [screenType, setScreenType] = useState('content');
   const [isCurrentScreenEnabled, setIsCurrentScreenEnabled] = useState(true);
   const [isText1Active, setIsText1Active] = useState(true);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(0);
-  const [direction, setDirection] = useState('up');
+  const [bilal, setBilal] = useState(false);
+  const [myFav, setmyFav] = useState(false);
+  const [daring, setDaring] = useState(false);
+  const [best, setBest] = useState(false);
+  const [nudity, setNudity] = useState(false);
+
   let vids = [
     {
       id: 0,
@@ -83,14 +88,14 @@ const Feed = ({navigation}) => {
   const xStrip = width - 56;
   const xScreen = width + 40;
   const [translateXImg, setTranslateXImg] = useState(new Animated.Value(0));
-  
 
-  const [translateXCurrentImg] = useState(new Animated.Value(0),);
+  const [translateXCurrentImg] = useState(new Animated.Value(0));
   const [translateYImg] = useState(new Animated.Value(0));
   const [translateXStrip] = useState(new Animated.Value(0));
   const [translateXScreen] = useState(new Animated.Value(0));
   const [translateBottomImageStripX] = useState(new Animated.Value(0));
   const [translateBottomIconsX] = useState(new Animated.Value(0));
+  const [isClap, setClapped] = useState(false);
 
   const config = {
     velocityThreshold: 0.3,
@@ -193,7 +198,7 @@ const Feed = ({navigation}) => {
       tension: 10,
     }).start();
   };
-  
+
   const handleBottomIconsXReverse = () => {
     Animated.spring(translateBottomIconsX, {
       toValue: 0,
@@ -242,13 +247,8 @@ const Feed = ({navigation}) => {
         text: 'Change',
         textColor: 'tomato',
         onPress: () => {
-          return(
-            // <Modal isVisible = {true}>
-              <View style={{ flex: 1 }}>
-                <Text>I am the modal content!</Text>
-              </View>
-            // </Modal>
-          )
+          setPaused(true);
+          playListRef.current.open();
         },
       },
     });
@@ -261,63 +261,79 @@ const Feed = ({navigation}) => {
     RNFetchBlob.config({
       // add this option that makes response data to be stored as a file,
       // this is much more performant.
-      path: dirs.DCIMDir + "/Videos/video_" + Math.floor(date.getTime()
-      + date.getSeconds() / 2) + '.mp4',
-      fileCache: true
+      path:
+        dirs.DCIMDir +
+        '/Videos/video_' +
+        Math.floor(date.getTime() + date.getSeconds() / 2) +
+        '.mp4',
+      fileCache: true,
     })
-      .fetch(
-        "GET",
-        vids[0].vid,
-        {
-          //some headers ..
-        }
-      )
-      .progress((received, total) => {
-        console.log("progress", received / total);
-        setProgress(received / total );
+      .fetch('GET', vids[0].vid, {
+        //some headers ..
       })
-      .then(res => {
-        console.log(dirs)
-        console.log('The file saved to ', res.path())
+      .progress((received, total) => {
+        console.log('progress', received / total);
+        setProgress(received / total);
+      })
+      .then((res) => {
+        console.log(dirs);
+        console.log('The file saved to ', res.path());
         setProgress(100);
         setIsLoading(false);
         ToastAndroid.showWithGravity(
-          "Your file has been downloaded to downloads folder!",
+          'Your file has been downloaded to downloads folder!',
           ToastAndroid.SHORT,
-          ToastAndroid.BOTTOM
+          ToastAndroid.BOTTOM,
         );
       });
   };
-   download = async() =>  {
+  const download = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: "Storage Permission",
-          message: "App needs access to memory to download the file "
+      requestMultiple(
+        (Platform.OS = 'android' && [
+          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        ]),
+      ).then((res) => {
+        if (
+          res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
+          res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
+        ) {
+          actualDownload();
+        } else {
+          Alert.alert('ChallengeIt', 'Please allow all permission', [
+            {
+              text: 'OPEN SETTINGS',
+              onPress: () => Linking.openSettings(),
+            },
+          ]);
         }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        actualDownload();
-      } else {
-        Alert.alert(
-          "Permission Denied!",
-          "You need to give storage permission to download the file"
-        );
-      }
+      });
     } catch (err) {
-      console.warn(err);
+      console.log(err);
     }
-  }
-  
+  };
+
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => {
       animateReverse();
       return true;
     });
+  }, []);
 
-  },[])
-
+  const handleShare = async () => {
+    let options = {
+      title: 'Challenge IT',
+      message: 'Hello',
+    };
+    Share.open(options)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        err && console.log(err);
+      });
+  };
   return (
     <View style={{flex: 1}}>
       <ViewPager
@@ -331,7 +347,7 @@ const Feed = ({navigation}) => {
         {vids.map((item) => {
           return (
             <Video
-              paused={false}
+              paused={paused}
               source={{uri: item.vid}}
               style={styles.mediaPlayer}
               volume={1}
@@ -406,6 +422,7 @@ const Feed = ({navigation}) => {
         setPaused={setNextPaused}
         style={styles.mediaPlayer}
         volume={10}
+        navigation={navigation}
         resizeMode="cover"
         repeat={true}
       />
@@ -453,24 +470,34 @@ const Feed = ({navigation}) => {
           alignItems: 'flex-end',
           transform: [{translateX: translateBottomIconsX}],
         }}>
-        <OptionsMenu 
-          customButton = {<Entypo
-            name="dots-three-horizontal"
-            style={{fontSize: 30, color: 'white'}}
-            />}
-          options = {['Add to playlist', 'Report Video']}
-          actions = {[addToPlayList, ]}
+        <OptionsMenu
+          customButton={
+            <Entypo
+              name="dots-three-horizontal"
+              style={{fontSize: 30, color: 'white'}}
+            />
+          }
+          options={['Add to playlist', 'Report Video']}
+          actions={[addToPlayList]}
         />
-        
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+
+        <TouchableOpacity
+          onPress={() => {
+            setClapped(!isClap);
+          }}
+          style={{alignItems: 'center', justifyContent: 'center'}}>
           <Image
             source={require('../../assets/images/clap.png')}
-            style={{tintColor: primaryColor, height: 30, width: 30}}
+            style={{
+              tintColor: isClap ? primaryColor : 'white',
+              height: 30,
+              width: 30,
+            }}
           />
           <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
-        </View>
+        </TouchableOpacity>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <TouchableOpacity onPress = {download}>
+          <TouchableOpacity onPress={() => download()}>
             <MaterialCommunityIcons
               name="download"
               style={{fontSize: 30, color: 'white'}}
@@ -479,10 +506,17 @@ const Feed = ({navigation}) => {
           <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <Entypo name="forward" style={{fontSize: 30, color: 'white'}} />
+          <Entypo
+            name="forward"
+            style={{fontSize: 30, color: 'white'}}
+            onPress={() => {
+              handleShare();
+            }}
+          />
           <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
       </Animated.View>
+
       <Animated.View
         style={{
           position: 'absolute',
@@ -491,20 +525,25 @@ const Feed = ({navigation}) => {
           width: '80%',
           alignItems: 'center',
           flexDirection: 'row',
-          transform: [{translateX: translateBottomImageStripX}]
+          transform: [{translateX: translateBottomImageStripX}],
         }}>
-        <Image
-          source={require('../../assets/images/samplechallenger.jpg')}
-          style={{
-            borderRadius: 30,
-            borderWidth: width / 205.714,
-            height: width / 6.857,
-            width: width / 6.857,
-            borderColor: 'white',
-            marginRight: 10,
-          }}
-          resizeMode="cover"
-        />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('User');
+          }}>
+          <Image
+            source={require('../../assets/images/samplechallenger.jpg')}
+            style={{
+              borderRadius: 30,
+              borderWidth: width / 205.714,
+              height: width / 6.857,
+              width: width / 6.857,
+              borderColor: 'white',
+              marginRight: 10,
+            }}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
         <View>
           <Text style={{color: 'white', fontSize: width / 22}}>Zaheer01</Text>
           <Text
@@ -516,6 +555,143 @@ const Feed = ({navigation}) => {
           </Text>
         </View>
       </Animated.View>
+      <RBSheet
+        ref={playListRef}
+        height={420}
+        openDuration={250}
+        customStyles={{
+          container: {
+            borderTopRightRadius: 30,
+            borderTopLeftRadius: 30,
+            paddingTop: 10,
+          },
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            setBilal(!bilal);
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <CheckBox
+            center
+            checked={bilal}
+            checkedColor="red"
+            onPress={() => {
+              setNudity(!nudity);
+            }}
+            containerStyle={{padding: 0}}
+          />
+          <Text
+            style={[
+              styles.large,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Bilal
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          onPress={() => {
+            setmyFav(!myFav);
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <CheckBox
+            center
+            checked={myFav}
+            checkedColor="red"
+            onPress={() => {
+              setmyFav(!myFav);
+            }}
+            containerStyle={{padding: 0}}
+          />
+          <Text
+            style={[
+              styles.large,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            My Favourites
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          onPress={() => {
+            setDaring(!daring);
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <CheckBox
+            center
+            checked={daring}
+            checkedColor="red"
+            onPress={() => {
+              setDaring(!daring);
+            }}
+            containerStyle={{padding: 0}}
+          />
+          <Text
+            style={[
+              styles.large,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Daring
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          onPress={() => {
+            setBest(!best);
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <CheckBox
+            center
+            checked={best}
+            checkedColor="red"
+            onPress={() => {
+              setBest(!best);
+            }}
+            containerStyle={{padding: 0}}
+          />
+          <Text
+            style={[
+              styles.large,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Best
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          onPress={() => {
+            Snackbar.show({
+              text: 'New playlist added',
+            });
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <MaterialIcons
+            name="playlist-add"
+            size={23}
+            color={'gray'}
+            style={{alignSelf: 'center', margin: 5}}
+          />
+          <Text
+            style={[
+              styles.large,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Add new playlist
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          style={styles.smallButton}
+          onPress={() => {
+            playListRef.current.close();
+            setPaused(false);
+          }}>
+          <Text
+            style={[styles.largeText, {color: 'white', alignSelf: 'center'}]}>
+            Save
+          </Text>
+        </TouchableOpacity>
+      </RBSheet>
 
       {/* <MediaControls
           duration={duration}
