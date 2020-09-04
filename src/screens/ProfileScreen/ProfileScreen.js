@@ -86,7 +86,7 @@ const ProfileScreen = ({
           style={styles.videoTouchableContainer}
           onPress={() => setPaused(!paused)}>
           <Video
-            paused={true}
+            paused={paused}
             source={{uri: 'https://www.w3schools.com/html/mov_bbb.mp4'}}
             style={styles.mediaPlayer}
             volume={1}
@@ -125,10 +125,9 @@ const ProfileScreen = ({
       <View style={styles.screenIconContainer}>
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity>
-            <AntDesign
-              name="heart"
-              color="orange"
-              style={{fontSize: width / 18.70129}}
+            <Image
+              source={require('../../assets/images/clap.png')}
+              style={{height: width / 18.70129, width: width / 18.70129, tintColor: '#f03c00'}}
             />
           </TouchableOpacity>
           <Text
@@ -196,12 +195,12 @@ const ProfileScreen = ({
               <MaterialIcons name="videocam" style={{fontSize: width / 16}} />
               <MaterialIcons
                 name="reply"
-                color="orange"
                 style={{
                   fontSize: width / 20,
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
+                  color: '#f03c00'
                 }}
               />
             </TouchableOpacity>

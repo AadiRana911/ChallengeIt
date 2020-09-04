@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import { primaryColor } from '../../components/colors';
 
 const {width, height} = Dimensions.get('window');
 export default styles = StyleSheet.create({
@@ -60,7 +61,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   followButtonStyle: {
-    backgroundColor: 'orange',
+    backgroundColor: primaryColor,
     paddingHorizontal: width / 27.8,
     paddingVertical: 3,
     borderRadius: 50,

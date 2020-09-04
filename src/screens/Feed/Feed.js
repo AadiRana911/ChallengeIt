@@ -158,7 +158,7 @@ const Feed = ({navigation}) => {
   };
   const handleStripSlide = () => {
     Animated.spring(translateXStrip, {
-      toValue: -(width * 2 - width / 5.2 + width / 13.71428),
+      toValue: 60,
       duration: 5,
       useNativeDriver: true,
       tension: 1,
@@ -448,6 +448,7 @@ const Feed = ({navigation}) => {
             transform: [{translateX: translateXStrip}],
           }}
         />
+        <TouchableOpacity onPress = {animate}>
         <Animated.Image
           source={require('../../assets/images/samplechallenger.jpg')}
           style={{
@@ -459,7 +460,7 @@ const Feed = ({navigation}) => {
             borderColor: 'white',
           }}
           resizeMode="cover"
-        />
+        /></TouchableOpacity>
       </GestureRecognizer>
       <Animated.View
         style={{

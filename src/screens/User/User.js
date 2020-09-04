@@ -77,7 +77,7 @@ const User = ({params, navigation}) => {
           Zaheer Hassan
         </Text>
         <TouchableOpacity style={styles.buttonStyle}>
-          <Text style={[styles.largeText, {color: 'white'}]}>Follow</Text>
+          <Text style={[styles.largeText, {color: 'white'}]}>follow</Text>
         </TouchableOpacity>
         <View style={styles.statsContainer}>
           <Text style={[styles.largeText, {textAlign: 'center', color: 'red'}]}>
@@ -94,7 +94,7 @@ const User = ({params, navigation}) => {
           </Text>
         </View>
       </View>
-      <View style={{flexDirection: 'row', flex: 0.07}}>
+      <View style={styles.userStatsContainer}>
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => {
@@ -104,13 +104,15 @@ const User = ({params, navigation}) => {
           style={[
             styles.categoryContainer,
             {
-              backgroundColor: challenges ? 'tomato' : '#303030',
+              backgroundColor: 'white',
+              borderRightWidth: 1,
+              borderColor: '#eee',
             },
           ]}>
           <Text
             style={[
               styles.mediumText,
-              {color: 'white', textAlign: 'center', fontSize: 16},
+              {textAlign: 'center', fontSize: 16},
             ]}>
             Challenges{`\n`}3004
           </Text>
@@ -124,13 +126,13 @@ const User = ({params, navigation}) => {
           style={[
             styles.categoryContainer,
             {
-              backgroundColor: accepted ? 'tomato' : '#303030',
+              backgroundColor: 'white',
             },
           ]}>
           <Text
             style={[
               styles.mediumText,
-              {color: 'white', textAlign: 'center', fontSize: 16},
+              {textAlign: 'center', fontSize: 16},
             ]}>
             Accepted{`\n`}3000
           </Text>

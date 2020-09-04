@@ -1,6 +1,9 @@
 import {StyleSheet, Dimensions} from 'react-native';
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+
 import {Fonts} from '../../utils/Fonts';
+
+
+const {height,width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -9,7 +12,7 @@ const styles = StyleSheet.create({
   },
   questionImage: {
     width: '100%',
-    height: SCREEN_HEIGHT / 2.5,
+    height: height / 2.5,
     marginVertical: '2%',
     borderRadius: 10,
   },
@@ -18,8 +21,8 @@ const styles = StyleSheet.create({
     fontSize: 70,
     color: 'white',
     position: 'absolute',
-    left: 350 / 2 - 35,
-    top: 350 / 2 - 35,
+    left: width/2-35,
+    top: height/3-35,
   },
   mediumText: {
     fontSize: 12,

@@ -1,5 +1,10 @@
-import {StyleSheet} from 'react-native';
+
+
 import {Fonts} from '../../utils/Fonts';
+
+import {StyleSheet, Dimensions} from 'react-native';
+const {height} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -16,6 +21,8 @@ const styles = StyleSheet.create({
     flex: 0.4,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    marginBottom: height/12,
+    marginTop: height/20,
   },
   categoryContainer: {
     flex: 0.5,
@@ -43,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonStyle: {
-    padding: 8,
+    padding: 5,
     width: '30%',
     backgroundColor: 'red',
     borderRadius: 100,
@@ -65,6 +72,21 @@ const styles = StyleSheet.create({
     margin: 5,
 
     borderRadius: 10,
+  },
+  userStatsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+
+    backgroundColor: '#fff',
+
+    shadowColor: '#000',
+    shadowOffset: {width: 1, height: 0},
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 3,
+    borderRadius: 3,
+    borderWidth: 0.5,
+    borderColor: '#eee',
   },
 });
 export default styles;
