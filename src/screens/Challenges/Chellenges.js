@@ -10,6 +10,7 @@ import {
   Platform,
   Linking,
   Alert,
+  TouchableHighlight,
 } from 'react-native';
 import Video from 'react-native-video';
 const {width, height} = Dimensions.get('window');
@@ -34,6 +35,7 @@ import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {ChallengePlaceholder} from '../../components/Placeholder';
+import DoubleTap from '../../components/DoubleTap';
 
 const Challenges = ({navigation}) => {
   useEffect(() => {
@@ -131,8 +133,11 @@ const Challenges = ({navigation}) => {
       time: '3 hours ago',
       claps: '3000',
       views: '300',
-      isPaused: true,
+      isPaused: false,
+      isMuted: true,
       shares: '200',
+      isVolumeVisible: false,
+      liked: false,
     },
     {
       id: 2,
@@ -145,6 +150,10 @@ const Challenges = ({navigation}) => {
       claps: '3000',
       views: '300',
       isPaused: true,
+      isVolumeVisible: false,
+      isMuted: true,
+      liked: false,
+
       shares: '200',
     },
     {
@@ -158,6 +167,9 @@ const Challenges = ({navigation}) => {
       claps: '3000',
       views: '300',
       isPaused: true,
+      isVolumeVisible: false,
+      isMuted: true,
+      liked: false,
       shares: '200',
     },
     {
@@ -171,6 +183,9 @@ const Challenges = ({navigation}) => {
       claps: '3000',
       views: '300',
       isPaused: true,
+      isMuted: true,
+      isVolumeVisible: false,
+      liked: false,
       shares: '200',
     },
     {
@@ -184,12 +199,15 @@ const Challenges = ({navigation}) => {
       claps: '3000',
       views: '300',
       isPaused: true,
+      isMuted: true,
+      isVolumeVisible: false,
+      liked: false,
       shares: '200',
     },
     {
       id: 6,
       status: '',
-      uri: 'https://www.w3schools.com/html/mov_bbb.mp4g',
+      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
       name: 'Zeeshan',
       to: 'Ali Khan',
       km: '2 km away',
@@ -197,13 +215,45 @@ const Challenges = ({navigation}) => {
       claps: '3000',
       views: '300',
       shares: '200',
+      isVolumeVisible: false,
       isPaused: true,
+      isMuted: true,
+      liked: false,
     },
   ]);
+  const toggleLike = (id) => {
+    setVideos(
+      videos.map((item) => {
+        if (item.id === id)
+          return {
+            ...item,
+            liked: !item.liked,
+            claps:
+              item.liked === true
+                ? parseInt(item.claps) - 1
+                : parseInt(item.claps) + 1,
+          };
+        return item;
+      }),
+    );
+  };
+
+  const handleVideoMute = (id) => {
+    setVideos(
+      videos.map((item) => {
+        if (item.id === id)
+          return {
+            ...item,
+            isMuted: !item.isMuted,
+          };
+        return item;
+      }),
+    );
+  };
   const handleVideoPause = (id) => {
     setVideos(
       videos.map((item) => {
-        if (item.id === id.id)
+        if (item.id === id)
           return {
             ...item,
             isPaused: !item.isPaused,
@@ -277,36 +327,34 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <View style={[styles.horizontalContainer, {marginTop: 15}]}></View>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => {
-            handleVideoPause(item);
-          }}>
-          {/* <Image
-            style={[styles.questionImage]}
-            source={dummy}
-            // resizeMode={'contain'}
-          /> */}
+        <View style={[styles.horizontalContainer, {margin: 15}]}></View>
+
+        <DoubleTap
+          singleTap={() => {
+            handleVideoPause(item.id);
+          }}
+          doubleTap={() => {
+            toggleLike(item.id);
+          }}
+          delay={200}>
           <Video
             source={{uri: item.uri}}
             paused={item.isPaused}
             resizeMode="cover"
-            style={{height: 200, width: '100%', backgroundColor: 'black'}}
+            repeat
+            style={{height: 350, width: '100%', backgroundColor: 'black'}}
           />
-        </TouchableOpacity>
+        </DoubleTap>
         {item.isPaused && (
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              handleVideoPause(item);
+              handleVideoPause(item.id);
             }}
             style={[
               {
-                position: 'absolute',
-                left: Platform.OS === 'ios' ? 80 : 50,
-                top: 60,
-                // right: 50,
+                position: 'relative',
+                // left: Platform.OS === 'ios' ? 80 : 50,
               },
             ]}>
             <Entypo
@@ -316,6 +364,35 @@ const Challenges = ({navigation}) => {
             />
           </TouchableOpacity>
         )}
+        {/* {item.isVolumeVisible && (
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              handleVideoMute(item);
+            }}
+            style={[
+              {
+                position: 'absolute',
+                right: Platform.OS === 'ios' ? 80 : 20,
+                bottom: 70,
+                backgroundColor: 'black',
+                height: 22,
+                width: 22,
+                borderRadius: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+                // right: 50,
+                padding: 2,
+              },
+            ]}>
+            <Ionicons
+              name={item.isMuted ? 'volume-mute' : 'volume-high'}
+              color="white"
+              style={[styles.playButton]}
+            />
+          </TouchableOpacity>
+        )} */}
+
         <View
           style={[
             styles.horizontalContainer,
@@ -342,7 +419,7 @@ const Challenges = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => setClapp(!isclapped)}>
+          <TouchableOpacity onPress={() => toggleLike(item.id)}>
             <View
               style={{
                 alignItems: 'center',
@@ -355,12 +432,12 @@ const Challenges = ({navigation}) => {
                 style={{
                   height: 25,
                   width: 25,
-                  tintColor: isclapped ? primaryColor : 'gray',
+                  tintColor: item.liked ? primaryColor : 'gray',
                   marginRight: 4,
                 }}
               />
               <Text style={[styles.smallText, {marginTop: 2}]}>
-                {item.shares}
+                {item.claps}
               </Text>
             </View>
           </TouchableOpacity>
@@ -439,6 +516,28 @@ const Challenges = ({navigation}) => {
       }),
     );
   };
+
+  const onViewRef = useRef((viewableItmes) => {
+    if (viewableItmes.viewableItems.length > 0) {
+      setVideos(
+        videos.map((item) => {
+          item.isPaused = true;
+          if (item.id === viewableItmes.changed[0].item.id)
+            return {
+              ...item,
+              isPaused: !item.isPaused,
+              isVolumeVisible: !item.isVolumeVisible,
+            };
+          return item;
+        }),
+      );
+    }
+  });
+
+  const viewConfigRef = useRef({
+    itemVisiblePercentThreshold: 300,
+    minimumViewTime: 5,
+  });
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -532,6 +631,8 @@ const Challenges = ({navigation}) => {
             data={videos}
             keyExtractor={(item, index) => item + index.toString()}
             renderItem={renderPosts}
+            onViewableItemsChanged={onViewRef.current}
+            viewabilityConfig={viewConfigRef.current}
           />
         </View>
       )}
