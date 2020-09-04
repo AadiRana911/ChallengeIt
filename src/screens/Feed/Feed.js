@@ -355,9 +355,7 @@ const Feed = ({navigation}) => {
               styles.textStyle,
               {
                 marginRight: 10,
-                color: isText1Active
-                  ? 'rgba(255,255,255,1)'
-                  : 'rgba(255,255,255,0.5)',
+                color: 'rgba(255,255,255,1)'
               },
             ]}>
             Trending
@@ -375,9 +373,7 @@ const Feed = ({navigation}) => {
               styles.textStyle,
               {
                 marginLeft: 10,
-                color: !isText1Active
-                  ? 'rgba(255,255,255,1)'
-                  : 'rgba(255,255,255,0.5)',
+                color: 'rgba(255,255,255,0.5)',
               },
             ]}>
             All Challenges

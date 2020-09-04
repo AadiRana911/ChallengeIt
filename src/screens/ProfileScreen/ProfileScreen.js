@@ -117,25 +117,7 @@ const ProfileScreen = ({
         )}
       </View>
       <View style={styles.screenIconContainer}>
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity>
-            <MaterialIcons
-              name="videocam"
-              style={{fontSize: width / 16.45714}}
-            />
-            <MaterialIcons
-              name="reply"
-              color="orange"
-              style={{
-                fontSize: width / 20.57142,
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-              }}
-            />
-          </TouchableOpacity>
-          <Text style={{fontSize: width / 45.71428}}>{responses}</Text>
-        </View>
+        
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity>
             <AntDesign
@@ -178,17 +160,28 @@ const ProfileScreen = ({
         </TouchableOpacity>
       </View>
       <View style={styles.userStatsContainer}>
-        <View style={styles.individualStatContainer}>
-          <Text>Challenges</Text>
-          <Text>{totalChallenges}</Text>
-        </View>
-        <View
-          style={[
-            styles.individualStatContainer,
-            {borderLeftWidth: 1, borderColor: 'rgba(125,125,125,0.2)'},
-          ]}>
-          <Text>Accepted</Text>
-          <Text>{acceptedChallenges}</Text>
+      <View style={{justifyContent: 'space-between', flexDirection: 'row', width: '90%', height: height/20, alignItems: 'center'}}>
+          <View style = {{flexDirection: 'row'}}>
+            <TouchableOpacity style = {{height: height/30}}>
+              <MaterialIcons
+                name="videocam"
+                style={{fontSize: width / 16}}
+              />
+              <MaterialIcons
+                name="reply"
+                color="orange"
+                style={{
+                  fontSize: width / 20,
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                }}
+              />
+            </TouchableOpacity>
+            <Text style = {{marginLeft: 10}}>All Responses</Text>
+
+          </View>
+          <Text style={{fontSize: width / 30}}>({responses})</Text>
         </View>
       </View>
       <View style={{top: height / 4.5, flex: 1}}>

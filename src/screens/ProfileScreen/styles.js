@@ -50,6 +50,7 @@ export default styles = StyleSheet.create({
   screenIconContainer: {
     top: 25,
     flexDirection: 'row',
+    marginHorizontal: width/20,
     justifyContent: 'space-between',
   },
   userNameContainer: {
