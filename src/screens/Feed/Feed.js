@@ -421,6 +421,7 @@ const Feed = ({navigation}) => {
         translateXImg={translateXImg}
         translateYImg={translateYImg}
         paused={nextPaused}
+        animateReverse = {animateReverse}
         setPaused={setNextPaused}
         style={styles.mediaPlayer}
         volume={10}
