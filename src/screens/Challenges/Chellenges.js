@@ -11,6 +11,8 @@ import {
   Linking,
   Alert,
   TouchableHighlight,
+  BackHandler,
+  TouchableWithoutFeedback
 } from 'react-native';
 import Video from 'react-native-video';
 const {width, height} = Dimensions.get('window');
@@ -262,6 +264,12 @@ const Challenges = ({navigation}) => {
       }),
     );
   };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.goBack();
+      return true;
+    });
+  }, []);
   const renderPosts = ({item, index}) => {
     return (
       <View key={index} activeOpacity={0.9} style={[styles.cardStyle]}>
@@ -346,23 +354,24 @@ const Challenges = ({navigation}) => {
           />
         </DoubleTap>
         {item.isPaused && (
-          <TouchableOpacity
+          <TouchableWithoutFeedback
             activeOpacity={1}
             onPress={() => {
               handleVideoPause(item.id);
             }}
-            style={[
-              {
-                position: 'relative',
-                // left: Platform.OS === 'ios' ? 80 : 50,
-              },
-            ]}>
+            // style={[
+            //   // {
+            //   //   position: 'absolute',
+            //   //   // left: Platform.OS === 'ios' ? 80 : 50,
+            //   // },
+            // ]}
+            >
             <Entypo
               name="controller-play"
               color="white"
               style={[styles.playButton]}
             />
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         )}
         {/* {item.isVolumeVisible && (
           <TouchableOpacity
