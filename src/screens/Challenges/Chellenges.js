@@ -12,7 +12,7 @@ import {
   Alert,
   TouchableHighlight,
   BackHandler,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Video from 'react-native-video';
 const {width, height} = Dimensions.get('window');
@@ -280,7 +280,7 @@ const Challenges = ({navigation}) => {
           <Text
             numberOfLines={3}
             style={[
-              styles.largeText,
+              // styles.largeText,
               {
                 alignSelf: 'center',
                 // padding: 10,
@@ -336,44 +336,41 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <View style={[styles.horizontalContainer, {margin: 15}]}></View>
-
-        <DoubleTap
-          singleTap={() => {
-            handleVideoPause(item.id);
-          }}
-          doubleTap={() => {
-            toggleLike(item.id);
-          }}
-          delay={200}>
-          <Video
-            source={{uri: item.uri}}
-            paused={item.isPaused}
-            resizeMode="cover"
-            repeat
-            style={{height: 350, width: '100%', backgroundColor: 'black'}}
-          />
-        </DoubleTap>
-        {item.isPaused && (
-          <TouchableWithoutFeedback
-            activeOpacity={1}
-            onPress={() => {
+        <View style={[styles.horizontalContainer, {margin: 10}]}></View>
+        <View>
+          <DoubleTap
+            singleTap={() => {
               handleVideoPause(item.id);
             }}
-            // style={[
-            //   // {
-            //   //   position: 'absolute',
-            //   //   // left: Platform.OS === 'ios' ? 80 : 50,
-            //   // },
-            // ]}
-            >
+            doubleTap={() => {
+              toggleLike(item.id);
+            }}
+            delay={200}>
+            <Video
+              source={{uri: item.uri}}
+              paused={item.isPaused}
+              resizeMode="cover"
+              repeat
+              style={{
+                height: height / 2,
+                width: '100%',
+                backgroundColor: 'black',
+                borderRadius: 20,
+              }}
+            />
+          </DoubleTap>
+          {item.isPaused && (
             <Entypo
               name="controller-play"
               color="white"
               style={[styles.playButton]}
+              onPress={() => {
+                handleVideoPause(item.id);
+              }}
             />
-          </TouchableWithoutFeedback>
-        )}
+          )}
+        </View>
+
         {/* {item.isVolumeVisible && (
           <TouchableOpacity
             activeOpacity={1}
@@ -688,8 +685,7 @@ const Challenges = ({navigation}) => {
             _captureVideo();
           }}
           style={[styles.horizontalContainer, {marginLeft: 4, padding: 10}]}>
-          <TouchableOpacity
-            style={[styles.iconStyle, {backgroundColor: 'tomato'}]}>
+          <TouchableOpacity style={[styles.iconStyle]}>
             <MaterialIcons
               name="videocam"
               size={24}
@@ -1162,7 +1158,7 @@ const Challenges = ({navigation}) => {
       <RBSheet
         ref={avatarRef}
         height={150}
-        openDuration={250}
+        openDuration={150}
         customStyles={{
           container: {
             borderTopRightRadius: 30,
@@ -1189,30 +1185,7 @@ const Challenges = ({navigation}) => {
               styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
-            Lorem Ipsum dollar the sign
-          </Text>
-        </TouchableOpacity>
-        <Divider style={styles.dividerStyle} />
-        <TouchableOpacity
-          onPress={() => {
-            avatarRef.current.close();
-          }}
-          style={[styles.horizontalContainer, {marginLeft: 4, padding: 10}]}>
-          <TouchableOpacity
-            style={[styles.iconStyle, {backgroundColor: 'tomato'}]}>
-            <MaterialIcons
-              name="videocam"
-              size={24}
-              color={'white'}
-              style={{alignSelf: 'center', margin: 5}}
-            />
-          </TouchableOpacity>
-          <Text
-            style={[
-              styles.mediumText,
-              {alignSelf: 'center', fontSize: 18, margin: 5},
-            ]}>
-            Lorem Ipsum Dollar the sign
+            Do it
           </Text>
         </TouchableOpacity>
         <Divider style={styles.dividerStyle} />
