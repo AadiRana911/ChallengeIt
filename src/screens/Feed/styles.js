@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('window');
+import {Fonts} from '../../utils/Fonts';
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -17,6 +18,23 @@ export default StyleSheet.create({
     height: 1,
     marginVertical: 5,
     alignSelf: 'center',
+  },
+  textareaContainer: {
+    height: 140,
+    padding: 5,
+    // backgroundColor: '#F5FCFF',
+    borderWidth: 1,
+    borderRadius: 4,
+    margin: 10,
+    width: '95%',
+    borderColor: '#bfbfbf',
+  },
+  textarea: {
+    textAlignVertical: 'top', // hack android
+    height: 170,
+    fontSize: 14,
+    color: '#333',
+    fontFamily: Fonts.CenturyRegular,
   },
   smallButton: {
     padding: 15,
@@ -76,6 +94,22 @@ export default StyleSheet.create({
   },
   textStyle: {
     fontSize: 18,
+    fontFamily: Fonts.CenturyBold,
+  },
+  mediumText: {
+    fontSize: 12,
+    fontFamily: Fonts.CenturyRegular,
+    alignSelf: 'center',
+  },
+  smallText: {
+    fontFamily: Fonts.CenturyRegular,
+    fontSize: 10,
+    alignSelf: 'center',
+  },
+  largeText: {
+    fontFamily: Fonts.CenturyBold,
+    fontSize: 16,
+    // fontWeight: 'bold',
   },
   switchTextView: {
     flexDirection: 'row',

@@ -13,6 +13,8 @@ import {
   Alert,
   Platform,
 } from 'react-native';
+import {Fonts} from '../../utils/Fonts';
+import Textarea from 'react-native-textarea';
 import OptionsMenu from 'react-native-options-menu';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {CheckBox} from 'react-native-elements';
@@ -36,6 +38,7 @@ import ProfileScreen from '../ProfileScreen';
 import {useFocusEffect} from '@react-navigation/native';
 import {Divider} from 'react-native-paper';
 const Feed = ({navigation}) => {
+  const reportRef = useRef(null);
   const playListRef = useRef(null);
   useFocusEffect(
     React.useCallback(() => {
@@ -57,7 +60,10 @@ const Feed = ({navigation}) => {
   const [daring, setDaring] = useState(false);
   const [best, setBest] = useState(false);
   const [nudity, setNudity] = useState(false);
-
+  const [voilence, setVoilence] = useState(false);
+  const [cheat, setCheat] = useState(false);
+  const [other, setOther] = useState(false);
+  const [reportMsg, setReportMsg] = useState('');
   let vids = [
     {
       id: 0,
@@ -371,7 +377,7 @@ const Feed = ({navigation}) => {
               styles.textStyle,
               {
                 marginRight: 10,
-                color: 'rgba(255,255,255,1)'
+                color: 'rgba(255,255,255,1)',
               },
             ]}>
             Trending
@@ -474,7 +480,7 @@ const Feed = ({navigation}) => {
             />
           }
           options={['Add to playlist', 'Report Video']}
-          actions={[addToPlayList]}
+          actions={[addToPlayList, () => reportRef.current.open()]}
         />
 
         <TouchableOpacity
@@ -490,7 +496,15 @@ const Feed = ({navigation}) => {
               width: 30,
             }}
           />
-          <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+          <Text
+            style={{
+              fontSize: 9,
+              marginLeft: 4,
+              color: 'white',
+              fontFamily: Fonts.CenturyBold,
+            }}>
+            3000
+          </Text>
         </TouchableOpacity>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <TouchableOpacity onPress={() => download()}>
@@ -499,7 +513,15 @@ const Feed = ({navigation}) => {
               style={{fontSize: 30, color: 'white'}}
             />
           </TouchableOpacity>
-          <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+          <Text
+            style={{
+              fontSize: 9,
+              marginLeft: 4,
+              color: 'white',
+              fontFamily: Fonts.CenturyBold,
+            }}>
+            3000
+          </Text>
         </View>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <Entypo
@@ -509,7 +531,15 @@ const Feed = ({navigation}) => {
               handleShare();
             }}
           />
-          <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
+          <Text
+            style={{
+              fontSize: 9,
+              marginLeft: 4,
+              color: 'white',
+              fontFamily: Fonts.CenturyBold,
+            }}>
+            3000
+          </Text>
         </View>
       </Animated.View>
 
@@ -541,10 +571,18 @@ const Feed = ({navigation}) => {
           />
         </TouchableOpacity>
         <View>
-          <Text style={{color: 'white', fontSize: width / 22}}>Zaheer01</Text>
           <Text
             style={{
               color: 'white',
+              fontSize: width / 22,
+              fontFamily: Fonts.CenturyBold,
+            }}>
+            Zaheer01
+          </Text>
+          <Text
+            style={{
+              color: 'white',
+              fontFamily: Fonts.CenturyRegular,
               fontSize: width / 30,
             }}>
             This is my tribute to challenge
@@ -685,6 +723,133 @@ const Feed = ({navigation}) => {
           <Text
             style={[styles.largeText, {color: 'white', alignSelf: 'center'}]}>
             Save
+          </Text>
+        </TouchableOpacity>
+      </RBSheet>
+      <RBSheet
+        ref={reportRef}
+        height={520}
+        openDuration={250}
+        customStyles={{
+          container: {
+            borderTopRightRadius: 30,
+            borderTopLeftRadius: 30,
+            paddingTop: 10,
+          },
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            setNudity(!nudity);
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <CheckBox
+            center
+            checked={nudity}
+            checkedColor="red"
+            onPress={() => {
+              setNudity(!nudity);
+            }}
+            containerStyle={{padding: 0}}
+          />
+          <Text
+            style={[
+              styles.mediumText,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Nudity
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          onPress={() => {
+            setVoilence(!voilence);
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <CheckBox
+            center
+            checked={voilence}
+            checkedColor="red"
+            onPress={() => {
+              setVoilence(!voilence);
+            }}
+            containerStyle={{padding: 0}}
+          />
+          <Text
+            style={[
+              styles.mediumText,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Voilence
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          onPress={() => {
+            setCheat(!cheat);
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <CheckBox
+            center
+            checked={cheat}
+            checkedColor="red"
+            onPress={() => {
+              setCheat(!cheat);
+            }}
+            containerStyle={{padding: 0}}
+          />
+          <Text
+            style={[
+              styles.mediumText,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Cheat
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <TouchableOpacity
+          onPress={() => {
+            setOther(!other);
+          }}
+          style={[styles.horizontalContainer, {marginLeft: 14, padding: 10}]}>
+          <CheckBox
+            center
+            checked={other}
+            checkedColor="red"
+            onPress={() => {
+              setOther(!other);
+            }}
+            containerStyle={{padding: 0}}
+          />
+          <Text
+            style={[
+              styles.mediumText,
+              {alignSelf: 'center', fontSize: 18, margin: 5},
+            ]}>
+            Other
+          </Text>
+        </TouchableOpacity>
+        <Divider style={styles.dividerStyle} />
+        <Textarea
+          containerStyle={styles.textareaContainer}
+          style={styles.textarea}
+          onChangeText={(e) => {
+            setReportMsg(e);
+          }}
+          defaultValue={reportMsg}
+          maxLength={120}
+          placeholder={'write your message'}
+          placeholderTextColor={'#c7c7c7'}
+          underlineColorAndroid={'transparent'}
+        />
+
+        <TouchableOpacity
+          style={styles.smallButton}
+          onPress={() => {
+            reportRef.current.close();
+          }}>
+          <Text
+            style={[styles.largeText, {color: 'white', alignSelf: 'center'}]}>
+            Send
           </Text>
         </TouchableOpacity>
       </RBSheet>

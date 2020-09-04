@@ -12,7 +12,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import Video from 'react-native-video';
-
+import {Fonts} from '../../utils/Fonts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -123,7 +123,6 @@ const ProfileScreen = ({
         )}
       </View>
       <View style={styles.screenIconContainer}>
-        
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity>
             <AntDesign
@@ -132,25 +131,38 @@ const ProfileScreen = ({
               style={{fontSize: width / 18.70129}}
             />
           </TouchableOpacity>
-          <Text style={{fontSize: width / 45.71428}}>{applauses}</Text>
+          <Text
+            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
+            {applauses}
+          </Text>
         </View>
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity>
             <FontAwesome name="share" style={{fontSize: width / 18.70129}} />
           </TouchableOpacity>
-          <Text style={{fontSize: width / 45.71428}}>{shares}</Text>
+          <Text
+            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
+            {shares}
+          </Text>
         </View>
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity>
             <Entypo name="eye" style={{fontSize: width / 18.70129}} />
           </TouchableOpacity>
-          <Text style={{fontSize: width / 45.71428}}>{views}</Text>
+          <Text
+            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
+            {views}
+          </Text>
         </View>
       </View>
       {/* <Text style = {{top: height/25}}>Icons go here</Text> */}
       <View style={styles.userNameContainer}>
         <Text
-          style={{color: 'black', fontSize: width / 20.57143}}
+          style={{
+            color: 'black',
+            fontSize: width / 20.57143,
+            fontFamily: Fonts.CenturyBold,
+          }}
           onPress={() => {
             navigation.navigate('User');
           }}>
@@ -164,19 +176,24 @@ const ProfileScreen = ({
               fontSize: width / 26.57143,
               color: 'white',
               alignSelf: 'center',
+              fontFamily: Fonts.CenturyBold,
             }}>
             {followState}
           </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.userStatsContainer}>
-      <View style={{justifyContent: 'space-between', flexDirection: 'row', width: '90%', height: height/20, alignItems: 'center'}}>
-          <View style = {{flexDirection: 'row'}}>
-            <TouchableOpacity style = {{height: height/30}}>
-              <MaterialIcons
-                name="videocam"
-                style={{fontSize: width / 16}}
-              />
+        <View
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            width: '90%',
+            height: height / 20,
+            alignItems: 'center',
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={{height: height / 30}}>
+              <MaterialIcons name="videocam" style={{fontSize: width / 16}} />
               <MaterialIcons
                 name="reply"
                 color="orange"
@@ -188,10 +205,13 @@ const ProfileScreen = ({
                 }}
               />
             </TouchableOpacity>
-            <Text style = {{marginLeft: 10}}>All Responses</Text>
-
+            <Text style={{marginLeft: 10, fontFamily: Fonts.CenturyRegular}}>
+              All Responses
+            </Text>
           </View>
-          <Text style={{fontSize: width / 30}}>({responses})</Text>
+          <Text style={{fontSize: width / 30, fontFamily: Fonts.CenturyBold}}>
+            ({responses})
+          </Text>
         </View>
       </View>
       <View style={{top: height / 4.5, flex: 1}}>

@@ -1,5 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
+import {Fonts} from '../../utils/Fonts';
+
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -20,17 +22,19 @@ const styles = StyleSheet.create({
     top: 350 / 2 - 35,
   },
   mediumText: {
-    // fontFamily: Fonts.RobotoRegular,
     fontSize: 12,
+    fontFamily: Fonts.CenturyRegular,
     alignSelf: 'center',
   },
   smallText: {
-    // fontFamily: Fonts.RobotoRegular,
+    fontFamily: Fonts.CenturyRegular,
     fontSize: 10,
     alignSelf: 'center',
   },
   largeText: {
+    fontFamily: Fonts.CenturyBold,
     fontSize: 16,
+    // fontWeight: 'bold',
   },
   horizontalContainer: {
     flexDirection: 'row',
@@ -116,6 +120,7 @@ const styles = StyleSheet.create({
     height: 170,
     fontSize: 14,
     color: '#333',
+    fontFamily: Fonts.CenturyRegular,
   },
 });
 export default styles;
