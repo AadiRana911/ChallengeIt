@@ -38,6 +38,7 @@ import Share from 'react-native-share';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {ChallengePlaceholder} from '../../components/Placeholder';
 import DoubleTap from '../../components/DoubleTap';
+import {Fonts} from '../../utils/Fonts';
 
 const Challenges = ({navigation}) => {
   useEffect(() => {
@@ -297,7 +298,7 @@ const Challenges = ({navigation}) => {
                   // alignSelf: 'center',
                   // textAlign: 'center',
                   marginTop: 0,
-                  color: 'red',
+                  color: primaryColor,
                 },
               ]}>
               {item.name}
@@ -612,7 +613,7 @@ const Challenges = ({navigation}) => {
                 style={{
                   margin: 5,
                   paddingHorizontal: 20,
-                  backgroundColor: item.isActive ? 'red' : '#e3e3e3',
+                  backgroundColor: item.isActive ? primaryColor : '#e3e3e3',
                   borderRadius: 100,
                   paddingVertical: 7,
                   justifyContent: 'center',
@@ -674,7 +675,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             View Challenge responses
@@ -698,7 +699,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Record your response
@@ -723,9 +724,12 @@ const Challenges = ({navigation}) => {
             Snackbar.show({
               text: ' Saved to playlist',
               duration: Snackbar.LENGTH_LONG,
+              fontFamily: Fonts.CenturyRegular,
               action: {
                 text: 'Change',
                 textColor: 'tomato',
+                fontFamily: Fonts.CenturyRegular,
+
                 onPress: () => {
                   optionSheet.current.close();
                   playListRef.current.open();
@@ -744,7 +748,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Save to playlist
@@ -777,7 +781,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Save to your device
@@ -810,7 +814,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Hide
@@ -843,7 +847,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Copy Link
@@ -874,7 +878,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Report Video
@@ -917,7 +921,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Bilal
@@ -940,7 +944,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             My Favourites
@@ -963,7 +967,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Daring
@@ -986,7 +990,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Best
@@ -1008,7 +1012,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Add new playlist
@@ -1054,7 +1058,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Nudity
@@ -1077,7 +1081,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Voilence
@@ -1100,7 +1104,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Cheat
@@ -1123,7 +1127,7 @@ const Challenges = ({navigation}) => {
           />
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Other
@@ -1182,7 +1186,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Lorem Ipsum dollar the sign
@@ -1205,7 +1209,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
           <Text
             style={[
-              styles.large,
+              styles.mediumText,
               {alignSelf: 'center', fontSize: 18, margin: 5},
             ]}>
             Lorem Ipsum Dollar the sign

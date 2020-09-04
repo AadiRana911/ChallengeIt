@@ -1,17 +1,18 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../utils/Fonts';
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 2,
     backgroundColor: 'white',
   },
   mediumText: {
-    // fontFamily: Fonts.RobotoRegular,
+    fontFamily: Fonts.CenturyRegular,
     fontSize: 14,
     alignSelf: 'center',
     width: '80%',
   },
   smallText: {
-    // fontFamily: Fonts.RobotoRegular,
+    fontFamily: Fonts.CenturyBold,
     fontSize: 10,
     alignSelf: 'center',
   },

@@ -1,5 +1,10 @@
+
+
+import {Fonts} from '../../utils/Fonts';
+
 import {StyleSheet, Dimensions} from 'react-native';
 const {height} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -27,16 +32,18 @@ const styles = StyleSheet.create({
     // marginTop: 10,
   },
   mediumText: {
-    // fontFamily: Fonts.RobotoRegular,
+    fontFamily: Fonts.CenturyRegular,
     fontSize: 12,
     alignSelf: 'center',
   },
   smallText: {
-    // fontFamily: Fonts.RobotoRegular,
+    fontFamily: Fonts.CenturyRegular,
+
     fontSize: 10,
     alignSelf: 'center',
   },
   largeText: {
+    fontFamily: Fonts.CenturyBold,
     fontSize: 17,
   },
   horizontalContainer: {
