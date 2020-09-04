@@ -92,6 +92,7 @@ const ProfileScreen = ({
             volume={1}
             resizeMode="cover"
             // repeat = {true}
+            muted
           />
         </TouchableWithoutFeedback>
 

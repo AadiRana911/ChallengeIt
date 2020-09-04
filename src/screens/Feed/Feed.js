@@ -352,15 +352,26 @@ const Feed = ({navigation}) => {
         initialPage={0}>
         {vids.map((item) => {
           return (
-            <Video
-              paused={true}
-              source={{uri: item.vid}}
-              style={styles.mediaPlayer}
-              volume={1}
-              resizeMode="cover"
-              repeat={true}
-              muted
-            />
+            <TouchableOpacity
+              activeOpacity={1}
+              style={[
+                {
+                  position: 'absolute',
+                  left: width / 2 - 35,
+                  top: height / 2 - 35,
+                },
+              ]}
+              onPress={() => setPaused(!paused)}>
+              <Video
+                paused={paused}
+                source={{uri: item.vid}}
+                style={styles.mediaPlayer}
+                volume={0.2}
+                resizeMode="cover"
+                repeat={true}
+                // muted
+              />
+            </TouchableOpacity>
           );
         })}
       </ViewPager>

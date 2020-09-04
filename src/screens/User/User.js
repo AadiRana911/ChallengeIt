@@ -110,10 +110,7 @@ const User = ({params, navigation}) => {
             },
           ]}>
           <Text
-            style={[
-              styles.mediumText,
-              {textAlign: 'center', fontSize: 16},
-            ]}>
+            style={[styles.mediumText, {textAlign: 'center', fontSize: 16}]}>
             Challenges{`\n`}3004
           </Text>
         </TouchableOpacity>
@@ -130,10 +127,7 @@ const User = ({params, navigation}) => {
             },
           ]}>
           <Text
-            style={[
-              styles.mediumText,
-              {textAlign: 'center', fontSize: 16},
-            ]}>
+            style={[styles.mediumText, {textAlign: 'center', fontSize: 16}]}>
             Accepted{`\n`}3000
           </Text>
         </TouchableOpacity>
@@ -148,7 +142,12 @@ const User = ({params, navigation}) => {
           contentContainerStyle={{margin: 10}}
           renderItem={({item}) => {
             return (
-              <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Home');
+                }}>
+                <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
+              </TouchableOpacity>
             );
           }}
         />
