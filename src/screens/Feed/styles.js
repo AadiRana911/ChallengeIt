@@ -12,12 +12,29 @@ export default StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
+  dividerStyle: {
+    width: '95%',
+    height: 1,
+    marginVertical: 5,
+    alignSelf: 'center',
+  },
+  smallButton: {
+    padding: 15,
+    width: '40%',
+    backgroundColor: 'red',
+    borderRadius: 100,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
   playButton: {
     opacity: 0.7,
     fontSize: 70,
     color: 'white',
     top: 0,
     left: 0,
+  },
+  horizontalContainer: {
+    flexDirection: 'row',
   },
   box: {
     backgroundColor: 'tomato',
