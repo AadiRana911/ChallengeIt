@@ -19,6 +19,7 @@
     "@react-navigation/stack": "^5.9.0",
     "react": "16.13.1",
     "react-native": "0.63.2",
+    "react-native-background-downloader": "^2.3.4",
     "react-native-camera": "^3.37.0",
     "react-native-elements": "^2.3.1",
     "react-native-gesture-handler": "^1.7.0",
@@ -46,6 +47,7 @@
     "react-native-vector-icons": "^7.0.0",
     "react-native-video": "^5.1.0-alpha8",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "rn-fetch-blob": "^0.12.0",
     "rn-placeholder": "^3.0.1"
   },
   "devDependencies": {

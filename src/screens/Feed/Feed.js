@@ -8,14 +8,21 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
+  PermissionsAndroid,
+  ToastAndroid,
   Animated,
+  BackHandler
 } from 'react-native';
+import OptionsMenu from "react-native-options-menu";
 import Video from 'react-native-video';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import styles from './styles';
 import {MediaControls, PLAYER_STATES} from 'react-native-media-controls';
 import LinearGradient from 'react-native-linear-gradient';
 import ViewPager from '@react-native-community/viewpager';
+import Snackbar from 'react-native-snackbar';
+import Modal from 'react-native-modal';
+import RNFetchBlob from "rn-fetch-blob";
 
 import {primaryColor} from '../../components/colors';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -37,15 +44,15 @@ const Feed = ({navigation}) => {
   let player;
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [paused, setPaused] = useState(false);
   const [nextPaused, setNextPaused] = useState(true);
   const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
   const [screenType, setScreenType] = useState('content');
   const [isCurrentScreenEnabled, setIsCurrentScreenEnabled] = useState(true);
   const [isText1Active, setIsText1Active] = useState(true);
-
-  let [direction, setDirection] = useState('up');
+  const [progress, setProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(0);
+  const [direction, setDirection] = useState('up');
   let vids = [
     {
       id: 0,
@@ -78,12 +85,10 @@ const Feed = ({navigation}) => {
   const [translateXImg, setTranslateXImg] = useState(new Animated.Value(0));
   
 
-  const [translateXCurrentImg, setTranslateXCurrentImg] = useState(
-    new Animated.Value(0),
-  );
-  const [translateYImg, setTranslateYImg] = useState(new Animated.Value(0));
-  const [translateXStrip, setTranslateXStrip] = useState(new Animated.Value(0));
-  const [translateXScreen, setTranslateXScreen] = useState(new Animated.Value(0));
+  const [translateXCurrentImg] = useState(new Animated.Value(0),);
+  const [translateYImg] = useState(new Animated.Value(0));
+  const [translateXStrip] = useState(new Animated.Value(0));
+  const [translateXScreen] = useState(new Animated.Value(0));
   const [translateBottomImageStripX] = useState(new Animated.Value(0));
   const [translateBottomIconsX] = useState(new Animated.Value(0));
 
@@ -111,6 +116,15 @@ const Feed = ({navigation}) => {
   const handleBottomImageStripX = () => {
     Animated.spring(translateBottomImageStripX, {
       toValue: -width,
+      duration: 5000,
+      useNativeDriver: true,
+      tension: 10,
+    }).start();
+  };
+
+  const handleBottomIconsX = () => {
+    Animated.spring(translateBottomIconsX, {
+      toValue: 100,
       duration: 5000,
       useNativeDriver: true,
       tension: 10,
@@ -179,6 +193,16 @@ const Feed = ({navigation}) => {
       tension: 10,
     }).start();
   };
+  
+  const handleBottomIconsXReverse = () => {
+    Animated.spring(translateBottomIconsX, {
+      toValue: 0,
+      duration: 5000,
+      useNativeDriver: true,
+      tension: 10,
+    }).start();
+  };
+
   const handleScreenSlideReverse = () => {
     Animated.spring(translateXScreen, {
       toValue: 0,
@@ -193,6 +217,7 @@ const Feed = ({navigation}) => {
     handleStripSlideReverse();
     handleScreenSlideReverse();
     handleBottomImageStripXReverse();
+    handleBottomIconsXReverse();
     setIsCurrentScreenEnabled(true);
     setNextPaused(true);
     setPaused(false);
@@ -204,10 +229,94 @@ const Feed = ({navigation}) => {
     handleStripSlide();
     handleScreenSlide();
     handleBottomImageStripX();
+    handleBottomIconsX();
     setIsCurrentScreenEnabled(false);
     setPaused(true);
     setNextPaused(false);
   };
+  const addToPlayList = () => {
+    Snackbar.show({
+      text: ' Saved to playlist',
+      duration: Snackbar.LENGTH_LONG,
+      action: {
+        text: 'Change',
+        textColor: 'tomato',
+        onPress: () => {
+          return(
+            // <Modal isVisible = {true}>
+              <View style={{ flex: 1 }}>
+                <Text>I am the modal content!</Text>
+              </View>
+            // </Modal>
+          )
+        },
+      },
+    });
+  };
+  actualDownload = () => {
+    var date = new Date();
+    setProgress(0);
+    setIsLoading(true);
+    let dirs = RNFetchBlob.fs.dirs;
+    RNFetchBlob.config({
+      // add this option that makes response data to be stored as a file,
+      // this is much more performant.
+      path: dirs.DCIMDir + "/Videos/video_" + Math.floor(date.getTime()
+      + date.getSeconds() / 2) + '.mp4',
+      fileCache: true
+    })
+      .fetch(
+        "GET",
+        vids[0].vid,
+        {
+          //some headers ..
+        }
+      )
+      .progress((received, total) => {
+        console.log("progress", received / total);
+        setProgress(received / total );
+      })
+      .then(res => {
+        console.log(dirs)
+        console.log('The file saved to ', res.path())
+        setProgress(100);
+        setIsLoading(false);
+        ToastAndroid.showWithGravity(
+          "Your file has been downloaded to downloads folder!",
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM
+        );
+      });
+  };
+   download = async() =>  {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: "Storage Permission",
+          message: "App needs access to memory to download the file "
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        actualDownload();
+      } else {
+        Alert.alert(
+          "Permission Denied!",
+          "You need to give storage permission to download the file"
+        );
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+  
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      animateReverse();
+      return true;
+    });
+
+  },[])
 
   return (
     <View style={{flex: 1}}>
@@ -333,7 +442,7 @@ const Feed = ({navigation}) => {
           resizeMode="cover"
         />
       </GestureRecognizer>
-      <View
+      <Animated.View
         style={{
           position: 'absolute',
           height: height / 4,
@@ -342,11 +451,17 @@ const Feed = ({navigation}) => {
           left: width - 60,
           justifyContent: 'space-between',
           alignItems: 'flex-end',
+          transform: [{translateX: translateBottomIconsX}],
         }}>
-        <Entypo
-          name="dots-three-horizontal"
-          style={{fontSize: 30, color: 'white'}}
+        <OptionsMenu 
+          customButton = {<Entypo
+            name="dots-three-horizontal"
+            style={{fontSize: 30, color: 'white'}}
+            />}
+          options = {['Add to playlist', 'Report Video']}
+          actions = {[addToPlayList, ]}
         />
+        
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <Image
             source={require('../../assets/images/clap.png')}
@@ -355,17 +470,19 @@ const Feed = ({navigation}) => {
           <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <MaterialCommunityIcons
-            name="download"
-            style={{fontSize: 30, color: 'white'}}
-          />
+          <TouchableOpacity onPress = {download}>
+            <MaterialCommunityIcons
+              name="download"
+              style={{fontSize: 30, color: 'white'}}
+            />
+          </TouchableOpacity>
           <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <Entypo name="forward" style={{fontSize: 30, color: 'white'}} />
           <Text style={{fontSize: 9, marginLeft: 4, color: 'white'}}>3000</Text>
         </View>
-      </View>
+      </Animated.View>
       <Animated.View
         style={{
           position: 'absolute',
