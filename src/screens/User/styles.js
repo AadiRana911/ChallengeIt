@@ -3,26 +3,31 @@
 import {Fonts} from '../../utils/Fonts';
 
 import {StyleSheet, Dimensions} from 'react-native';
+import { primaryColor } from '../../components/colors';
 const {height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: 'white',
+    paddingTop: height/10,
+
   },
   imageStyle: {
     height: 100,
     width: 100,
-    borderRadius: 50,
-    borderWidth: 3,
-    borderColor: '#eee',
+    borderRadius: 60,
+    
+    // borderWidth: 3,
+    // borderColor: '#fff',
+    
   },
   head: {
     flex: 0.4,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: height/12,
-    marginTop: height/20,
+    marginBottom: height/15,
+    // marginTop: height/20,
   },
   categoryContainer: {
     flex: 0.5,
@@ -58,6 +63,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 10, height: 10},
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 10,
+    // borderRadius: 70,
+    // borderWidth: 3,
+    // borderColor: primaryColor,
   },
   statsContainer: {
     flexDirection: 'row',

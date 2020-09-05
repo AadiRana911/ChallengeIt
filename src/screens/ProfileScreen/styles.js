@@ -14,6 +14,7 @@ export default styles = StyleSheet.create({
     flex: 1,
   },
   videoContainer: {
+    marginTop: height/18,
     backgroundColor: 'red',
     width: width - 20,
     height: height / 2.5,
@@ -40,12 +41,15 @@ export default styles = StyleSheet.create({
     top: height / 5 - 35,
   },
   imageStyle: {
+    position: 'absolute',
     borderRadius: 30,
     borderWidth: width / 205.714,
-    height: width / 6.857,
-    width: width / 6.857,
-    top: height / 3 + height / 27,
+    height: width / 8,
+    width: width / 8,
+    top: height / 100,
     left: width - width / 5.2,
+    // top: 100,
+    // left: 100,
     borderColor: 'white',
   },
   screenIconContainer: {
@@ -56,9 +60,10 @@ export default styles = StyleSheet.create({
   },
   userNameContainer: {
     flexDirection: 'row',
-    left: width / 5.14285,
-    top: height / 10,
-    justifyContent: 'space-between',
+    left: width / 14,
+    marginTop: height / 75,
+    top: height/50,
+    justifyContent: 'space-evenly',
   },
   followButtonStyle: {
     backgroundColor: primaryColor,
@@ -70,7 +75,7 @@ export default styles = StyleSheet.create({
   userStatsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    top: height / 5,
+    top: height / 15,
 
     backgroundColor: '#fff',
 
@@ -83,11 +88,11 @@ export default styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#eee',
   },
-  individualStatContainer: {
-    alignItems: 'center',
-    width: '50%',
-    paddingVertical: 10,
-  },
+  // individualStatContainer: {
+  //   alignItems: 'center',
+  //   width: '50%',
+  //   paddingVertical: 10,
+  // },
   thumbnailStyle: {
     height: height / 6.8,
     width: width / 3.475,

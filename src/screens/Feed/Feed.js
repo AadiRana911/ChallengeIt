@@ -53,7 +53,7 @@ const Feed = ({navigation}) => {
   );
   let player;
 
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
   const [nextPaused, setNextPaused] = useState(true);
   const [isCurrentScreenEnabled, setIsCurrentScreenEnabled] = useState(true);
   const [isText1Active, setIsText1Active] = useState(true);
@@ -140,6 +140,7 @@ const Feed = ({navigation}) => {
   const handleImageSlideX = () => {
     Animated.spring(translateXImg, {
       toValue: -width + width / 4.4,
+      // toValue: -wi,
       duration: 5000,
       useNativeDriver: true,
       tension: 10,
@@ -147,7 +148,7 @@ const Feed = ({navigation}) => {
   };
   const handleImageSlideY = () => {
     Animated.spring(translateYImg, {
-      toValue: height / 6.2,
+      toValue: -height /10,
       duration: 5000,
       useNativeDriver: true,
       tension: 10,
@@ -349,16 +350,6 @@ const Feed = ({navigation}) => {
     }
   };
 
-  useEffect(() => {
-    // animation.current.play();
-    // Or set a specific startFrame and endFrame with:
-    // animation.current.play(30, 120);
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      animateReverse();
-      return true;
-    });
-  }, []);
-
   const toggleLike = (id) => {
     setVids(
       vids.map((item) => {
@@ -393,13 +384,15 @@ const Feed = ({navigation}) => {
       <ViewPager
         onPageSelected={(e) => {
           setActive(e.nativeEvent.position);
-          setPaused(true);
+          // setPaused(true);
         }}
         orientation="vertical"
         style={{height: '93%'}}
         initialPage={0}>
         {vids.map((item) => {
           return (
+
+
             <View>
               <Video
                 paused={false}
@@ -560,6 +553,7 @@ const Feed = ({navigation}) => {
                 </View>
               </Animated.View>
             </View>
+
           );
         })}
       </ViewPager>
@@ -644,7 +638,7 @@ const Feed = ({navigation}) => {
       <GestureRecognizer
         style={{
           position: 'absolute',
-          top: height / 3 + height / 27,
+          top: height / 6,
           left: width - width / 5.2,
         }}
         config={config}
@@ -655,7 +649,7 @@ const Feed = ({navigation}) => {
             left: width / 13.71428,
             position: 'absolute',
             width: width,
-            height: width / 7.09359,
+            height: width / 8.4,
             backgroundColor: primaryColor,
             transform: [{translateX: translateXStrip}],
           }}
@@ -666,8 +660,8 @@ const Feed = ({navigation}) => {
             style={{
               borderRadius: 30,
               borderWidth: width / 205.714,
-              height: width / 6.857,
-              width: width / 6.857,
+              height: width / 8,
+              width: width / 8,
               transform: [{translateX: translateXCurrentImg}],
               borderColor: 'white',
             }}
@@ -675,6 +669,138 @@ const Feed = ({navigation}) => {
           />
         </TouchableOpacity>
       </GestureRecognizer>
+
+      <Animated.View
+        style={{
+          position: 'absolute',
+          height: height / 4,
+          width: width / 8,
+          bottom: height / 10,
+          left: width - 60,
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+          transform: [{translateX: translateBottomIconsX}],
+        }}>
+        <OptionsMenu
+          customButton={
+            <Entypo
+              name="dots-three-horizontal"
+              style={{fontSize: 27, color: 'white'}}
+            />
+          }
+          options={['Add to playlist', 'Report Video']}
+          actions={[addToPlayList, () => reportRef.current.open()]}
+        />
+
+        <TouchableOpacity
+          onPress={() => {
+            setClapped(!isClap);
+          }}
+          style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Image
+            source={require('../../assets/images/clap.png')}
+            style={{
+              tintColor: isClap ? primaryColor : 'white',
+              height: 30,
+              width: 30,
+            }}
+          />
+          <Text
+            style={{
+              fontSize: 9,
+              marginLeft: 4,
+              color: 'white',
+              fontFamily: Fonts.CenturyBold,
+            }}>
+            3000
+          </Text>
+        </TouchableOpacity>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <TouchableOpacity onPress={() => download()}>
+            <MaterialCommunityIcons
+              name="download"
+              style={{fontSize: 30, color: 'white'}}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 9,
+              marginLeft: 4,
+              color: 'white',
+              fontFamily: Fonts.CenturyBold,
+            }}>
+            3000
+          </Text>
+        </View>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Entypo
+            name="forward"
+            style={{fontSize: 30, color: 'white'}}
+            onPress={() => {
+              handleShare();
+            }}
+          />
+          <Text
+            style={{
+              fontSize: 9,
+              marginLeft: 4,
+              color: 'white',
+              fontFamily: Fonts.CenturyBold,
+            }}>
+            3000
+          </Text>
+        </View>
+      </Animated.View>
+
+      <Animated.View
+        style={{
+          position: 'absolute',
+          bottom: height / 8,
+          left: width / 20,
+          width: '80%',
+          alignItems: 'center',
+          flexDirection: 'row',
+          transform: [{translateX: translateBottomImageStripX}],
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            setPaused(true);
+            navigation.navigate('User');
+          }}>
+          <Image
+            source={require('../../assets/images/samplechallenger.jpg')}
+            style={{
+              borderRadius: 30,
+              borderWidth: width / 205.714,
+              height: width / 6.857,
+              width: width / 6.857,
+              borderColor: 'white',
+              marginRight: 10,
+            }}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+        <View>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: width / 22,
+              fontFamily: Fonts.CenturyBold,
+            }}>
+            Zaheer01
+          </Text>
+          <Text
+            style={{
+              color: 'white',
+              fontFamily: Fonts.CenturyRegular,
+              fontSize: width / 30,
+            }}>
+            This is my tribute to challenge
+          </Text>
+        </View>
+      </Animated.View>
+
+
 
       <RBSheet
         ref={playListRef}
@@ -957,6 +1083,7 @@ const Feed = ({navigation}) => {
         navigation={navigation}
         params={'Home'}
         animateReverse={animateReverse}
+        pauser = {() => setPaused(true)}
       />
     </View>
   );
