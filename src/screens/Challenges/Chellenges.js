@@ -14,8 +14,7 @@ import {
   BackHandler,
   TouchableWithoutFeedback,
   Animated,
-  ScrollView,
-  Easing,
+  TextInput,
 } from 'react-native';
 import Video from 'react-native-video';
 const {width, height} = Dimensions.get('window');
@@ -75,7 +74,6 @@ const Challenges = ({navigation}) => {
   const optionSheet = useRef(null);
   const playListRef = useRef(null);
   const reportRef = useRef(null);
-  const avatarRef = useRef(null);
 
   const [isclapped, setClapp] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -90,6 +88,8 @@ const Challenges = ({navigation}) => {
   const [reportMsg, setReportMsg] = useState('');
   const [loading, setLoading] = useState(true);
   const [clapProgress, setClapProgress] = useState(new Animated.Value(0));
+  const [searching, setSearching] = useState(false);
+  const [showAvatar, setShowAvatar] = useState(false);
 
   const [buttons, setButton] = useState([
     {id: 0, name: 'New', isActive: true},
@@ -293,63 +293,65 @@ const Challenges = ({navigation}) => {
   const renderPosts = ({item, index}) => {
     return (
       <View key={index} activeOpacity={0.9} style={[styles.cardStyle]}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Image source={dummy} style={styles.userImgStyle} />
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        <Text
-            numberOfLines={3}
-            style={[
-              // styles.largeText,
-              {
-                alignSelf: 'center',
-                // padding: 10,
-                // textAlign: 'center',
-                marginTop: '-2%',
-                width: '75%',
-                // backgroundColor: 'red'
-              },
-            ]}>
+          <Image source={dummy} style={styles.userImgStyle} />
+          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
             <Text
+              numberOfLines={3}
               style={[
-                styles.mediumText,
+                // styles.largeText,
                 {
-                  // color: theme.colors.primary,
-                  // alignSelf: 'center',
+                  alignSelf: 'center',
+                  // padding: 10,
                   // textAlign: 'center',
-                  marginTop: 0,
-                  color: primaryColor,
-                  fontSize: 15
+                  marginTop: '-2%',
+                  width: '75%',
+                  // backgroundColor: 'red'
                 },
               ]}>
-              {item.name}
-            </Text>{' '}
-            <Text style={[styles.mediumText, {fontSize: 15}]}>Challenged </Text>
-            <Text
-              style={[
-                styles.mediumText,
-                {color: primaryColor, fontSize: 15},
-              ]}>{`${item.to} \n`}</Text>
-            <Text
-              style={[
-                styles.mediumText,
-                {
-                  // alignSelf: 'flex-start',
-                  // marginLeft: '15.5%',
-                  // color: theme.colors.gray,
-                },
-              ]}>
-              {item.km}
-              {'    '} {item.time}
+              <Text
+                style={[
+                  styles.mediumText,
+                  {
+                    // color: theme.colors.primary,
+                    // alignSelf: 'center',
+                    // textAlign: 'center',
+                    marginTop: 0,
+                    color: primaryColor,
+                    fontSize: 15,
+                  },
+                ]}>
+                {item.name}
+              </Text>{' '}
+              <Text style={[styles.mediumText, {fontSize: 15}]}>
+                Challenged{' '}
+              </Text>
+              <Text
+                style={[
+                  styles.mediumText,
+                  {color: primaryColor, fontSize: 15},
+                ]}>{`${item.to} \n`}</Text>
+              <Text
+                style={[
+                  styles.mediumText,
+                  {
+                    // alignSelf: 'flex-start',
+                    // marginLeft: '15.5%',
+                    // color: theme.colors.gray,
+                  },
+                ]}>
+                {item.km}
+                {'    '} {item.time}
+              </Text>
             </Text>
-          </Text>
-          <View style={{justifyContent: 'flex-end', height: height/18}}>
-            <Entypo name="eye" style={{fontSize: width / 18.70129}} />
-          <Text style={[styles.smallText, {marginTop: -3}]}>
-            {item.views}
-          </Text>
-        </View>
-        </View>
-          
+            <View style={{justifyContent: 'flex-end', height: height / 18}}>
+              <Entypo name="eye" style={{fontSize: width / 18.70129}} />
+              <Text style={[styles.smallText, {marginTop: -3}]}>
+                {item.views}
+              </Text>
+            </View>
+          </View>
+
           <TouchableOpacity
             style={{
               height: 27,
@@ -358,7 +360,12 @@ const Challenges = ({navigation}) => {
             onPress={() => optionSheet.current.open()}>
             <Image
               source={more}
-              style={{top: height/70, height: 17, width: 17, tintColor: 'black'}}
+              style={{
+                top: height / 70,
+                height: 17,
+                width: 17,
+                tintColor: 'black',
+              }}
             />
           </TouchableOpacity>
         </View>
@@ -373,26 +380,18 @@ const Challenges = ({navigation}) => {
               toggleLike(item.id);
             }}
             delay={200}>
-            <ScrollView
-              style={{flex: 1}}
-              contentContainerStyle={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Video
-                source={{uri: item.uri}}
-                paused={item.isPaused}
-                resizeMode="cover"
-                repeat
-                style={{
-                  height: height / 2,
-                  width: '100%',
-                  backgroundColor: 'black',
-                  borderRadius: 20,
-                }}
-              />
-            </ScrollView>
+            <Video
+              source={{uri: item.uri}}
+              paused={item.isPaused}
+              resizeMode="cover"
+              repeat
+              style={{
+                height: height / 2,
+                width: '100%',
+                backgroundColor: 'black',
+                borderRadius: 20,
+              }}
+            />
           </DoubleTap>
           {item.isPaused && (
             <Entypo
@@ -441,7 +440,7 @@ const Challenges = ({navigation}) => {
             {justifyContent: 'space-between'},
           ]}>
           <View style={[styles.bottomContainer]}>
-            <TouchableOpacity onPress={() => rbsheet.current.open()}>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
               <MaterialIcons
                 name="videocam"
                 style={{fontSize: width / 16.45714, color: 'black'}}
@@ -505,7 +504,7 @@ const Challenges = ({navigation}) => {
             <TouchableOpacity onPress={handleShare}>
               <FontAwesome
                 name="share"
-                style={{fontSize: width / 18.70129, color: 'gray'}}
+                style={{fontSize: width / 18.70129, color: 'black'}}
               />
               <Text style={[styles.smallText, {marginTop: -3}]}>
                 {item.views}
@@ -517,10 +516,14 @@ const Challenges = ({navigation}) => {
               styles.bottomContainer,
               {flexDirection: 'row', paddingHorizontal: 10},
             ]}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                handleVideoPause(item.id);
+                _captureVideo();
+              }}>
               <Entypo
                 name="camera"
-                style={{fontSize: width / 18.70129, color: 'gray'}}
+                style={{fontSize: width / 18.70129, color: 'black'}}
               />
             </TouchableOpacity>
           </View>
@@ -534,7 +537,7 @@ const Challenges = ({navigation}) => {
       ImagePicker.openCamera({
         mediaType: 'video',
       }).then((result) => {
-        console.log(result);
+        navigation.navigate('Response', {video: result.path});
         // setTimeout(() => {
         //   setImages(medai);
         // }, 200);
@@ -588,58 +591,92 @@ const Challenges = ({navigation}) => {
   });
 
   const viewConfigRef = useRef({
-    itemVisiblePercentThreshold: 300,
-    minimumViewTime: 2,
+    itemVisiblePercentThreshold: 400,
+    minimumViewTime: 5,
+    waitForInteraction: true,
   });
 
   return (
     <SafeAreaView style={styles.mainContainer}>
+      <View>
+        <Ionicons
+          name="chevron-back"
+          style={{fontSize: 30, margin: 10}}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+      </View>
       <View
         style={{
-          flex: 0.2,
+          // flex: 0.1,
 
           justifyContent: 'center',
           paddingLeft: 5,
         }}>
-        <View style = {{flexDirection: 'row',}}>
-        <Feather name = 'search' style = {{alignSelf: 'center', fontSize: 30, marginHorizontal: width/30}}/>
-        <FlatList
-          contentContainerStyle={{marginTop: 5}}
-          horizontal
-          keyExtractor={(item, index) => {
-            item + index.toString();
-          }}
-          data={avatars}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  avatarRef.current.open();
-                }}>
-                <Avatar
-                  source={{
-                    uri: item.uri,
-                  }}
-                  size="medium"
-                  rounded
-                  containerStyle={{margin: 4}}
-                />
+        <View style={{flexDirection: 'row'}}>
+          <Feather
+            name="search"
+            style={{
+              alignSelf: 'center',
+              fontSize: 30,
+              marginHorizontal: width / 30,
+            }}
+            onPress={() => {
+              setSearching(!searching);
+            }}
+          />
+          {searching ? (
+            <TextInput
+              placeholder="Search..."
+              style={{
+                width: '80%',
+                borderRadius: 3,
+                borderWidth: 0.4,
+                borderColor: '#ddd',
+                paddingLeft: 10,
+              }}
+            />
+          ) : (
+            <FlatList
+              contentContainerStyle={{marginTop: 5}}
+              horizontal
+              keyExtractor={(item, index) => {
+                item + index.toString();
+              }}
+              data={avatars}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    key={index}
+                    onPress={() => {
+                      setShowAvatar(!showAvatar);
+                    }}>
+                    <Avatar
+                      source={{
+                        uri: item.uri,
+                      }}
+                      size="medium"
+                      rounded
+                      containerStyle={{margin: 4}}
+                    />
 
-                <Badge
-                  status={item.status === '' ? 'primary' : item.status}
-                  value={item.status === 'error' && 'live'}
-                  containerStyle={{
-                    position: 'absolute',
-                    top: item.status === 'error' ? 2 : 8,
-                    right: item.status === 'error' ? 0 : 6,
-                  }}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
+                    <Badge
+                      status={item.status === '' ? 'primary' : item.status}
+                      value={item.status === 'error' && 'live'}
+                      containerStyle={{
+                        position: 'absolute',
+                        top: item.status === 'error' ? 2 : 8,
+                        right: item.status === 'error' ? 0 : 6,
+                      }}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          )}
         </View>
         <FlatList
           contentContainerStyle={{marginVertical: 5}}
@@ -664,7 +701,7 @@ const Challenges = ({navigation}) => {
                   paddingVertical: 7,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  borderColor: 'gray',
+
                   shadowColor: '#000',
                   shadowOffset: {width: 1, height: 0},
                   shadowOpacity: 0.3,
@@ -698,67 +735,94 @@ const Challenges = ({navigation}) => {
           />
         </View>
       )}
-
-      <RBSheet
-        ref={rbsheet}
-        height={150}
-        openDuration={250}
-        customStyles={{
-          container: {
+      {showAvatar && (
+        <View
+          style={{
+            height: 220,
+            width: '100%',
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
-            paddingTop: 10,
-          },
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            rbsheet.current.close();
-            navigation.navigate('Home');
-          }}
-          style={[styles.horizontalContainer, {marginLeft: 4, padding: 10}]}>
-          <TouchableOpacity
-            style={[styles.iconStyle, {backgroundColor: 'teal'}]}>
-            <AntDesign
-              name="eye"
-              size={20}
-              color={'white'}
-              style={{alignSelf: 'center', margin: 5}}
-            />
-          </TouchableOpacity>
+          }}>
+          <Image
+            source={{
+              uri:
+                'https://image.shutterstock.com/image-photo/islamabad-pakistan-april-25-2019-260nw-1407461093.jpg',
+            }}
+            style={{
+              height: 90,
+              width: 90,
+              borderRadius: 45,
+              top: -40,
+              alignSelf: 'center',
+            }}
+          />
           <Text
             style={[
-              styles.mediumText,
-              {alignSelf: 'center', fontSize: 18, margin: 5},
+              styles.largeText,
+              {alignSelf: 'center', marginTop: -20, color: primaryColor},
             ]}>
-            View Challenge responses
+            Jhon Doe
           </Text>
-        </TouchableOpacity>
-        <Divider style={styles.dividerStyle} />
-        <TouchableOpacity
-          onPress={() => {
-            // rbsheet.current.close();
-            _captureVideo();
-          }}
-          style={[styles.horizontalContainer, {marginLeft: 4, padding: 10}]}>
-          <TouchableOpacity style={[styles.iconStyle]}>
-            <MaterialIcons
-              name="videocam"
-              size={24}
-              color={'white'}
-              style={{alignSelf: 'center', margin: 5}}
-            />
-          </TouchableOpacity>
-          <Text
-            style={[
-              styles.mediumText,
-              {alignSelf: 'center', fontSize: 18, margin: 5},
-            ]}>
-            Record your response
+          <Text style={[styles.mediumText, {alignSelf: 'center'}]}>
+            1 Km away
           </Text>
-        </TouchableOpacity>
-        <Divider style={styles.dividerStyle} />
-      </RBSheet>
-
+          <View>
+            <TouchableOpacity
+              onPress={() => {}}
+              style={[
+                styles.horizontalContainer,
+                {marginLeft: 4, padding: 10},
+              ]}>
+              <TouchableOpacity
+                style={[styles.iconStyle, {backgroundColor: 'teal'}]}>
+                <AntDesign
+                  name="eye"
+                  size={20}
+                  color={'white'}
+                  style={{alignSelf: 'center', margin: 5}}
+                  onPress={() => {
+                    setShowAvatar(!showAvatar);
+                  }}
+                />
+              </TouchableOpacity>
+              <Text
+                style={[
+                  styles.mediumText,
+                  {alignSelf: 'center', fontSize: 18, margin: 5},
+                ]}>
+                Do it
+              </Text>
+            </TouchableOpacity>
+            <Divider style={styles.dividerStyle} />
+            <TouchableOpacity
+              onPress={() => {
+                setShowAvatar(!showAvatar), navigation.navigate('User');
+              }}
+              style={[
+                styles.horizontalContainer,
+                {marginLeft: 4, padding: 10},
+              ]}>
+              <TouchableOpacity
+                style={[styles.iconStyle, {backgroundColor: 'tomato'}]}>
+                <AntDesign
+                  name="user"
+                  size={20}
+                  color={'white'}
+                  style={{alignSelf: 'center', margin: 5}}
+                />
+              </TouchableOpacity>
+              <Text
+                style={[
+                  styles.mediumText,
+                  {alignSelf: 'center', fontSize: 18, margin: 5},
+                ]}>
+                View Profile
+              </Text>
+            </TouchableOpacity>
+            <Divider style={styles.dividerStyle} />
+          </View>
+        </View>
+      )}
       <RBSheet
         ref={optionSheet}
         height={360}
@@ -1209,44 +1273,6 @@ const Challenges = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </RBSheet>
-
-      <RBSheet
-        ref={avatarRef}
-        height={150}
-        openDuration={150}
-        customStyles={{
-          container: {
-            borderTopRightRadius: 30,
-            borderTopLeftRadius: 30,
-            paddingTop: 10,
-          },
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            avatarRef.current.close();
-          }}
-          style={[styles.horizontalContainer, {marginLeft: 4, padding: 10}]}>
-          <TouchableOpacity
-            style={[styles.iconStyle, {backgroundColor: 'teal'}]}>
-            <AntDesign
-              name="eye"
-              size={20}
-              color={'white'}
-              style={{alignSelf: 'center', margin: 5}}
-            />
-          </TouchableOpacity>
-          <Text
-            style={[
-              styles.mediumText,
-              {alignSelf: 'center', fontSize: 18, margin: 5},
-            ]}>
-            Do it
-          </Text>
-        </TouchableOpacity>
-        <Divider style={styles.dividerStyle} />
-      </RBSheet>
-
-      {/* {isModalVisible && renderModal()} */}
     </SafeAreaView>
   );
 };
