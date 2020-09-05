@@ -6,6 +6,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
+import primaryColor from '../../components/colors'
+import ImagePicker from 'react-native-image-crop-picker';
+import LinearGradient from 'react-native-linear-gradient';
+
+
+
 const TabBar = ({navigation, params, animateReverse, pauser}) => {
   return (
     <View style={styles.container}>
@@ -48,6 +54,9 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
         />
       </TouchableOpacity>
 
+
+
+ 
       <TouchableOpacity
         onPress={
           params === 'Home'
@@ -60,6 +69,7 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
               }
         }>
         <Entypo name={'message'} style={{fontSize: 28, color: 'white'}} />
+
       </TouchableOpacity>
 
       <TouchableOpacity

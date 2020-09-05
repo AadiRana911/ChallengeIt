@@ -129,6 +129,16 @@ const Challenges = ({navigation}) => {
       status: '',
       uri: 'https://randomuser.me/api/portraits/men/50.jpg',
     },
+    {
+      id: 6,
+      status: '',
+      uri: 'https://randomuser.me/api/portraits/men/50.jpg',
+    },
+    {
+      id: 6,
+      status: '',
+      uri: 'https://randomuser.me/api/portraits/men/50.jpg',
+    },
   ]);
   const [videos, setVideos] = useState([
     {
@@ -285,8 +295,8 @@ const Challenges = ({navigation}) => {
       <View key={index} activeOpacity={0.9} style={[styles.cardStyle]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Image source={dummy} style={styles.userImgStyle} />
-
-          <Text
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        <Text
             numberOfLines={3}
             style={[
               // styles.largeText,
@@ -301,22 +311,23 @@ const Challenges = ({navigation}) => {
             ]}>
             <Text
               style={[
-                styles.largeText,
+                styles.mediumText,
                 {
                   // color: theme.colors.primary,
                   // alignSelf: 'center',
                   // textAlign: 'center',
                   marginTop: 0,
                   color: primaryColor,
+                  fontSize: 15
                 },
               ]}>
               {item.name}
             </Text>{' '}
-            <Text style={[styles.largeText]}>Challenged </Text>
+            <Text style={[styles.mediumText, {fontSize: 15}]}>Challenged </Text>
             <Text
               style={[
-                styles.largeText,
-                {color: 'red'},
+                styles.mediumText,
+                {color: primaryColor, fontSize: 15},
               ]}>{`${item.to} \n`}</Text>
             <Text
               style={[
@@ -331,7 +342,14 @@ const Challenges = ({navigation}) => {
               {'    '} {item.time}
             </Text>
           </Text>
-
+          <View style={{justifyContent: 'flex-end', height: height/18}}>
+            <Entypo name="eye" style={{fontSize: width / 18.70129}} />
+          <Text style={[styles.smallText, {marginTop: -3}]}>
+            {item.views}
+          </Text>
+        </View>
+        </View>
+          
           <TouchableOpacity
             style={{
               height: 27,
@@ -340,7 +358,7 @@ const Challenges = ({navigation}) => {
             onPress={() => optionSheet.current.open()}>
             <Image
               source={more}
-              style={{height: 17, width: 17, tintColor: 'black'}}
+              style={{top: height/70, height: 17, width: 17, tintColor: 'black'}}
             />
           </TouchableOpacity>
         </View>
@@ -426,7 +444,7 @@ const Challenges = ({navigation}) => {
             <TouchableOpacity onPress={() => rbsheet.current.open()}>
               <MaterialIcons
                 name="videocam"
-                style={{fontSize: width / 16.45714, color: 'gray'}}
+                style={{fontSize: width / 16.45714, color: 'black'}}
               />
               {/* <MaterialIcons
                 name="reply"
@@ -469,7 +487,7 @@ const Challenges = ({navigation}) => {
                   style={{
                     height: 24,
                     width: 24,
-                    tintColor: item.liked ? primaryColor : 'gray',
+                    tintColor: item.liked ? primaryColor : 'black',
                     marginLeft: 4,
                   }}
                 />
@@ -501,12 +519,9 @@ const Challenges = ({navigation}) => {
             ]}>
             <TouchableOpacity>
               <Entypo
-                name="eye"
+                name="camera"
                 style={{fontSize: width / 18.70129, color: 'gray'}}
               />
-              <Text style={[styles.smallText, {marginTop: -3}]}>
-                {item.views}
-              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -586,6 +601,8 @@ const Challenges = ({navigation}) => {
           justifyContent: 'center',
           paddingLeft: 5,
         }}>
+        <View style = {{flexDirection: 'row',}}>
+        <Feather name = 'search' style = {{alignSelf: 'center', fontSize: 30, marginHorizontal: width/30}}/>
         <FlatList
           contentContainerStyle={{marginTop: 5}}
           horizontal
@@ -623,6 +640,7 @@ const Challenges = ({navigation}) => {
             );
           }}
         />
+        </View>
         <FlatList
           contentContainerStyle={{marginVertical: 5}}
           horizontal
@@ -641,13 +659,19 @@ const Challenges = ({navigation}) => {
                 style={{
                   margin: 5,
                   paddingHorizontal: 20,
-                  backgroundColor: item.isActive ? primaryColor : '#e3e3e3',
+                  backgroundColor: item.isActive ? primaryColor : '#fff',
                   borderRadius: 100,
                   paddingVertical: 7,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  borderWidth: 0.4,
                   borderColor: 'gray',
+                  shadowColor: '#000',
+                  shadowOffset: {width: 1, height: 0},
+                  shadowOpacity: 0.3,
+                  shadowRadius: 5,
+                  elevation: 3,
+                  borderWidth: 0.5,
+                  borderColor: '#eee',
                 }}>
                 <Text
                   style={[
