@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import primaryColor from '../../components/colors'
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
 const TabBar = ({navigation, params, animateReverse, pauser}) => {
@@ -64,7 +65,7 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
         ? () => {pauser();navigation.navigate('Chat')}
         : () => {navigation.navigate('Chat')}
       }>
-        <Entypo name={'message'} style={{fontSize: 28, color: primaryColor}} />
+        <Entypo name={'message'} style={{fontSize: 28, color: '#fff'}} />
 
       </TouchableOpacity>
 

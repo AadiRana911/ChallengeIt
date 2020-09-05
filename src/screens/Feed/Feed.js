@@ -148,7 +148,7 @@ const Feed = ({navigation}) => {
   };
   const handleImageSlideY = () => {
     Animated.spring(translateYImg, {
-      toValue: -height /10,
+      toValue: -height / 10,
       duration: 5000,
       useNativeDriver: true,
       tension: 10,
@@ -391,8 +391,6 @@ const Feed = ({navigation}) => {
         initialPage={0}>
         {vids.map((item) => {
           return (
-
-
             <View>
               <Video
                 paused={false}
@@ -505,55 +503,7 @@ const Feed = ({navigation}) => {
                   </Text>
                 </View>
               </Animated.View>
-
-              <Animated.View
-                style={{
-                  position: 'absolute',
-                  bottom: height / 8,
-                  left: width / 20,
-                  width: '80%',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  transform: [{translateX: translateBottomImageStripX}],
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('User');
-                  }}>
-                  <Image
-                    source={require('../../assets/images/samplechallenger.jpg')}
-                    style={{
-                      borderRadius: 30,
-                      borderWidth: width / 205.714,
-                      height: width / 6.857,
-                      width: width / 6.857,
-                      borderColor: 'white',
-                      marginRight: 10,
-                    }}
-                    resizeMode="cover"
-                  />
-                </TouchableOpacity>
-                <View>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: width / 22,
-                      fontFamily: Fonts.CenturyBold,
-                    }}>
-                    Zaheer01
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontFamily: Fonts.CenturyRegular,
-                      fontSize: width / 30,
-                    }}>
-                    This is my tribute to challenge
-                  </Text>
-                </View>
-              </Animated.View>
             </View>
-
           );
         })}
       </ViewPager>
@@ -673,88 +623,6 @@ const Feed = ({navigation}) => {
       <Animated.View
         style={{
           position: 'absolute',
-          height: height / 4,
-          width: width / 8,
-          bottom: height / 10,
-          left: width - 60,
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          transform: [{translateX: translateBottomIconsX}],
-        }}>
-        <OptionsMenu
-          customButton={
-            <Entypo
-              name="dots-three-horizontal"
-              style={{fontSize: 27, color: 'white'}}
-            />
-          }
-          options={['Add to playlist', 'Report Video']}
-          actions={[addToPlayList, () => reportRef.current.open()]}
-        />
-
-        <TouchableOpacity
-          onPress={() => {
-            setClapped(!isClap);
-          }}
-          style={{alignItems: 'center', justifyContent: 'center'}}>
-          <Image
-            source={require('../../assets/images/clap.png')}
-            style={{
-              tintColor: isClap ? primaryColor : 'white',
-              height: 30,
-              width: 30,
-            }}
-          />
-          <Text
-            style={{
-              fontSize: 9,
-              marginLeft: 4,
-              color: 'white',
-              fontFamily: Fonts.CenturyBold,
-            }}>
-            3000
-          </Text>
-        </TouchableOpacity>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <TouchableOpacity onPress={() => download()}>
-            <MaterialCommunityIcons
-              name="download"
-              style={{fontSize: 30, color: 'white'}}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              fontSize: 9,
-              marginLeft: 4,
-              color: 'white',
-              fontFamily: Fonts.CenturyBold,
-            }}>
-            3000
-          </Text>
-        </View>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <Entypo
-            name="forward"
-            style={{fontSize: 30, color: 'white'}}
-            onPress={() => {
-              handleShare();
-            }}
-          />
-          <Text
-            style={{
-              fontSize: 9,
-              marginLeft: 4,
-              color: 'white',
-              fontFamily: Fonts.CenturyBold,
-            }}>
-            3000
-          </Text>
-        </View>
-      </Animated.View>
-
-      <Animated.View
-        style={{
-          position: 'absolute',
           bottom: height / 8,
           left: width / 20,
           width: '80%',
@@ -799,8 +667,6 @@ const Feed = ({navigation}) => {
           </Text>
         </View>
       </Animated.View>
-
-
 
       <RBSheet
         ref={playListRef}
@@ -1083,7 +949,7 @@ const Feed = ({navigation}) => {
         navigation={navigation}
         params={'Home'}
         animateReverse={animateReverse}
-        pauser = {() => setPaused(true)}
+        pauser={() => setPaused(true)}
       />
     </View>
   );
