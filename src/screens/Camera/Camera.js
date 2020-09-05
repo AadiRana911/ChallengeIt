@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  Platform,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {primaryColor} from '../../components/colors';
 const Height = Dimensions.get('window').height;
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 
 class Camera extends Component {
   constructor() {
@@ -79,6 +81,7 @@ class Camera extends Component {
             this.camera = ref;
           }}
           style={styles.preview}
+          cameraProps={{captureAudio: false}}
           type={
             this.state.cameraType === 'back'
               ? RNCamera.Constants.Type.back
@@ -137,7 +140,7 @@ class Camera extends Component {
     const type = `video/${codec}`;
 
     this.setState({processing: false, uri: uri, type: type}, () => {
-      this.props.navigation.navigate('Add', {video: uri});
+      this.props.navigation.navigate('Challenge', {video: uri});
     });
   }
 
@@ -146,16 +149,6 @@ class Camera extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const {isLoading, isSuccess, message} = state.videos;
-  const {userData} = state.auth;
-  return {
-    isLoading,
-    isSuccess,
-    message,
-    userData,
-  };
-};
 export default Camera;
 
 const styles = StyleSheet.create({

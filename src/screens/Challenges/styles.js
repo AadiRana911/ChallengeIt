@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   cardStyle: {
     flex: 1,
     margin: 10,
-    // padding: 15,
+    // padding: 10,
     backgroundColor: 'white',
     // elevation: 10,
     // shadowColor: '#BDBDBD',
