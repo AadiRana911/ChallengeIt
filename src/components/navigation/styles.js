@@ -5,7 +5,11 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-around',
 
     position: 'absolute',
-    bottom: 10,
+    bottom: 0,
     width: '100%',
+    backgroundColor: '#2f2f2f',
+    padding: 10,
+    alignItems: 'center',
+    height: '7%',
   },
 });
