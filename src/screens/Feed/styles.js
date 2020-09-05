@@ -72,7 +72,7 @@ export default StyleSheet.create({
     // right: 0,
     height: '100%',
 
-    backgroundColor: 'black',
+    backgroundColor: '#2f2f2f',
   },
   imageStyle: {
     height: 60,

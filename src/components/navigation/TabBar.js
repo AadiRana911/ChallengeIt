@@ -2,7 +2,6 @@ import React from 'react';
 import {View, TouchableOpacity} from 'react-native';
 import styles from './styles';
 
-import {primaryColor} from '../colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -34,32 +33,35 @@ const TabBar = ({navigation, params, animateReverse}) => {
         }>
         <MaterialCommunityIcons
           name={'fire'}
-          style={{fontSize: 34, color: primaryColor}}
+          style={{fontSize: 34, color: 'white'}}
         />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
         <FontAwesome
           name={'bell'}
-          style={{fontSize: 26, color: primaryColor}}
+          style={{
+            fontSize: 24,
+            color: 'white',
+          }}
         />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => _captureVideo()}>
         <MaterialCommunityIcons
           name={'plus-circle'}
-          style={{fontSize: 36, color: primaryColor}}
+          style={{fontSize: 33, color: 'white'}}
         />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-        <Entypo name={'message'} style={{fontSize: 28, color: primaryColor}} />
+        <Entypo name={'message'} style={{fontSize: 30, color: 'white'}} />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('User')}>
         <FontAwesome5
           name={'user-alt'}
-          style={{fontSize: 26, color: primaryColor}}
+          style={{fontSize: 24, color: 'white'}}
         />
       </TouchableOpacity>
     </View>
