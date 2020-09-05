@@ -9,7 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
-const TabBar = ({navigation, params, animateReverse}) => {
+const TabBar = ({navigation, params, animateReverse, pauser}) => {
   const _captureVideo = async () => {
     try {
       ImagePicker.openCamera({
@@ -38,7 +38,11 @@ const TabBar = ({navigation, params, animateReverse}) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
+      <TouchableOpacity onPress={
+        params === 'Home'
+        ? () => {pauser();navigation.navigate('Notifications')}
+        : () => {navigation.navigate('Notifications')}
+      }>
         <FontAwesome
           name={'bell'}
           style={{fontSize: 26, color: primaryColor}}
@@ -52,11 +56,19 @@ const TabBar = ({navigation, params, animateReverse}) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
+      <TouchableOpacity onPress={
+        params === 'Home'
+        ? () => {pauser();navigation.navigate('Chat')}
+        : () => {navigation.navigate('Chat')}
+      }>
         <Entypo name={'message'} style={{fontSize: 28, color: primaryColor}} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('User')}>
+      <TouchableOpacity onPress={
+        params === 'Home'
+          ? () => {pauser();navigation.navigate('User')}
+          : () => {navigation.navigate('User')}
+        }>
         <FontAwesome5
           name={'user-alt'}
           style={{fontSize: 26, color: primaryColor}}

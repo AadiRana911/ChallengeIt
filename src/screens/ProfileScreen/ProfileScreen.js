@@ -82,6 +82,43 @@ const ProfileScreen = ({
     <Animated.ScrollView
       style={[styles.container, {transform: [{translateX: translateScreen}]}]}
       contentContainerStyle={{flexGrow: 1}}>
+      <View style={styles.userNameContainer}>
+      <View style = {{flexDirection: 'row'}}>
+      <Text
+          style={{
+            color: '#F03C00',
+            fontSize: width / 30,
+            fontFamily: Fonts.CenturyRegular,
+          }}
+          >
+          Zaheer Hassan{' '}
+        </Text>
+        <Text
+          style={{
+            color: 'black',
+            fontSize: width / 30,
+            fontFamily: Fonts.CenturyRegular,
+          }}
+          >
+            challanged{' '}
+          </Text>
+          <Text
+          style={{
+            color: '#F03C00',
+            fontSize: width / 30,
+            fontFamily: Fonts.CenturyRegular,
+          }}
+          >Waqas</Text>
+      </View>
+        <View style={{alignItems: 'center'}}>
+          <Entypo name="eye" style={{fontSize: width / 25}} />
+          <Text
+            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
+            {views}
+          </Text>
+        </View>
+      </View>
+      
       <View style={styles.videoContainer}>
         <TouchableWithoutFeedback
           style={styles.videoTouchableContainer}
@@ -95,7 +132,6 @@ const ProfileScreen = ({
             // repeat = {true}
           />
         </TouchableWithoutFeedback>
-
         <Animated.Image
           onPress={() => {
             navigation.navigate('User');
@@ -112,7 +148,6 @@ const ProfileScreen = ({
           ]}
           resizeMode="cover"
         />
-
         {paused && (
           <TouchableWithoutFeedback onPress={() => setPaused(!paused)}>
             <Entypo
@@ -147,41 +182,12 @@ const ProfileScreen = ({
         </View>
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity>
-            <Entypo name="eye" style={{fontSize: width / 18.70129}} />
+            <Entypo name="camera" style={{fontSize: width / 18.70129}} />
           </TouchableOpacity>
-          <Text
-            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
-            {views}
-          </Text>
         </View>
       </View>
       {/* <Text style = {{top: height/25}}>Icons go here</Text> */}
-      <View style={styles.userNameContainer}>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: width / 20.57143,
-            fontFamily: Fonts.CenturyBold,
-          }}
-          onPress={() => {
-            navigation.navigate('User');
-          }}>
-          Zaheer01
-        </Text>
-        <TouchableOpacity
-          style={styles.followButtonStyle}
-          onPress={() => toggleFollowState()}>
-          <Text
-            style={{
-              fontSize: width / 26.57143,
-              color: 'white',
-              alignSelf: 'center',
-              fontFamily: Fonts.CenturyBold,
-            }}>
-            {followState}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      
       <View style={styles.userStatsContainer}>
         <View
           style={{
@@ -214,7 +220,7 @@ const ProfileScreen = ({
           </Text>
         </View>
       </View>
-      <View style={{top: height / 4.5, flex: 1}}>
+      <View style={{top: height / 10, flex: 1}}>
         <FlatList
           style={{width: width - 20, top: height / 11.67755}}
           showsVerticalScrollIndicator={false}
@@ -233,7 +239,7 @@ const ProfileScreen = ({
         />
       </View>
 
-      <View style={{height: height / 3.8}}></View>
+      <View style={{height: height / 10}}></View>
     </Animated.ScrollView>
   );
 };

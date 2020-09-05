@@ -49,7 +49,7 @@ const Feed = ({navigation}) => {
   );
   let player;
 
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
   const [nextPaused, setNextPaused] = useState(true);
   const [isCurrentScreenEnabled, setIsCurrentScreenEnabled] = useState(true);
   const [isText1Active, setIsText1Active] = useState(true);
@@ -111,6 +111,7 @@ const Feed = ({navigation}) => {
   const handleImageSlideX = () => {
     Animated.spring(translateXImg, {
       toValue: -width + width / 4.4,
+      // toValue: -wi,
       duration: 5000,
       useNativeDriver: true,
       tension: 10,
@@ -118,7 +119,7 @@ const Feed = ({navigation}) => {
   };
   const handleImageSlideY = () => {
     Animated.spring(translateYImg, {
-      toValue: height / 6.2,
+      toValue: -height /10,
       duration: 5000,
       useNativeDriver: true,
       tension: 10,
@@ -320,12 +321,12 @@ const Feed = ({navigation}) => {
     }
   };
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      animateReverse();
-      return true;
-    });
-  }, []);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', () => {
+  //     animateReverse();
+  //     return true;
+  //   });
+  // }, []);
 
   const handleShare = async () => {
     let options = {
@@ -345,22 +346,23 @@ const Feed = ({navigation}) => {
       <ViewPager
         onPageSelected={(e) => {
           setActive(e.nativeEvent.position);
-          setPaused(true);
+          // setPaused(true);
         }}
         orientation="vertical"
         style={{height: '100%'}}
         initialPage={0}>
         {vids.map((item) => {
           return (
+            <TouchableWithoutFeedback onPress = {() => setPaused(!paused)}>
             <Video
-              paused={true}
+              paused={paused}
               source={{uri: item.vid}}
               style={styles.mediaPlayer}
               volume={1}
               resizeMode="cover"
               repeat={true}
-              muted
-            />
+              // muted
+            /></TouchableWithoutFeedback>
           );
         })}
       </ViewPager>
@@ -433,7 +435,7 @@ const Feed = ({navigation}) => {
       <GestureRecognizer
         style={{
           position: 'absolute',
-          top: height / 3 + height / 27,
+          top: height / 6,
           left: width - width / 5.2,
         }}
         config={config}
@@ -444,7 +446,7 @@ const Feed = ({navigation}) => {
             left: width / 13.71428,
             position: 'absolute',
             width: width,
-            height: width / 7.09359,
+            height: width / 8.4,
             backgroundColor: primaryColor,
             transform: [{translateX: translateXStrip}],
           }}
@@ -455,8 +457,8 @@ const Feed = ({navigation}) => {
             style={{
               borderRadius: 30,
               borderWidth: width / 205.714,
-              height: width / 6.857,
-              width: width / 6.857,
+              height: width / 8,
+              width: width / 8,
               transform: [{translateX: translateXCurrentImg}],
               borderColor: 'white',
             }}
@@ -479,7 +481,7 @@ const Feed = ({navigation}) => {
           customButton={
             <Entypo
               name="dots-three-horizontal"
-              style={{fontSize: 30, color: 'white'}}
+              style={{fontSize: 27, color: 'white'}}
             />
           }
           options={['Add to playlist', 'Report Video']}
@@ -558,6 +560,7 @@ const Feed = ({navigation}) => {
         }}>
         <TouchableOpacity
           onPress={() => {
+            setPaused(true);
             navigation.navigate('User');
           }}>
           <Image
@@ -873,6 +876,7 @@ const Feed = ({navigation}) => {
         navigation={navigation}
         params={'Home'}
         animateReverse={animateReverse}
+        pauser = {() => setPaused(true)}
       />
     </View>
   );
