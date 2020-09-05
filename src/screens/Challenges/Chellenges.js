@@ -13,6 +13,8 @@ import {
   TouchableHighlight,
   BackHandler,
   TouchableWithoutFeedback,
+  Animated,
+  Easing,
 } from 'react-native';
 import Video from 'react-native-video';
 const {width, height} = Dimensions.get('window');
@@ -39,6 +41,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {ChallengePlaceholder} from '../../components/Placeholder';
 import DoubleTap from '../../components/DoubleTap';
 import {Fonts} from '../../utils/Fonts';
+import LottieView from 'lottie-react-native';
 
 const Challenges = ({navigation}) => {
   useEffect(() => {
@@ -85,6 +88,7 @@ const Challenges = ({navigation}) => {
   const [other, setOther] = useState(false);
   const [reportMsg, setReportMsg] = useState('');
   const [loading, setLoading] = useState(true);
+  const [clapProgress, setClapProgress] = useState(new Animated.Value(0));
 
   const [buttons, setButton] = useState([
     {id: 0, name: 'New', isActive: true},
@@ -426,28 +430,42 @@ const Challenges = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => toggleLike(item.id)}>
+          <TouchableWithoutFeedback onPress={() => toggleLike(item.id)}>
             <View
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginTop: 4,
               }}>
-              <Image
-                resizeMode={'contain'}
-                source={clap}
-                style={{
-                  height: 25,
-                  width: 25,
-                  tintColor: item.liked ? primaryColor : 'gray',
-                  marginRight: 4,
-                }}
-              />
-              <Text style={[styles.smallText, {marginTop: 2}]}>
+              {item.liked ? (
+                <LottieView
+                  source={require('../../utils/clap.json')}
+                  style={{
+                    height: 32,
+                    width: 32,
+                    backgroundColor: 'transparent',
+                  }}
+                  progress={clapProgress}
+                  autoPlay
+                  loop
+                />
+              ) : (
+                <Image
+                  resizeMode={'contain'}
+                  source={clap}
+                  style={{
+                    height: 24,
+                    width: 24,
+                    tintColor: item.liked ? primaryColor : 'gray',
+                    marginLeft: 4,
+                  }}
+                />
+              )}
+              <Text style={[styles.smallText, {marginTop: 0}]}>
                 {item.claps}
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
           <View
             style={[
               styles.bottomContainer,
