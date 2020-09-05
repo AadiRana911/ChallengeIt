@@ -1,12 +1,13 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+
 const styles = StyleSheet.create({
   playButton: {
     opacity: 0.7,
     fontSize: 70,
     color: 'white',
     position: 'absolute',
-    left: 150,
-    top: 60,
+    top: Dimensions.get('window').height / 4 - 35,
+    left: Dimensions.get('window').width / 2 - 35,
   },
   buttonStyle: {
     padding: 15,

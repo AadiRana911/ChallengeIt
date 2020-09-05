@@ -14,6 +14,7 @@ import {
   BackHandler,
   TouchableWithoutFeedback,
   Animated,
+  ScrollView,
   Easing,
 } from 'react-native';
 import Video from 'react-native-video';
@@ -133,7 +134,8 @@ const Challenges = ({navigation}) => {
     {
       id: 1,
       status: 'success',
-      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      uri:
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
       name: 'Zeeshan',
       to: 'Ali Khan',
       km: '2 km away',
@@ -149,7 +151,8 @@ const Challenges = ({navigation}) => {
     {
       id: 2,
       status: 'success',
-      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      uri:
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       name: 'Zeeshan',
       to: 'Ali Khan',
       km: '2 km away',
@@ -166,7 +169,8 @@ const Challenges = ({navigation}) => {
     {
       id: 3,
       status: 'error',
-      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      uri:
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       name: 'Zeeshan',
       to: 'Ali Khan',
       km: '2 km away',
@@ -182,7 +186,8 @@ const Challenges = ({navigation}) => {
     {
       id: 4,
       status: '',
-      uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      uri:
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
       name: 'Zeeshan',
       to: 'Ali Khan',
       km: '2 km away',
@@ -350,18 +355,26 @@ const Challenges = ({navigation}) => {
               toggleLike(item.id);
             }}
             delay={200}>
-            <Video
-              source={{uri: item.uri}}
-              paused={item.isPaused}
-              resizeMode="cover"
-              repeat
-              style={{
-                height: height / 2,
-                width: '100%',
-                backgroundColor: 'black',
-                borderRadius: 20,
-              }}
-            />
+            <ScrollView
+              style={{flex: 1}}
+              contentContainerStyle={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Video
+                source={{uri: item.uri}}
+                paused={item.isPaused}
+                resizeMode="cover"
+                repeat
+                style={{
+                  height: height / 2,
+                  width: '100%',
+                  backgroundColor: 'black',
+                  borderRadius: 20,
+                }}
+              />
+            </ScrollView>
           </DoubleTap>
           {item.isPaused && (
             <Entypo
@@ -561,7 +574,7 @@ const Challenges = ({navigation}) => {
 
   const viewConfigRef = useRef({
     itemVisiblePercentThreshold: 300,
-    minimumViewTime: 5,
+    minimumViewTime: 2,
   });
 
   return (
