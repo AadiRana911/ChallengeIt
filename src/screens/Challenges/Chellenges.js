@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {
   Text,
   View,
+  ScrollView,
   SafeAreaView,
   FlatList,
   TouchableOpacity,
@@ -145,14 +146,14 @@ const Challenges = ({navigation}) => {
       id: 1,
       status: 'success',
       uri:
-        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       name: 'Zeeshan',
       to: 'Ali Khan',
       km: '2 km away',
       time: '3 hours ago',
       claps: '3000',
       views: '300',
-      isPaused: false,
+      isPaused: true,
       isMuted: true,
       shares: '200',
       isVolumeVisible: false,
@@ -260,15 +261,13 @@ const Challenges = ({navigation}) => {
     );
   };
 
-  const handleVideoMute = (id) => {
+  const setAllVidsPause = () => {
     setVideos(
       videos.map((item) => {
-        if (item.id === id)
-          return {
-            ...item,
-            isMuted: !item.isMuted,
-          };
-        return item;
+        return {
+          ...item,
+          isPaused: true,
+        };
       }),
     );
   };
@@ -284,12 +283,7 @@ const Challenges = ({navigation}) => {
       }),
     );
   };
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      navigation.goBack();
-      return true;
-    });
-  }, []);
+
   const renderPosts = ({item, index}) => {
     return (
       <View key={index} activeOpacity={0.9} style={[styles.cardStyle]}>
@@ -299,23 +293,17 @@ const Challenges = ({navigation}) => {
             <Text
               numberOfLines={3}
               style={[
-                // styles.largeText,
                 {
                   alignSelf: 'center',
-                  // padding: 10,
-                  // textAlign: 'center',
+
                   marginTop: '-2%',
                   width: '75%',
-                  // backgroundColor: 'red'
                 },
               ]}>
               <Text
                 style={[
                   styles.mediumText,
                   {
-                    // color: theme.colors.primary,
-                    // alignSelf: 'center',
-                    // textAlign: 'center',
                     marginTop: 0,
                     color: primaryColor,
                     fontSize: 15,
@@ -331,15 +319,7 @@ const Challenges = ({navigation}) => {
                   styles.mediumText,
                   {color: primaryColor, fontSize: 15},
                 ]}>{`${item.to} \n`}</Text>
-              <Text
-                style={[
-                  styles.mediumText,
-                  {
-                    // alignSelf: 'flex-start',
-                    // marginLeft: '15.5%',
-                    // color: theme.colors.gray,
-                  },
-                ]}>
+              <Text style={[styles.mediumText]}>
                 {item.km}
                 {'    '} {item.time}
               </Text>
@@ -591,26 +571,23 @@ const Challenges = ({navigation}) => {
   });
 
   const viewConfigRef = useRef({
-    itemVisiblePercentThreshold: 400,
+    itemVisiblePercentThreshold: 200,
     minimumViewTime: 5,
-    waitForInteraction: true,
+    // waitForInteraction: true,
   });
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <View>
-        <Ionicons
-          name="chevron-back"
-          style={{fontSize: 30, margin: 10}}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-      </View>
+      <Ionicons
+        name="chevron-back"
+        style={{fontSize: 30, margin: 10}}
+        onPress={() => {
+          navigation.goBack();
+        }}
+      />
+
       <View
         style={{
-          // flex: 0.1,
-
           justifyContent: 'center',
           paddingLeft: 5,
         }}>
@@ -639,7 +616,6 @@ const Challenges = ({navigation}) => {
             />
           ) : (
             <FlatList
-              contentContainerStyle={{marginTop: 5}}
               horizontal
               keyExtractor={(item, index) => {
                 item + index.toString();
@@ -652,6 +628,7 @@ const Challenges = ({navigation}) => {
                     activeOpacity={1}
                     key={index}
                     onPress={() => {
+                      setAllVidsPause();
                       setShowAvatar(!showAvatar);
                     }}>
                     <Avatar
@@ -722,23 +699,22 @@ const Challenges = ({navigation}) => {
           }}
         />
       </View>
+
       {loading === false ? (
         <ChallengePlaceholder type={'question'} />
       ) : (
-        <View style={{flex: 0.9}}>
-          <FlatList
-            data={videos}
-            keyExtractor={(item, index) => item + index.toString()}
-            renderItem={renderPosts}
-            onViewableItemsChanged={onViewRef.current}
-            viewabilityConfig={viewConfigRef.current}
-          />
-        </View>
+        <FlatList
+          data={videos}
+          keyExtractor={(item, index) => item + index.toString()}
+          renderItem={renderPosts}
+          onViewableItemsChanged={onViewRef.current}
+          viewabilityConfig={viewConfigRef.current}
+        />
       )}
       {showAvatar && (
         <View
           style={{
-            height: 220,
+            height: 240,
             width: '100%',
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
@@ -768,7 +744,9 @@ const Challenges = ({navigation}) => {
           </Text>
           <View>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => {
+                setShowAvatar(false);
+              }}
               style={[
                 styles.horizontalContainer,
                 {marginLeft: 4, padding: 10},
@@ -780,9 +758,6 @@ const Challenges = ({navigation}) => {
                   size={20}
                   color={'white'}
                   style={{alignSelf: 'center', margin: 5}}
-                  onPress={() => {
-                    setShowAvatar(!showAvatar);
-                  }}
                 />
               </TouchableOpacity>
               <Text

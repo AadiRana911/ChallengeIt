@@ -7,7 +7,7 @@ const {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   questionImage: {
     width: '100%',

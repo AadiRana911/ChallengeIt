@@ -69,6 +69,7 @@ const Feed = ({navigation}) => {
   const [other, setOther] = useState(false);
   const [reportMsg, setReportMsg] = useState('');
   const [clapProgress, setClapProgress] = useState(new Animated.Value(0));
+  const [videoLoad, SetVideoLoad] = useState(true);
   const [vids, setVids] = useState([
     {
       id: 0,
@@ -379,6 +380,9 @@ const Feed = ({navigation}) => {
         err && console.log(err);
       });
   };
+  const handleVidMute = (id) => {
+    console.log(id);
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#2f2f2f'}}>
       <ViewPager
@@ -396,10 +400,11 @@ const Feed = ({navigation}) => {
                 paused={false}
                 source={{uri: item.vid}}
                 style={styles.mediaPlayer}
-                volume={1}
+                volume={0.5}
                 resizeMode="cover"
                 repeat={true}
                 muted
+                onReadyForDisplay={() => SetVideoLoad(false)}
               />
               <Animated.View
                 style={{
@@ -507,19 +512,21 @@ const Feed = ({navigation}) => {
           );
         })}
       </ViewPager>
-      <LottieView
-        source={require('../../utils/loading.json')}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          bottom: '7%',
-          padding: 0,
-          left: 0,
-          right: 0,
-        }}
-        autoPlay
-        loop
-      />
+      {videoLoad && (
+        <LottieView
+          source={require('../../utils/loading.json')}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            bottom: '7%',
+            padding: 0,
+            left: 0,
+            right: 0,
+          }}
+          autoPlay
+          loop
+        />
+      )}
       <LinearGradient
         colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
         style={[styles.switchTextView]}>
