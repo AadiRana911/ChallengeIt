@@ -324,12 +324,6 @@ const Challenges = ({navigation}) => {
                 {'    '} {item.time}
               </Text>
             </Text>
-            <View style={{justifyContent: 'flex-end', height: height / 18}}>
-              <Entypo name="eye" style={{fontSize: width / 18.70129}} />
-              <Text style={[styles.smallText, {marginTop: -3}]}>
-                {item.views}
-              </Text>
-            </View>
           </View>
 
           <TouchableOpacity
@@ -373,6 +367,41 @@ const Challenges = ({navigation}) => {
               }}
             />
           </DoubleTap>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 5,
+              right: 0,
+              height: height / 20,
+              backgroundColor: 'rgba(100,100,100,0.4)',
+              shadowColor: '#000',
+              shadowOffset: {width: 1, height: 0},
+              shadowOpacity: 0.3,
+              shadowRadius: 5,
+              elevation: 3,
+              borderRadius: 3,
+              // borderWidth: 0.5,
+              // borderColor: '#eee',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginRight: 10,
+              // width: 45,
+              justifyContent: 'space-between',
+            }}>
+            <Entypo
+              name="eye"
+              size={20}
+              style={{marginRight: 7, color: 'white'}}
+            />
+            <Text
+              style={[
+                styles.smallText,
+                {marginTop: -3, color: 'white', fontWeight: 'bold'},
+              ]}>
+              {item.views}
+              {item.views}
+            </Text>
+          </View>
           {item.isPaused && (
             <Entypo
               name="controller-play"

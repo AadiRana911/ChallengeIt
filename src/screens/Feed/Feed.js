@@ -75,7 +75,7 @@ const Feed = ({navigation}) => {
       id: 0,
       vid:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-      paused: false,
+      // [paused, setPaused]: useState(false),
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
       downloads: '2000',
@@ -88,7 +88,7 @@ const Feed = ({navigation}) => {
       id: 1,
       vid:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-      paused: false,
+      // [paused, setPaused]: useState(false),
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
       downloads: '2000',
@@ -100,7 +100,7 @@ const Feed = ({navigation}) => {
     {
       id: 2,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
-      paused: false,
+      // [paused, setPaused]: useState(false),
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
       downloads: '2000',
@@ -112,7 +112,7 @@ const Feed = ({navigation}) => {
     {
       id: 3,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
-      paused: false,
+      // [paused, setPaused]: useState(false),
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
       downloads: '2000',
@@ -400,6 +400,16 @@ const Feed = ({navigation}) => {
     );
   };
 
+  // const vidPause = (id) => {
+  //   setVids(
+  //     vids.map((item) => {
+  //       if (item.id === id)
+  //       return {
+
+  //       }
+  //     })
+  //   )
+  // }
   const handleVideoPause = (id) => {
     setVids(
       vids.map((item) => {
@@ -416,6 +426,221 @@ const Feed = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: '#2f2f2f'}}>
       <ViewPager
+        onPageSelected={(e) => {
+          setActive(e.nativeEvent.position);
+          setPaused(false);
+          console.log(active);
+        }}
+        orientation="vertical"
+        style={{flex: 1}}
+        initialPage={0}>
+        {vids.map((item) => (
+          <TouchableOpacity
+            key={item.id}
+            style={{flex: 1}}
+            activeOpacity={1}
+            onPress={() => {
+              setPaused(!paused);
+            }}>
+            <Video
+              paused={Number(item.id) !== active || paused}
+              source={{uri: item.vid}}
+              style={styles.mediaPlayer}
+              volume={0.4}
+              resizeMode="cover"
+              repeat={true}
+              onReadyForDisplay={() => {
+                handleVideoLoading(item.id);
+              }}
+            />
+            <Animated.View
+              style={{
+                position: 'absolute',
+                height: height / 4,
+                width: width / 8,
+                bottom: height / 10,
+                left: width - 60,
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                transform: [{translateX: translateBottomIconsX}],
+              }}>
+              <OptionsMenu
+                customButton={
+                  <Entypo
+                    name="dots-three-horizontal"
+                    style={{fontSize: 30, color: 'white'}}
+                  />
+                }
+                options={['Add to playlist', 'Report Video']}
+                actions={[addToPlayList, () => reportRef.current.open()]}
+              />
+
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  toggleLike(item.id);
+                }}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                  {item.liked ? (
+                    <LottieView
+                      source={require('../../utils/clap.json')}
+                      style={{
+                        height: 37,
+                        width: 37,
+
+                        marginRight: -22,
+                        overflow: 'hidden',
+                      }}
+                      autoPlay
+                      loop
+                    />
+                  ) : (
+                    <Image
+                      source={require('../../assets/images/clap.png')}
+                      style={{
+                        tintColor: item.liked ? primaryColor : 'white',
+                        height: 27,
+                        width: 27,
+                        marginLeft: 5,
+                      }}
+                    />
+                  )}
+
+                  <Text
+                    style={{
+                      fontSize: 9,
+                      marginRight: item.liked ? -25 : 0,
+                      marginLeft: item.liked ? 0 : 4,
+                      color: 'white',
+                      fontFamily: Fonts.CenturyBold,
+                      marginTop: !item.liked ? 4 : 0,
+                    }}>
+                    {item.claps}
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <TouchableOpacity onPress={() => download()}>
+                  <MaterialCommunityIcons
+                    name="download"
+                    style={{fontSize: 30, color: 'white'}}
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 9,
+                    marginLeft: 4,
+                    color: 'white',
+                    fontFamily: Fonts.CenturyBold,
+                  }}>
+                  {item.downloads}
+                </Text>
+              </View>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <Entypo
+                  name="forward"
+                  style={{fontSize: 30, color: 'white'}}
+                  onPress={() => {
+                    handleShare();
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 9,
+                    marginLeft: 4,
+                    color: 'white',
+                    fontFamily: Fonts.CenturyBold,
+                  }}>
+                  {item.shares}
+                </Text>
+              </View>
+            </Animated.View>
+
+            <Animated.View
+              style={{
+                position: 'absolute',
+                bottom: height / 10,
+                left: width / 20,
+                width: '80%',
+                alignItems: 'center',
+                flexDirection: 'row',
+                transform: [{translateX: translateBottomImageStripX}],
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setPaused(true);
+                  navigation.navigate('User');
+                }}>
+                <Image
+                  source={require('../../assets/images/samplechallenger.jpg')}
+                  style={{
+                    borderRadius: 30,
+                    borderWidth: width / 205.714,
+                    height: width / 6.857,
+                    width: width / 6.857,
+                    borderColor: 'white',
+                    marginRight: 10,
+                  }}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+              <View>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: width / 22,
+                    fontFamily: Fonts.CenturyBold,
+                  }}>
+                  Zaheer01
+                </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontFamily: Fonts.CenturyRegular,
+                    fontSize: width / 30,
+                  }}>
+                  This is my tribute to challenge
+                </Text>
+              </View>
+            </Animated.View>
+            {paused && (
+              <Entypo
+                onPress={() => {
+                  setPaused(!paused);
+                }}
+                style={{
+                  zIndex: 999,
+                  opacity: 0.8,
+                  position: 'absolute',
+                  alignSelf: 'center',
+                  top: '40%',
+                  bottom: '40%',
+                  left: '40%',
+                  right: '40%',
+                }}
+                name="controller-play"
+                size={100}
+                color="#E5E5E5"
+              />
+            )}
+            {item.loading && (
+              <LottieView
+                source={require('../../utils/loading.json')}
+                style={{
+                  position: 'absolute',
+                  width: '110%',
+                  bottom: '0%',
+                  padding: 0,
+                  left: -20,
+                  right: 0,
+                }}
+                autoPlay
+                loop
+              />
+            )}
+          </TouchableOpacity>
+        ))}
+      </ViewPager>
+      {/* <ViewPager
         onPageSelected={(e) => {
           setActive(e.nativeEvent.position);
           // setPaused(true);
@@ -441,195 +666,12 @@ const Feed = ({navigation}) => {
                   handleVideoLoading(item.id);
                 }}
               />
-              <Animated.View
-                style={{
-                  position: 'absolute',
-                  height: height / 4,
-                  width: width / 8,
-                  bottom: height / 10,
-                  left: width - 60,
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-end',
-                  transform: [{translateX: translateBottomIconsX}],
-                }}>
-                <OptionsMenu
-                  customButton={
-                    <Entypo
-                      name="dots-three-horizontal"
-                      style={{fontSize: 30, color: 'white'}}
-                    />
-                  }
-                  options={['Add to playlist', 'Report Video']}
-                  actions={[addToPlayList, () => reportRef.current.open()]}
-                />
-
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    toggleLike(item.id);
-                  }}>
-                  <View
-                    style={{alignItems: 'center', justifyContent: 'center'}}>
-                    {item.liked ? (
-                      <LottieView
-                        source={require('../../utils/clap.json')}
-                        style={{
-                          height: 37,
-                          width: 37,
-
-                          marginRight: -22,
-                          overflow: 'hidden',
-                        }}
-                        autoPlay
-                        loop
-                      />
-                    ) : (
-                      <Image
-                        source={require('../../assets/images/clap.png')}
-                        style={{
-                          tintColor: item.liked ? primaryColor : 'white',
-                          height: 27,
-                          width: 27,
-                          marginLeft: 5,
-                        }}
-                      />
-                    )}
-
-                    <Text
-                      style={{
-                        fontSize: 9,
-                        marginRight: item.liked ? -25 : 0,
-                        marginLeft: item.liked ? 0 : 4,
-                        color: 'white',
-                        fontFamily: Fonts.CenturyBold,
-                        marginTop: !item.liked ? 4 : 0,
-                      }}>
-                      {item.claps}
-                    </Text>
-                  </View>
-                </TouchableWithoutFeedback>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                  <TouchableOpacity onPress={() => download()}>
-                    <MaterialCommunityIcons
-                      name="download"
-                      style={{fontSize: 30, color: 'white'}}
-                    />
-                  </TouchableOpacity>
-                  <Text
-                    style={{
-                      fontSize: 9,
-                      marginLeft: 4,
-                      color: 'white',
-                      fontFamily: Fonts.CenturyBold,
-                    }}>
-                    {item.downloads}
-                  </Text>
-                </View>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                  <Entypo
-                    name="forward"
-                    style={{fontSize: 30, color: 'white'}}
-                    onPress={() => {
-                      handleShare();
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 9,
-                      marginLeft: 4,
-                      color: 'white',
-                      fontFamily: Fonts.CenturyBold,
-                    }}>
-                    {item.shares}
-                  </Text>
-                </View>
-              </Animated.View>
-
-              <Animated.View
-                style={{
-                  position: 'absolute',
-                  bottom: height / 15,
-                  left: width / 20,
-                  width: '80%',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  transform: [{translateX: translateBottomImageStripX}],
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setPaused(true);
-                    navigation.navigate('User');
-                  }}>
-                  <Image
-                    source={require('../../assets/images/samplechallenger.jpg')}
-                    style={{
-                      borderRadius: 30,
-                      borderWidth: width / 205.714,
-                      height: width / 6.857,
-                      width: width / 6.857,
-                      borderColor: 'white',
-                      marginRight: 10,
-                    }}
-                    resizeMode="cover"
-                  />
-                </TouchableOpacity>
-                <View>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: width / 22,
-                      fontFamily: Fonts.CenturyBold,
-                    }}>
-                    Zaheer01
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontFamily: Fonts.CenturyRegular,
-                      fontSize: width / 30,
-                    }}>
-                    This is my tribute to challenge
-                  </Text>
-                </View>
-              </Animated.View>
-              {paused && (
-                <Entypo
-                  onPress={() => {
-                    setPaused(!paused);
-                  }}
-                  style={{
-                    zIndex: 999,
-                    opacity: 0.8,
-                    position: 'absolute',
-                    alignSelf: 'center',
-                    top: '40%',
-                    bottom: '40%',
-                    left: '40%',
-                    right: '40%',
-                  }}
-                  name="controller-play"
-                  size={100}
-                  color="#E5E5E5"
-                />
-              )}
-              {item.loading && (
-                <LottieView
-                  source={require('../../utils/loading.json')}
-                  style={{
-                    position: 'absolute',
-                    width: '110%',
-                    bottom: '0%',
-                    padding: 0,
-                    left: -20,
-                    right: 0,
-                  }}
-                  autoPlay
-                  loop
-                />
+            
               )}
             </TouchableOpacity>
           );
         })}
-      </ViewPager>
+      </ViewPager> */}
 
       <LinearGradient
         colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
@@ -983,18 +1025,6 @@ const Feed = ({navigation}) => {
         </TouchableOpacity>
       </RBSheet>
 
-      {/* <MediaControls
-          duration={duration}
-          isLoading={isLoading}
-          mainColor="#333"
-          onPaused={onPaused}
-          onReplay={onReplay}
-          onSeek={onSeek}
-          onSeeking={onSeeking}
-          playerState={playerState}
-          progress={currentTime}
-          toolbar={renderToolbar()}
-      />  */}
       <TabBar
         navigation={navigation}
         params={'Home'}

@@ -4,7 +4,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Camera from './src/screens/Camera';
 
-import HomeScreen from './src/screens/HomeScreen';
 import {Challenge, Response} from './src/screens/Post';
 import AddScreen from './src/screens/AddScreen';
 import Chat from './src/screens/Chat';
