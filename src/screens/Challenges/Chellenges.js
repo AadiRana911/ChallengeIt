@@ -91,7 +91,7 @@ const Challenges = ({navigation}) => {
   const [clapProgress, setClapProgress] = useState(new Animated.Value(0));
   const [searching, setSearching] = useState(false);
   const [showAvatar, setShowAvatar] = useState(false);
-
+  const [scrolling, setScrolling] = useState(false);
   const [buttons, setButton] = useState([
     {id: 0, name: 'New', isActive: true},
     {id: 1, name: 'week before', isActive: false},
@@ -586,125 +586,131 @@ const Challenges = ({navigation}) => {
         }}
       />
 
-      <View
-        style={{
-          justifyContent: 'center',
-          paddingLeft: 5,
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <Feather
-            name="search"
-            style={{
-              alignSelf: 'center',
-              fontSize: 30,
-              marginHorizontal: width / 30,
-            }}
-            onPress={() => {
-              setSearching(!searching);
-            }}
-          />
-          {searching ? (
-            <TextInput
-              placeholder="Search..."
-              style={{
-                width: '80%',
-                borderRadius: 3,
-                borderWidth: 0.4,
-                borderColor: '#ddd',
-                paddingLeft: 10,
-              }}
-            />
-          ) : (
-            <FlatList
-              horizontal
-              keyExtractor={(item, index) => {
-                item + index.toString();
-              }}
-              data={avatars}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index}) => {
-                return (
-                  <TouchableOpacity
-                    activeOpacity={1}
-                    key={index}
-                    onPress={() => {
-                      setAllVidsPause();
-                      setShowAvatar(!showAvatar);
-                    }}>
-                    <Avatar
-                      source={{
-                        uri: item.uri,
-                      }}
-                      size="medium"
-                      rounded
-                      containerStyle={{margin: 4}}
-                    />
-
-                    <Badge
-                      status={item.status === '' ? 'primary' : item.status}
-                      value={item.status === 'error' && 'live'}
-                      containerStyle={{
-                        position: 'absolute',
-                        top: item.status === 'error' ? 2 : 8,
-                        right: item.status === 'error' ? 0 : 6,
-                      }}
-                    />
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          )}
-        </View>
-        <FlatList
-          contentContainerStyle={{marginVertical: 5}}
-          horizontal
-          keyExtractor={(item, index) => {
-            item + index.toString();
-          }}
-          data={buttons}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  handleItemPress(item);
-                }}
-                style={{
-                  margin: 5,
-                  paddingHorizontal: 20,
-                  backgroundColor: item.isActive ? primaryColor : '#fff',
-                  borderRadius: 100,
-                  paddingVertical: 7,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-
-                  shadowColor: '#000',
-                  shadowOffset: {width: 1, height: 0},
-                  shadowOpacity: 0.3,
-                  shadowRadius: 5,
-                  elevation: 3,
-                  borderWidth: 0.5,
-                  borderColor: '#eee',
-                }}>
-                <Text
-                  style={[
-                    styles.mediumText,
-                    {color: item.isActive ? 'white' : 'gray', fontSize: 14},
-                  ]}>
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
-
       {loading === false ? (
         <ChallengePlaceholder type={'question'} />
       ) : (
         <FlatList
           data={videos}
+          ListHeaderComponent={
+            <View
+              style={{
+                justifyContent: 'center',
+                paddingLeft: 5,
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <Feather
+                  name="search"
+                  style={{
+                    alignSelf: 'center',
+                    fontSize: 30,
+                    marginHorizontal: width / 30,
+                  }}
+                  onPress={() => {
+                    setSearching(!searching);
+                  }}
+                />
+                {searching ? (
+                  <TextInput
+                    placeholder="Search..."
+                    style={{
+                      width: '80%',
+                      borderRadius: 3,
+                      borderWidth: 0.4,
+                      borderColor: '#ddd',
+                      paddingLeft: 10,
+                    }}
+                  />
+                ) : (
+                  <FlatList
+                    horizontal
+                    keyExtractor={(item, index) => {
+                      item + index.toString();
+                    }}
+                    data={avatars}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({item, index}) => {
+                      return (
+                        <TouchableOpacity
+                          activeOpacity={1}
+                          key={index}
+                          onPress={() => {
+                            setAllVidsPause();
+                            setShowAvatar(!showAvatar);
+                          }}>
+                          <Avatar
+                            source={{
+                              uri: item.uri,
+                            }}
+                            size="medium"
+                            rounded
+                            containerStyle={{margin: 4}}
+                          />
+
+                          <Badge
+                            status={
+                              item.status === '' ? 'primary' : item.status
+                            }
+                            value={item.status === 'error' && 'live'}
+                            containerStyle={{
+                              position: 'absolute',
+                              top: item.status === 'error' ? 2 : 8,
+                              right: item.status === 'error' ? 0 : 6,
+                            }}
+                          />
+                        </TouchableOpacity>
+                      );
+                    }}
+                  />
+                )}
+              </View>
+              <FlatList
+                contentContainerStyle={{marginVertical: 5}}
+                horizontal
+                keyExtractor={(item, index) => {
+                  item + index.toString();
+                }}
+                data={buttons}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item, index}) => {
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        handleItemPress(item);
+                      }}
+                      style={{
+                        margin: 5,
+                        paddingHorizontal: 20,
+                        backgroundColor: item.isActive ? primaryColor : '#fff',
+                        borderRadius: 100,
+                        paddingVertical: 7,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+
+                        shadowColor: '#000',
+                        shadowOffset: {width: 1, height: 0},
+                        shadowOpacity: 0.3,
+                        shadowRadius: 5,
+                        elevation: 3,
+                        borderWidth: 0.5,
+                        borderColor: '#eee',
+                      }}>
+                      <Text
+                        style={[
+                          styles.mediumText,
+                          {
+                            color: item.isActive ? 'white' : 'gray',
+                            fontSize: 14,
+                          },
+                        ]}>
+                        {item.name}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </View>
+          }
           keyExtractor={(item, index) => item + index.toString()}
           renderItem={renderPosts}
           onViewableItemsChanged={onViewRef.current}
