@@ -1,41 +1,62 @@
-import React, {Component} from 'react';
-import {View, Text, Animated} from 'react-native';
-import styles from '../screens/Feed/styles';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Animated,
+} from 'react-native';
+import {Fonts} from '../utils/Fonts';
+
 import OptionsMenu from 'react-native-options-menu';
 
-const [translateBottomIconsX] = useState(new Animated.Value(0));
+import Video from 'react-native-video';
+// import styles from './styles';
+import {PLAYER_STATES} from 'react-native-media-controls';
+import ViewPager from '@react-native-community/viewpager';
+import Snackbar from 'react-native-snackbar';
+import RNFetchBlob from 'rn-fetch-blob';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {primaryColor} from './colors';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default class VideoPlayer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  addToPlayList = () => {
-    Snackbar.show({
-      text: ' Saved to playlist',
-      duration: Snackbar.LENGTH_LONG,
-      action: {
-        text: 'Change',
-        textColor: 'tomato',
-        onPress: () => {
-          setPaused(true);
-          playListRef.current.open();
-        },
-      },
-    });
-  };
-  render() {
-    return (
-      <View style={{flex: 1}}>
-        <Video
-          paused={false}
-          source={{uri: item.vid}}
-          style={styles.mediaPlayer}
-          volume={0.5}
-          resizeMode="cover"
-          repeat={true}
-        />
-        <Animated.View
+import LottieView from 'lottie-react-native';
+
+// export const Container = styled.View`
+//   background: #fff;
+//   position: absolute;
+//   width: 100%;
+//   height: 100%;
+//   z-index: -1;
+// `;
+const VideoPlayer = ({navigation, play, item}) => {
+  return (
+    // <TouchableOpacity activeOpacity={1}>
+    <View
+      style={{
+        background: '#fff',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: -1,
+      }}>
+      <Video
+        source={{uri: item.vid}}
+        // style={styles.mediaPlayer}
+        volume={0.5}
+        resizeMode="cover"
+        repeat={true}
+        paused={play}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+        // onReadyForDisplay={() => SetVideoLoad(false)}
+      />
+    </View>
+    /* <Animated.View
           style={{
             position: 'absolute',
             height: height / 4,
@@ -136,7 +157,9 @@ export default class VideoPlayer extends Component {
             </Text>
           </View>
         </Animated.View>
-      </View>
-    );
-  }
-}
+       */
+    // </TouchableOpacity>
+  );
+};
+
+export default VideoPlayer;

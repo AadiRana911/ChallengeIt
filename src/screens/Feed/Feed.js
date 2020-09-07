@@ -73,7 +73,8 @@ const Feed = ({navigation}) => {
   const [vids, setVids] = useState([
     {
       id: 0,
-      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      vid:
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
       paused: false,
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
@@ -84,7 +85,8 @@ const Feed = ({navigation}) => {
     },
     {
       id: 1,
-      vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      vid:
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       paused: true,
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
@@ -380,11 +382,40 @@ const Feed = ({navigation}) => {
         err && console.log(err);
       });
   };
-  const handleVidMute = (id) => {
-    console.log(id);
+  const handleVideoPause = (id) => {
+    setVids(
+      vids.map((item) => {
+        if (item.id === id)
+          return {
+            ...item,
+            paused: !item.paused,
+          };
+        return item;
+      }),
+    );
   };
   return (
     <View style={{flex: 1, backgroundColor: '#2f2f2f'}}>
+      {paused && (
+        <Entypo
+          onPress={() => {
+            setPaused(!paused);
+          }}
+          style={{
+            zIndex: 999,
+            opacity: 0.8,
+            position: 'absolute',
+            alignSelf: 'center',
+            top: '40%',
+            bottom: '40%',
+            left: '40%',
+            right: '40%',
+          }}
+          name="controller-play"
+          size={100}
+          color="#E5E5E5"
+        />
+      )}
       <ViewPager
         onPageSelected={(e) => {
           setActive(e.nativeEvent.position);
@@ -393,18 +424,23 @@ const Feed = ({navigation}) => {
         orientation="vertical"
         style={{height: '93%'}}
         initialPage={0}>
-        {vids.map((item) => {
+        {vids.map((item, index) => {
           return (
-            <View>
+            <TouchableOpacity key={index} activeOpacity={1}>
               <Video
-                paused={false}
+                paused={paused}
                 source={{uri: item.vid}}
                 style={styles.mediaPlayer}
-                volume={0.5}
+                volume={0.4}
+                onTouchStart={() => {
+                  setPaused(!paused);
+                }}
+                filterEnable
                 resizeMode="cover"
                 repeat={true}
-                muted
-                onReadyForDisplay={() => SetVideoLoad(false)}
+                onReadyForDisplay={() => {
+                  SetVideoLoad(false);
+                }}
               />
               <Animated.View
                 style={{
@@ -508,10 +544,11 @@ const Feed = ({navigation}) => {
                   </Text>
                 </View>
               </Animated.View>
-            </View>
+            </TouchableOpacity>
           );
         })}
       </ViewPager>
+
       {videoLoad && (
         <LottieView
           source={require('../../utils/loading.json')}
@@ -564,20 +601,7 @@ const Feed = ({navigation}) => {
           </Text>
         </TouchableWithoutFeedback>
       </LinearGradient>
-      {paused && (
-        <TouchableOpacity
-          activeOpacity={1}
-          style={[
-            {position: 'absolute', left: width / 2 - 35, top: height / 2 - 35},
-          ]}
-          onPress={() => setPaused(!paused)}>
-          <Entypo
-            name="controller-play"
-            color="white"
-            style={[styles.playButton]}
-          />
-        </TouchableOpacity>
-      )}
+
       <ProfileScreen
         translateScreen={translateXScreen}
         translateXImg={translateXImg}
