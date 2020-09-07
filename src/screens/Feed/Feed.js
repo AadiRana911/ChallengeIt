@@ -81,41 +81,45 @@ const Feed = ({navigation}) => {
       downloads: '2000',
       claps: '2000',
       shares: '2000',
+      loading: true,
       liked: false,
     },
     {
       id: 1,
       vid:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-      paused: true,
+      paused: false,
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
       downloads: '2000',
       claps: '2000',
       shares: '2000',
+      loading: true,
       liked: false,
     },
     {
       id: 2,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
-      paused: true,
+      paused: false,
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
       downloads: '2000',
       claps: '2000',
       shares: '2000',
+      loading: true,
       liked: false,
     },
     {
       id: 3,
       vid: 'https://www.w3schools.com/html/mov_bbb.mp4',
-      paused: true,
+      paused: false,
       name: 'Zaheer01',
       tagline: 'This is my tribute to challenge',
       downloads: '2000',
       claps: '2000',
       shares: '2000',
       liked: false,
+      loading: true,
     },
   ]);
 
@@ -382,9 +386,24 @@ const Feed = ({navigation}) => {
         err && console.log(err);
       });
   };
+  const handleVideoLoading = (id) => {
+    setVids(
+      vids.map((item) => {
+        item.loading = true;
+        if (item.id === id)
+          return {
+            ...item,
+            loading: !item.loading,
+          };
+        return item;
+      }),
+    );
+  };
+
   const handleVideoPause = (id) => {
     setVids(
       vids.map((item) => {
+        item.paused = true;
         if (item.id === id)
           return {
             ...item,
@@ -408,18 +427,18 @@ const Feed = ({navigation}) => {
           return (
             <TouchableOpacity key={index} activeOpacity={1}>
               <Video
-                paused={paused}
+                paused={item.paused}
                 source={{uri: item.vid}}
                 style={styles.mediaPlayer}
                 volume={0.4}
-                onTouchStart={() => {
-                  setPaused(!paused);
-                }}
+                // onTouchStart={() => {
+                //   setPaused(!paused);
+                // }}
                 filterEnable
                 resizeMode="cover"
                 repeat={true}
                 onReadyForDisplay={() => {
-                  SetVideoLoad(false);
+                  handleVideoLoading(item.id);
                 }}
               />
               <Animated.View
@@ -592,26 +611,26 @@ const Feed = ({navigation}) => {
                   color="#E5E5E5"
                 />
               )}
+              {item.loading && (
+                <LottieView
+                  source={require('../../utils/loading.json')}
+                  style={{
+                    position: 'absolute',
+                    width: '110%',
+                    bottom: '0%',
+                    padding: 0,
+                    left: -20,
+                    right: 0,
+                  }}
+                  autoPlay
+                  loop
+                />
+              )}
             </TouchableOpacity>
           );
         })}
       </ViewPager>
 
-      {videoLoad && (
-        <LottieView
-          source={require('../../utils/loading.json')}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            bottom: '7%',
-            padding: 0,
-            left: 0,
-            right: 0,
-          }}
-          autoPlay
-          loop
-        />
-      )}
       <LinearGradient
         colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
         style={[styles.switchTextView]}>
