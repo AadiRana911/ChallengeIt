@@ -91,7 +91,8 @@ const Challenges = ({navigation}) => {
   const [clapProgress, setClapProgress] = useState(new Animated.Value(0));
   const [searching, setSearching] = useState(false);
   const [showAvatar, setShowAvatar] = useState(false);
-
+  const [searchState, setSearchState] = useState(false);
+  const [searchWidth, setSearchWidth] = useState(new Animated.Value(0))
   const [buttons, setButton] = useState([
     {id: 0, name: 'New', isActive: true},
     {id: 1, name: 'week before', isActive: false},
@@ -283,6 +284,24 @@ const Challenges = ({navigation}) => {
       }),
     );
   };
+
+  const animationToggle = () => {
+    if (searchState === false){
+      Animated.timing(searchWidth, {
+        toValue: 400,
+        timing: 15000,
+      }).start(() => {
+        setSearchState(true)
+      });
+    }else{
+      Animated.timing(searchWidth, {
+        toValue: 0,
+        timing: 15000,
+      }).start(() => {
+        setSearchState(false)
+      });
+    }
+  }
 
   const renderPosts = ({item, index}) => {
     return (
@@ -591,7 +610,7 @@ const Challenges = ({navigation}) => {
           justifyContent: 'center',
           paddingLeft: 5,
         }}>
-        <View style={{flexDirection: 'row'}}>
+        <Animated.View style={{flexDirection: 'row'}}>
           <Feather
             name="search"
             style={{
@@ -600,21 +619,21 @@ const Challenges = ({navigation}) => {
               marginHorizontal: width / 30,
             }}
             onPress={() => {
-              setSearching(!searching);
+              animationToggle();
             }}
           />
-          {searching ? (
+          <Animated.View style = {{width: searchWidth}}>
             <TextInput
               placeholder="Search..."
               style={{
                 width: '80%',
                 borderRadius: 3,
-                borderWidth: 0.4,
-                borderColor: '#ddd',
+                borderWidth: searchState ? 0.4 : 0,
+                borderColor: searchState ? '#ddd' : '#fff',
                 paddingLeft: 10,
               }}
             />
-          ) : (
+            </Animated.View>
             <FlatList
               horizontal
               keyExtractor={(item, index) => {
@@ -653,8 +672,7 @@ const Challenges = ({navigation}) => {
                 );
               }}
             />
-          )}
-        </View>
+        </Animated.View>
         <FlatList
           contentContainerStyle={{marginVertical: 5}}
           horizontal
