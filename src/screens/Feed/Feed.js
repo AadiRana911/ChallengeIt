@@ -396,26 +396,6 @@ const Feed = ({navigation}) => {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#2f2f2f'}}>
-      {paused && (
-        <Entypo
-          onPress={() => {
-            setPaused(!paused);
-          }}
-          style={{
-            zIndex: 999,
-            opacity: 0.8,
-            position: 'absolute',
-            alignSelf: 'center',
-            top: '40%',
-            bottom: '40%',
-            left: '40%',
-            right: '40%',
-          }}
-          name="controller-play"
-          size={100}
-          color="#E5E5E5"
-        />
-      )}
       <ViewPager
         onPageSelected={(e) => {
           setActive(e.nativeEvent.position);
@@ -592,6 +572,26 @@ const Feed = ({navigation}) => {
                   </Text>
                 </View>
               </Animated.View>
+              {paused && (
+                <Entypo
+                  onPress={() => {
+                    setPaused(!paused);
+                  }}
+                  style={{
+                    zIndex: 999,
+                    opacity: 0.8,
+                    position: 'absolute',
+                    alignSelf: 'center',
+                    top: '40%',
+                    bottom: '40%',
+                    left: '40%',
+                    right: '40%',
+                  }}
+                  name="controller-play"
+                  size={100}
+                  color="#E5E5E5"
+                />
+              )}
             </TouchableOpacity>
           );
         })}
