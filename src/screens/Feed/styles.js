@@ -48,8 +48,7 @@ export default StyleSheet.create({
     opacity: 0.7,
     fontSize: 70,
     color: 'white',
-    top: 0,
-    left: 0,
+    position: 'absolute',
   },
   horizontalContainer: {
     flexDirection: 'row',
@@ -64,12 +63,6 @@ export default StyleSheet.create({
     borderColor: '#000',
   },
   mediaPlayer: {
-    // position: 'absolute',
-    width,
-    // top: 0,
-    // left: 0,
-    // bottom: 0,
-    // right: 0,
     height: '100%',
 
     backgroundColor: '#2f2f2f',
