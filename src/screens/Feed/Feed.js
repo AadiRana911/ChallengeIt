@@ -544,6 +544,54 @@ const Feed = ({navigation}) => {
                   </Text>
                 </View>
               </Animated.View>
+
+              <Animated.View
+                style={{
+                  position: 'absolute',
+                  bottom: height / 15,
+                  left: width / 20,
+                  width: '80%',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  transform: [{translateX: translateBottomImageStripX}],
+                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setPaused(true);
+                    navigation.navigate('User');
+                  }}>
+                  <Image
+                    source={require('../../assets/images/samplechallenger.jpg')}
+                    style={{
+                      borderRadius: 30,
+                      borderWidth: width / 205.714,
+                      height: width / 6.857,
+                      width: width / 6.857,
+                      borderColor: 'white',
+                      marginRight: 10,
+                    }}
+                    resizeMode="cover"
+                  />
+                </TouchableOpacity>
+                <View>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: width / 22,
+                      fontFamily: Fonts.CenturyBold,
+                    }}>
+                    Zaheer01
+                  </Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontFamily: Fonts.CenturyRegular,
+                      fontSize: width / 30,
+                    }}>
+                    This is my tribute to challenge
+                  </Text>
+                </View>
+              </Animated.View>
             </TouchableOpacity>
           );
         })}
@@ -650,54 +698,6 @@ const Feed = ({navigation}) => {
           />
         </TouchableOpacity>
       </GestureRecognizer>
-
-      <Animated.View
-        style={{
-          position: 'absolute',
-          bottom: height / 8,
-          left: width / 20,
-          width: '80%',
-          alignItems: 'center',
-          flexDirection: 'row',
-          transform: [{translateX: translateBottomImageStripX}],
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            setPaused(true);
-            navigation.navigate('User');
-          }}>
-          <Image
-            source={require('../../assets/images/samplechallenger.jpg')}
-            style={{
-              borderRadius: 30,
-              borderWidth: width / 205.714,
-              height: width / 6.857,
-              width: width / 6.857,
-              borderColor: 'white',
-              marginRight: 10,
-            }}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
-        <View>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: width / 22,
-              fontFamily: Fonts.CenturyBold,
-            }}>
-            Zaheer01
-          </Text>
-          <Text
-            style={{
-              color: 'white',
-              fontFamily: Fonts.CenturyRegular,
-              fontSize: width / 30,
-            }}>
-            This is my tribute to challenge
-          </Text>
-        </View>
-      </Animated.View>
 
       <RBSheet
         ref={playListRef}
