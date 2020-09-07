@@ -426,12 +426,7 @@ const Feed = ({navigation}) => {
         initialPage={0}>
         {vids.map((item, index) => {
           return (
-            <TouchableOpacity
-              key={index}
-              activeOpacity={1}
-              onPress={() => {
-                handleVideoPause(item.id);
-              }}>
+            <TouchableOpacity key={index} activeOpacity={1}>
               <Video
                 paused={paused}
                 source={{uri: item.vid}}
