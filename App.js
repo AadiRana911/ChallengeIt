@@ -14,6 +14,7 @@ import Challenges from './src/screens/Challenges';
 import Feed from './src/screens/Feed';
 import User from './src/screens/User';
 import SignupScreen from './src/screens/SignupScreen';
+import ViewResponses from './src/screens/ViewResponses';
 import {
   Component1,
   Component2,
@@ -100,6 +101,11 @@ function App() {
         <Stack.Screen
           name="Response"
           component={Response}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewRes"
+          component={ViewResponses}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
