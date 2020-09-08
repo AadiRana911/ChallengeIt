@@ -92,6 +92,8 @@ const Challenges = ({navigation}) => {
   const [searching, setSearching] = useState(false);
   const [showAvatar, setShowAvatar] = useState(false);
   const [scrolling, setScrolling] = useState(false);
+  const [searchState, setSearchState] = useState(false);
+  const [searchWidth, setSearchWidth] = useState(new Animated.Value(0));
   const [buttons, setButton] = useState([
     {id: 0, name: 'New', isActive: true},
     {id: 1, name: 'week before', isActive: false},
@@ -284,12 +286,29 @@ const Challenges = ({navigation}) => {
     );
   };
 
+  const animationToggle = () => {
+    if (searchState === false) {
+      Animated.timing(searchWidth, {
+        toValue: 400,
+        timing: 15000,
+      }).start(() => {
+        setSearchState(true);
+      });
+    } else {
+      Animated.timing(searchWidth, {
+        toValue: 0,
+        timing: 15000,
+      }).start(() => {
+        setSearchState(false);
+      });
+    }
+  };
   const renderPosts = ({item, index}) => {
     return (
       <View key={index} activeOpacity={0.9} style={[styles.cardStyle]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <Image source={dummy} style={styles.userImgStyle} />
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text
               numberOfLines={3}
               style={[
@@ -297,6 +316,7 @@ const Challenges = ({navigation}) => {
                   alignSelf: 'center',
 
                   marginTop: '-2%',
+                  marginLeft: 10,
                   width: '75%',
                 },
               ]}>
@@ -311,7 +331,7 @@ const Challenges = ({navigation}) => {
                 ]}>
                 {item.name}
               </Text>{' '}
-              <Text style={[styles.mediumText, {fontSize: 15}]}>
+              <Text style={[styles.mediumText, {fontSize: 15, color: 'black'}]}>
                 Challenged{' '}
               </Text>
               <Text
@@ -325,7 +345,19 @@ const Challenges = ({navigation}) => {
               </Text>
             </Text>
           </View>
+          <TouchableOpacity
+            style={{
+              height: 27,
+              width: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
 
+              marginRight: 9,
+              marginTop: 5,
+            }}
+            onPress={() => navigation.navigate('ViewRes')}>
+            <AntDesign name="retweet" size={20} />
+          </TouchableOpacity>
           <TouchableOpacity
             style={{
               height: 27,
@@ -635,63 +667,60 @@ const Challenges = ({navigation}) => {
                     marginHorizontal: width / 30,
                   }}
                   onPress={() => {
-                    setSearching(!searching);
+                    animationToggle();
                   }}
                 />
-                {searching ? (
+                <Animated.View style={{width: searchWidth}}>
                   <TextInput
                     placeholder="Search..."
                     style={{
                       width: '80%',
                       borderRadius: 3,
-                      borderWidth: 0.4,
-                      borderColor: '#ddd',
+                      borderWidth: searchState ? 0.4 : 0,
+                      borderColor: searchState ? '#ddd' : '#fff',
                       paddingLeft: 10,
                     }}
                   />
-                ) : (
-                  <FlatList
-                    horizontal
-                    keyExtractor={(item, index) => {
-                      item + index.toString();
-                    }}
-                    data={avatars}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={({item, index}) => {
-                      return (
-                        <TouchableOpacity
-                          activeOpacity={1}
-                          key={index}
-                          onPress={() => {
-                            setAllVidsPause();
-                            setShowAvatar(!showAvatar);
-                          }}>
-                          <Avatar
-                            source={{
-                              uri: item.uri,
-                            }}
-                            size="medium"
-                            rounded
-                            containerStyle={{margin: 4}}
-                          />
+                </Animated.View>
+                <FlatList
+                  horizontal
+                  keyExtractor={(item, index) => {
+                    item + index.toString();
+                  }}
+                  data={avatars}
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    return (
+                      <TouchableOpacity
+                        activeOpacity={1}
+                        key={index}
+                        onPress={() => {
+                          setAllVidsPause();
+                          setShowAvatar(!showAvatar);
+                        }}>
+                        <Avatar
+                          source={{
+                            uri: item.uri,
+                          }}
+                          size="medium"
+                          rounded
+                          containerStyle={{margin: 4}}
+                        />
 
-                          <Badge
-                            status={
-                              item.status === '' ? 'primary' : item.status
-                            }
-                            value={item.status === 'error' && 'live'}
-                            containerStyle={{
-                              position: 'absolute',
-                              top: item.status === 'error' ? 2 : 8,
-                              right: item.status === 'error' ? 0 : 6,
-                            }}
-                          />
-                        </TouchableOpacity>
-                      );
-                    }}
-                  />
-                )}
+                        <Badge
+                          status={item.status === '' ? 'primary' : item.status}
+                          containerStyle={{
+                            position: 'absolute',
+                            top: 8,
+                            right: 6,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
               </View>
+
               <FlatList
                 contentContainerStyle={{marginVertical: 5}}
                 horizontal
