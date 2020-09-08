@@ -4,8 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Camera from './src/screens/Camera';
 
-import HomeScreen from './src/screens/HomeScreen';
-import {Challenge, Response} from './src/screens/Post'
+import {Challenge, Response} from './src/screens/Post';
 import AddScreen from './src/screens/AddScreen';
 import Chat from './src/screens/Chat';
 import NotificationScreen from './src/screens/NotificationScreen';
@@ -27,9 +26,7 @@ console.disableYellowBox = true;
 function App() {
   return (
     <NavigationContainer>
-
       <Stack.Navigator initialRouteName="Home">
-
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
