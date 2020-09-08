@@ -610,7 +610,7 @@ const Challenges = ({navigation}) => {
           justifyContent: 'center',
           paddingLeft: 5,
         }}>
-        <Animated.View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row'}}>
           <Feather
             name="search"
             style={{
@@ -672,7 +672,7 @@ const Challenges = ({navigation}) => {
                 );
               }}
             />
-        </Animated.View>
+        </View>
         <FlatList
           contentContainerStyle={{marginVertical: 5}}
           horizontal
