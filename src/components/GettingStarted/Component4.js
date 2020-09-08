@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import {Fonts} from '../../utils/Fonts'
 import ImagePicker from 'react-native-image-crop-picker';
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -36,10 +37,10 @@ const Component4 = ({navigation}) => {
           }}>
           <View style={{marginBottom: 20}}>
             <Text
-              style={{fontSize: 25, color: primaryColor, fontWeight: 'bold'}}>
+              style={{fontSize: 25, color: primaryColor, fontFamily: Fonts.CenturyBold}}>
               Sign up
             </Text>
-            <Text style={{fontSize: 15}}>
+            <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>
               tap to upload your profile picture
             </Text>
           </View>
@@ -81,7 +82,7 @@ const Component4 = ({navigation}) => {
         <TouchableOpacity
           style={styles.nextButtonStyle}
           onPress={() => navigation.navigate('Home')}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
+          <Text style={{fontSize: 20, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
             Register
           </Text>
         </TouchableOpacity>

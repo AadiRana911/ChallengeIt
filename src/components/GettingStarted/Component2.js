@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
+import {Fonts} from '../../utils/Fonts'
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -38,10 +39,10 @@ const Component2 = ({navigation}) => {
           />
         </View>
         <View style={{margin: 15}}>
-          <Text style={{fontSize: 25, color: primaryColor, fontWeight: 'bold'}}>
+          <Text style={{fontSize: 25, color: primaryColor, fontFamily: Fonts.CenturyBold}}>
             Sign up
           </Text>
-          <Text style={{fontSize: 15}}>Please choose your gender</Text>
+          <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>Please choose your gender</Text>
         </View>
         <View style={style.genderContainer}>
           <TouchableOpacity
@@ -114,7 +115,7 @@ const Component2 = ({navigation}) => {
         <TouchableOpacity
           style={style.nextButtonStyle}
           onPress={() => navigation.navigate('C3')}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
+          <Text style={{fontSize: 20, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
             Next
           </Text>
         </TouchableOpacity>
