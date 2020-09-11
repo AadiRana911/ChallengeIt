@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {primaryColor} from '../colors';
+import {Fonts} from '../../utils/Fonts';
 const {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +30,11 @@ const styles = StyleSheet.create({
   },
   textInputStyle: {
     marginBottom: 15,
+
+    fontFamily: Fonts.CenturyRegular,
+
     padding: 15,
+
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {width: 1, height: 0},
@@ -82,6 +87,7 @@ const styles = StyleSheet.create({
   suggestions: {
     marginRight: 7,
     color: primaryColor,
+    fontFamily: Fonts.CenturyRegular,
   },
   paginationView: {
     height: 15,

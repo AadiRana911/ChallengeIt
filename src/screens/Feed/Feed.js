@@ -198,7 +198,6 @@ const Feed = ({navigation}) => {
       toValue: 60,
       duration: 5,
       useNativeDriver: true,
-      tension: 1,
     }).start();
   };
   const handleScreenSlide = () => {
@@ -602,26 +601,6 @@ const Feed = ({navigation}) => {
                 </Text>
               </View>
             </Animated.View>
-            {paused && (
-              <Entypo
-                onPress={() => {
-                  setPaused(!paused);
-                }}
-                style={{
-                  zIndex: 999,
-                  opacity: 0.8,
-                  position: 'absolute',
-                  alignSelf: 'center',
-                  top: '40%',
-                  bottom: '40%',
-                  left: '40%',
-                  right: '40%',
-                }}
-                name="controller-play"
-                size={100}
-                color="#E5E5E5"
-              />
-            )}
             {item.loading && (
               <LottieView
                 source={require('../../utils/loading.json')}

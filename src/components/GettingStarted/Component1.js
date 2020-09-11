@@ -8,6 +8,7 @@ import {
   Image,
 } from 'react-native';
 import {primaryColor} from '../colors';
+import {Fonts} from '../../utils/Fonts';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import styles from './styles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -103,10 +104,10 @@ const Component1 = ({navigation}) => {
           }}>
           <View style={{marginBottom: 20}}>
             <Text
-              style={{fontSize: 25, color: primaryColor, fontWeight: 'bold'}}>
+              style={{fontSize: 25, color: primaryColor, fontFamily: Fonts.CenturyBold}}>
               Sign up
             </Text>
-            <Text style={{fontSize: 15}}>
+            <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>
               Enter your email address to create account
             </Text>
           </View>
@@ -138,16 +139,16 @@ const Component1 = ({navigation}) => {
         <TouchableOpacity
           style={styles.nextButtonStyle}
           onPress={() => navigation.navigate('C2')}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
+          <Text style={{fontSize: 20, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
             Next
           </Text>
         </TouchableOpacity>
         <View style={{flex: 0.25, marginTop: height / 15}}>
           <View style={{flex: 1}}>
-            <Text>Already have an account?</Text>
+            <Text style = {{fontFamily: Fonts.CenturyRegular}}>Already have an account?</Text>
             <TouchableOpacity>
               <Text
-                style={{fontSize: 16, fontWeight: 'bold', color: primaryColor}}>
+                style={{fontSize: 16, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
                 Sign in
               </Text>
             </TouchableOpacity>

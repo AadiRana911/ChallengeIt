@@ -178,18 +178,19 @@ const ViewResponses = ({navigation}) => {
   //     }),
   //   );
   // };
-  // const handleVideoPause = (id) => {
-  //   setVideos(
-  //     videos.map((item) => {
-  //       if (item.id === id)
-  //         return {
-  //           ...item,
-  //           isPaused: !item.isPaused,
-  //         };
-  //       return item;
-  //     }),
-  //   );
-  // };
+  const handleVideoPause = (id) => {
+    setVideos(
+      videos.map((item) => {
+        if (item.id === id)
+          return {
+            ...item,
+            isPaused: !item.isPaused,
+          };
+          item.isPaused = true;
+        return item;
+      }),
+    );
+  };
 
   const renderPosts = ({item, index}) => {
     return (
@@ -233,6 +234,7 @@ const ViewResponses = ({navigation}) => {
         {/* <View style={[styles.horizontalContainer, {margin: 10}]}></View> */}
         <View>
           {/* <DoubleTap singleTap={() => {}} doubleTap={() => {}} delay={200}> */}
+          <TouchableWithoutFeedback onPress = {() => handleVideoPause(item.id)}>
           <Video
             source={{uri: item.uri}}
             paused={item.isPaused}
@@ -246,6 +248,7 @@ const ViewResponses = ({navigation}) => {
               alignSelf: 'center',
             }}
           />
+          </TouchableWithoutFeedback>
           {/* </DoubleTap> */}
 
           {item.isPaused && (
@@ -258,6 +261,7 @@ const ViewResponses = ({navigation}) => {
                 fontSize: 70,
                 left: width / 2 - 35,
               }}
+              onPress = {() => handleVideoPause(item.id)}
             />
           )}
         </View>

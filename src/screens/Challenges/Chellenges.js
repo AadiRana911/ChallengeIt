@@ -355,7 +355,7 @@ const Challenges = ({navigation}) => {
               marginRight: 9,
               marginTop: 5,
             }}
-            onPress={() => navigation.navigate('ViewRes')}>
+            onPress={() => {navigation.navigate('ViewRes');handleVideoPause(item.id)}}>
             <AntDesign name="retweet" size={20} />
           </TouchableOpacity>
           <TouchableOpacity

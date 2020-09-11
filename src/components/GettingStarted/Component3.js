@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import {Fonts} from '../../utils/Fonts'
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import styles from './styles';
@@ -27,10 +28,10 @@ const Component3 = ({navigation}) => {
           }}>
           <View style={{marginBottom: 20}}>
             <Text
-              style={{fontSize: 25, color: primaryColor, fontWeight: 'bold'}}>
+              style={{fontSize: 25, color: primaryColor, fontFamily: Fonts.CenturyBold}}>
               Sign up
             </Text>
-            <Text style={{fontSize: 15}}>
+            <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>
               Enter your email address to create account
             </Text>
           </View>
@@ -42,7 +43,7 @@ const Component3 = ({navigation}) => {
                 style={[styles.textInputStyle, {marginBottom: 5}]}
                 placeholder="User Name"
               />
-              <Text style={{color: primaryColor}}>
+              <Text style={{color: primaryColor, fontFamily: Fonts.CenturyRegular}}>
                 This username is taken try another
               </Text>
               <View
@@ -52,7 +53,7 @@ const Component3 = ({navigation}) => {
                   justifyContent: 'space-between',
                   marginTop: 10,
                 }}>
-                <Text>try</Text>
+                <Text style = {{fontFamily: Fonts.CenturyRegular}}>try</Text>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={styles.suggestions}>ali031</Text>
                   <Text style={styles.suggestions}>ali169</Text>
@@ -83,7 +84,7 @@ const Component3 = ({navigation}) => {
         <TouchableOpacity
           style={styles.nextButtonStyle}
           onPress={() => navigation.navigate('C4')}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', color: primaryColor}}>
+          <Text style={{fontSize: 20, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
             Next
           </Text>
         </TouchableOpacity>
