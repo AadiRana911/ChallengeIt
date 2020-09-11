@@ -13,6 +13,7 @@ target 'ChallengeIt' do
   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'GoogleSignIn', '~> 5.0.2'
   pod 'RNShare', :path => '../node_modules/react-native-share'
 
   pod 'RNSnackbar', :path => '../node_modules/react-native-snackbar'
