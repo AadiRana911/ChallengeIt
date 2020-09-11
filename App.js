@@ -9,7 +9,6 @@ import AddScreen from './src/screens/AddScreen';
 import Chat from './src/screens/Chat';
 import NotificationScreen from './src/screens/NotificationScreen';
 import UserScreen from './src/screens/UserScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
 import Challenges from './src/screens/Challenges';
 import Feed from './src/screens/Feed';
 import User from './src/screens/User';
@@ -21,13 +20,20 @@ import {
   Component3,
   Component4,
 } from './src/components/GettingStarted';
-
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {persister, store} from './src/redux/store';
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
-function App() {
+
+function AppNav() {
   return (
     <NavigationContainer>
+
       <Stack.Navigator initialRouteName="Signup">
+
+      <Stack.Navigator>
+
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
@@ -113,4 +119,14 @@ function App() {
   );
 }
 
-export default App;
+const ReduxApp = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persister}>
+        <AppNav />
+      </PersistGate>
+    </Provider>
+  );
+};
+
+export default ReduxApp;

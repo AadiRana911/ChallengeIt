@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ChallengeIt</string>
+<string name="facebook_app_id">2729226490682705</string>
+    <string name="fb_login_protocol_scheme">fb2729226490682705</string>
 </resources>
