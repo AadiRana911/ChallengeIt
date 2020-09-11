@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {primaryColor} from '../colors';
 const {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   },
   textInputStyle: {
     marginBottom: 15,
+    padding: 15,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {width: 1, height: 0},
