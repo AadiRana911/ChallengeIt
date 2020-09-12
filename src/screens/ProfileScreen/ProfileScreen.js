@@ -240,7 +240,7 @@ const ProfileScreen = ({
         />
       </View>
 
-      <View style={{height: height / 10}}></View>
+      <View style={{height: height / 5}}></View>
     </Animated.ScrollView>
   );
 };
