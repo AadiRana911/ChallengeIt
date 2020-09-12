@@ -62,7 +62,7 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     left: width / 14,
     marginTop: height / 75,
-    top: height/50,
+    top: height/100,
     justifyContent: 'space-evenly',
   },
   followButtonStyle: {

@@ -289,7 +289,7 @@ const Challenges = ({navigation}) => {
   const animationToggle = () => {
     if (searchState === false) {
       Animated.timing(searchWidth, {
-        toValue: 400,
+        toValue: width/1.1,
         timing: 15000,
       }).start(() => {
         setSearchState(true);
@@ -639,14 +639,40 @@ const Challenges = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
+    <View style = {{margin: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
       <Ionicons
         name="chevron-back"
-        style={{fontSize: 30, margin: 10}}
+        style={{fontSize: 30, marginTop: height/100}}
         onPress={() => {
           navigation.goBack();
         }}
       />
-
+      <View style = {{flexDirection: 'row'}}>
+      <Feather
+        name="search"
+        style={{
+          alignSelf: 'center',
+          fontSize: 26,
+          marginHorizontal: width / 30,
+        }}
+        onPress={() => {
+          animationToggle();
+        }}
+      />
+      <Animated.View style={{width: searchWidth}}>
+        <TextInput
+          placeholder="Search..."
+          style={{
+            width: '80%',
+            borderRadius: 3,
+            borderBottomWidth: searchState ? 0.8 : 0,
+            borderColor: searchState ? '#ddd' : '#fff',
+            paddingLeft: 10,
+          }}
+        />
+      </Animated.View>
+      </View>
+      </View>
       {loading === false ? (
         <ChallengePlaceholder type={'question'} />
       ) : (
@@ -659,7 +685,7 @@ const Challenges = ({navigation}) => {
                 paddingLeft: 5,
               }}>
               <View style={{flexDirection: 'row'}}>
-                <Feather
+                {/* <Feather
                   name="search"
                   style={{
                     alignSelf: 'center',
@@ -669,8 +695,8 @@ const Challenges = ({navigation}) => {
                   onPress={() => {
                     animationToggle();
                   }}
-                />
-                <Animated.View style={{width: searchWidth}}>
+                /> */}
+                {/* <Animated.View style={{width: searchWidth}}>
                   <TextInput
                     placeholder="Search..."
                     style={{
@@ -681,7 +707,7 @@ const Challenges = ({navigation}) => {
                       paddingLeft: 10,
                     }}
                   />
-                </Animated.View>
+                </Animated.View> */}
                 <FlatList
                   horizontal
                   keyExtractor={(item, index) => {
@@ -689,6 +715,7 @@ const Challenges = ({navigation}) => {
                   }}
                   data={avatars}
                   showsHorizontalScrollIndicator={false}
+                  style = {{marginTop: 5}}
                   renderItem={({item, index}) => {
                     return (
                       <TouchableOpacity

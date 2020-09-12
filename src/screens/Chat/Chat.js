@@ -26,7 +26,7 @@ const Chat = ({navigation}) => {
 
                 <Text style={styles.mediumText}>Hi this is new message</Text>
               </View>
-              <AntDesign name="close" size={13} color="red" />
+              <AntDesign name="close" size={13} color="red" style = {{alignSelf: 'center'}} />
             </View>
           );
         }}
