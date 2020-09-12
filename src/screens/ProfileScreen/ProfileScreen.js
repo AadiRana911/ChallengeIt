@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useRef} from 'react';
 import {
   ScrollView,
   View,
@@ -17,6 +17,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import OptionsMenu from 'react-native-options-menu';
+import Snackbar from 'react-native-snackbar';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
 import TabBar from '../../components/navigation';
 import styles from './styles';
@@ -30,6 +33,7 @@ const ProfileScreen = ({
   navigation,
   animateReverse
 }) => {
+  const playListRef = useRef(null);
   const [followState, setFollowState] = useState('follow');
   const [responses, setResponses] = useState(0);
   const [applauses, setApplauses] = useState(0);
@@ -65,6 +69,20 @@ const ProfileScreen = ({
         'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRFU7U2h0umyF0P6E_yhTX45sGgPEQAbGaJ4g&usqp=CAU',
     },
   ];
+  const addToPlayList = () => {
+    Snackbar.show({
+      text: ' Saved to playlist',
+      duration: Snackbar.LENGTH_LONG,
+      action: {
+        text: 'Change',
+        textColor: 'tomato',
+        onPress: () => {
+          setPaused(true);
+          playListRef.current.open();
+        },
+      },
+    });
+  };
   useEffect(() => {
     console.log(width, ' ', height);
   }, []);
@@ -111,11 +129,16 @@ const ProfileScreen = ({
           >Waqas</Text>
       </View>
         <View style={{alignItems: 'center'}}>
-          <Entypo name="eye" style={{fontSize: width / 25}} />
-          <Text
-            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
-            {views}
-          </Text>
+          <OptionsMenu
+            customButton={
+              <Entypo
+                name="dots-three-vertical"
+                style={{fontSize: width/20, color: 'black'}}
+              />
+            }
+            options={['Add to playlist', 'Report Video']}
+            // actions={[addToPlayList, () => reportRef.current.open()]}
+          />
         </View>
       </View>
       
@@ -185,6 +208,13 @@ const ProfileScreen = ({
           <TouchableOpacity>
             <Entypo name="camera" style={{fontSize: width / 18.70129}} />
           </TouchableOpacity>
+        </View>
+        <View style={{alignItems: 'center'}}>
+          <Entypo name="eye" style={{fontSize: width / 20}} />
+          <Text
+            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
+            {views}
+          </Text>
         </View>
       </View>
       {/* <Text style = {{top: height/25}}>Icons go here</Text> */}
