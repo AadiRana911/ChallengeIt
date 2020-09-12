@@ -7,12 +7,16 @@ import {
   View,
   Dimensions,
   Platform,
+  Alert,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {primaryColor} from '../../components/colors';
-const Height = Dimensions.get('window').height;
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
+import Entypo from 'react-native-vector-icons/Entypo';
+import DocumentPicker from 'react-native-document-picker';
+
+const Height = Dimensions.get('window').height;
 
 class Camera extends Component {
   constructor() {
@@ -25,6 +29,28 @@ class Camera extends Component {
       cameraType: 'back',
     };
   }
+
+  _captureVideo = async () => {
+    try {
+      const results = await DocumentPicker.pickMultiple({
+        type: [DocumentPicker.types.audio],
+      });
+      for (const res of results) {
+        console.log(
+          res.uri,
+          res.type, // mime type
+          res.name,
+          res.size,
+        );
+      }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  };
 
   render() {
     console.log(Height);
@@ -81,17 +107,17 @@ class Camera extends Component {
             this.camera = ref;
           }}
           style={styles.preview}
-          cameraProps={{captureAudio: false}}
           type={
             this.state.cameraType === 'back'
               ? RNCamera.Constants.Type.back
               : RNCamera.Constants.Type.front
           }
-          flashMode={RNCamera.Constants.FlashMode.on}
-          permissionDialogTitle={'Permission to use camera'}
-          permissionDialogMessage={
-            'We need your permission to use your camera phone'
-          }
+          androidCameraPermissionOptions={{
+            title: 'Permission to use camera',
+            message: 'We need your permission to use your camera',
+            buttonPositive: 'Ok',
+            buttonNegative: 'Cancel',
+          }}
         />
 
         <View
@@ -103,7 +129,25 @@ class Camera extends Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <View style={{width: '35%'}}></View>
+          <View
+            style={{
+              width: '35%',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => {
+                this._captureVideo();
+              }}>
+              <Entypo
+                name="folder-music"
+                size={27}
+                color="white"
+                style={{marginRight: '7%'}}
+              />
+            </TouchableOpacity>
+          </View>
 
           <View style={{width: '30%'}}>{button}</View>
 

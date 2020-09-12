@@ -43,6 +43,7 @@ import {ChallengePlaceholder} from '../../components/Placeholder';
 import DoubleTap from '../../components/DoubleTap';
 import {Fonts} from '../../utils/Fonts';
 import LottieView from 'lottie-react-native';
+import TabBar from '../../components/navigation';
 
 const Challenges = ({navigation}) => {
   useEffect(() => {
@@ -355,7 +356,10 @@ const Challenges = ({navigation}) => {
               marginRight: 9,
               marginTop: 5,
             }}
-            onPress={() => {navigation.navigate('ViewRes');handleVideoPause(item.id)}}>
+            onPress={() => {
+              navigation.navigate('ViewRes');
+              handleVideoPause(item.id);
+            }}>
             <AntDesign name="retweet" size={20} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -575,7 +579,7 @@ const Challenges = ({navigation}) => {
 
   const _captureVideo = async () => {
     try {
-      ImagePicker.openCamera({
+      ImagePicker.openPicker({
         mediaType: 'video',
       }).then((result) => {
         navigation.navigate('Response', {video: result.path});
