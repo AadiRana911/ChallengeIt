@@ -10,7 +10,7 @@ export default styles = StyleSheet.create({
     backgroundColor: 'white',
     left: width,
     paddingTop: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 3,
     flex: 1,
   },
   videoContainer: {
@@ -21,7 +21,7 @@ export default styles = StyleSheet.create({
   },
   videoTouchableContainer: {
     backgroundColor: 'red',
-    width: width - 20,
+    width: width,
     height: height / 3,
   },
   mediaPlayer: {
@@ -94,9 +94,9 @@ export default styles = StyleSheet.create({
   //   paddingVertical: 10,
   // },
   thumbnailStyle: {
-    height: height / 6.8,
-    width: width / 3.475,
-    marginRight: 20,
-    marginBottom: 20,
+    height: width / 3,
+    width: width / 3,
+    marginRight: 2,
+    marginBottom: 2,
   },
 });

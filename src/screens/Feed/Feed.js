@@ -564,7 +564,7 @@ const Feed = ({navigation}) => {
                 flexDirection: 'row',
                 transform: [{translateX: translateBottomImageStripX}],
               }}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setPaused(true);
                   navigation.navigate('User');
@@ -581,7 +581,7 @@ const Feed = ({navigation}) => {
                   }}
                   resizeMode="cover"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <View>
                 <Text
                   style={{
@@ -589,7 +589,7 @@ const Feed = ({navigation}) => {
                     fontSize: width / 22,
                     fontFamily: Fonts.CenturyBold,
                   }}>
-                  Zaheer01
+                  @Zaheer01
                 </Text>
                 <Text
                   style={{

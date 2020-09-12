@@ -32,8 +32,6 @@ function AppNav() {
 
       <Stack.Navigator initialRouteName="Signup">
 
-      <Stack.Navigator>
-
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
