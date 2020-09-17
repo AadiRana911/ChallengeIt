@@ -5,12 +5,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
-import primaryColor from '../../components/colors'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import primaryColor from '../../components/colors';
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
-
-
 
 const TabBar = ({navigation, params, animateReverse, pauser}) => {
   return (
@@ -26,7 +24,63 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
           style={{fontSize: 34, color: 'white'}}
         />
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={
+          params === 'Home'
+            ? () => {
+                pauser();
+                navigation.navigate('Challenges');
+              }
+            : () => {
+                navigation.navigate('Challenges');
+              }
+        }>
+        <MaterialIcons
+          name={'slideshow'}
+          style={{
+            fontSize: 34,
+            color: 'white',
+          }}
+        />
+      </TouchableOpacity>
 
+      <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
+        <MaterialCommunityIcons
+          name={'plus-circle'}
+          style={{fontSize: 33, color: 'white'}}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={
+          params === 'Home'
+            ? () => {
+                pauser();
+                navigation.navigate('Chat');
+              }
+            : () => {
+                navigation.navigate('Chat');
+              }
+        }>
+        <Entypo name={'message'} style={{fontSize: 28, color: 'white'}} />
+      </TouchableOpacity>
+
+      {/* <TouchableOpacity
+        onPress={
+          params === 'Home'
+            ? () => {
+                pauser();
+                navigation.navigate('User');
+              }
+            : () => {
+                navigation.navigate('User');
+              }
+        }>
+        <FontAwesome5
+          name={'user-alt'}
+          style={{fontSize: 24, color: 'white'}}
+        />
+      </TouchableOpacity> */}
       <TouchableOpacity
         onPress={
           params === 'Home'
@@ -44,48 +98,6 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
             fontSize: 24,
             color: 'white',
           }}
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
-        <MaterialCommunityIcons
-          name={'plus-circle'}
-          style={{fontSize: 33, color: 'white'}}
-        />
-      </TouchableOpacity>
-
-
-
- 
-      <TouchableOpacity
-        onPress={
-          params === 'Home'
-            ? () => {
-                pauser();
-                navigation.navigate('Chat');
-              }
-            : () => {
-                navigation.navigate('Chat');
-              }
-        }>
-        <Entypo name={'message'} style={{fontSize: 28, color: 'white'}} />
-
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={
-          params === 'Home'
-            ? () => {
-                pauser();
-                navigation.navigate('User');
-              }
-            : () => {
-                navigation.navigate('User');
-              }
-        }>
-        <FontAwesome5
-          name={'user-alt'}
-          style={{fontSize: 24, color: 'white'}}
         />
       </TouchableOpacity>
     </View>

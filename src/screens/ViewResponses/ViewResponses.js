@@ -186,7 +186,7 @@ const ViewResponses = ({navigation}) => {
             ...item,
             isPaused: !item.isPaused,
           };
-          item.isPaused = true;
+        item.isPaused = true;
         return item;
       }),
     );
@@ -203,7 +203,7 @@ const ViewResponses = ({navigation}) => {
                 {
                   alignSelf: 'center',
 
-                  marginTop: '-2%',
+                  // marginTop: '-2%',
                   marginLeft: 16,
                   width: '95%',
                 },
@@ -234,20 +234,20 @@ const ViewResponses = ({navigation}) => {
         {/* <View style={[styles.horizontalContainer, {margin: 10}]}></View> */}
         <View>
           {/* <DoubleTap singleTap={() => {}} doubleTap={() => {}} delay={200}> */}
-          <TouchableWithoutFeedback onPress = {() => handleVideoPause(item.id)}>
-          <Video
-            source={{uri: item.uri}}
-            paused={item.isPaused}
-            resizeMode="cover"
-            repeat
-            style={{
-              height: height / 3,
-              width: '93%',
-              backgroundColor: 'black',
-              borderRadius: 20,
-              alignSelf: 'center',
-            }}
-          />
+          <TouchableWithoutFeedback onPress={() => handleVideoPause(item.id)}>
+            <Video
+              source={{uri: item.uri}}
+              paused={item.isPaused}
+              resizeMode="cover"
+              repeat
+              style={{
+                height: height / 3,
+                width: '100%',
+                backgroundColor: 'black',
+                // borderRadius: 20,
+                alignSelf: 'center',
+              }}
+            />
           </TouchableWithoutFeedback>
           {/* </DoubleTap> */}
 
@@ -261,7 +261,7 @@ const ViewResponses = ({navigation}) => {
                 fontSize: 70,
                 left: width / 2 - 35,
               }}
-              onPress = {() => handleVideoPause(item.id)}
+              onPress={() => handleVideoPause(item.id)}
             />
           )}
         </View>
@@ -300,13 +300,15 @@ const ViewResponses = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <Ionicons
-        name="chevron-back"
-        style={{fontSize: 30, margin: 10}}
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
+      <View style={{width: '100%', backgroundColor: primaryColor}}>
+        <Ionicons
+          name="chevron-back"
+          style={{fontSize: 30, margin: 10, color: 'white'}}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+      </View>
 
       <FlatList
         data={videos}

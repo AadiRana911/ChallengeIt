@@ -1,6 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import { primaryColor } from '../../components/colors';
-
+import {primaryColor} from '../../components/colors';
+import {Fonts} from '../../utils/Fonts';
 const {width, height} = Dimensions.get('window');
 export default styles = StyleSheet.create({
   container: {
@@ -13,11 +13,17 @@ export default styles = StyleSheet.create({
     paddingHorizontal: 3,
     flex: 1,
   },
+  smallText: {
+    fontFamily: Fonts.CenturyRegular,
+    fontSize: 10,
+    alignSelf: 'center',
+  },
   videoContainer: {
-    marginTop: height/18,
+    marginTop: height / 18,
     backgroundColor: 'red',
     width: width - 20,
     height: height / 2.5,
+    alignSelf: 'center',
   },
   videoTouchableContainer: {
     backgroundColor: 'red',
@@ -55,14 +61,14 @@ export default styles = StyleSheet.create({
   screenIconContainer: {
     top: 25,
     flexDirection: 'row',
-    marginHorizontal: width/20,
+    marginHorizontal: width / 20,
     justifyContent: 'space-between',
   },
   userNameContainer: {
     flexDirection: 'row',
     left: width / 14,
     marginTop: height / 75,
-    top: height/100,
+    top: height / 100,
     justifyContent: 'space-evenly',
   },
   followButtonStyle: {

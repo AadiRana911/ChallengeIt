@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   userImgStyle: {
-    height: 50,
-    width: 50,
-    borderRadius: 70,
+    height: 40,
+    width: 40,
+    borderRadius: 20,
     alignSelf: 'center',
     margin: 5,
   },
@@ -67,10 +67,11 @@ const styles = StyleSheet.create({
   },
   cardStyle: {
     flex: 1,
-    margin: 10,
-    // padding: 10,
+    marginVertical: 1,
+    marginHorizontal: 3,
+    padding: 3,
     backgroundColor: 'white',
-    // elevation: 10,
+    elevation: 10,
     // shadowColor: '#BDBDBD',
     // shadowOffset: {
     //   width: 0,
@@ -79,8 +80,8 @@ const styles = StyleSheet.create({
     // shadowRadius: 5,
     // shadowOpacity: 1.0,
     // borderWidth: 1,
-    // borderColor: theme.colors.lightGray,
-    borderRadius: 10,
+    borderColor: '#fff',
+    borderRadius: 3,
   },
   iconStyle: {
     height: 35,

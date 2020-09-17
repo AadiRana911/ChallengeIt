@@ -6,7 +6,8 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Dimensions
+  Dimensions,
+  ScrollView,
 } from 'react-native';
 import styles from './styles';
 import {Divider} from 'react-native-elements';
@@ -17,6 +18,7 @@ const User = ({params, navigation}) => {
   const {height, width} = Dimensions.get('window');
   const [challenges, setChallenges] = useState(true);
   const [accepted, setAccepted] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
   const [areChallengesSelected, setAreChallengesSelected] = useState(true);
   const results = [
     {
@@ -70,39 +72,58 @@ const User = ({params, navigation}) => {
   ];
   // return <ProfilePlaceholder />;
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <ScrollView
+      // style={styles.mainContainer}
+
+      contentContainerStyle={{flexGrow: 1}}>
       <View style={styles.head}>
-      <View style = {{
-        shadowColor: '#000',
-        shadowOffset: {width: 10, height: 10},
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
-        elevation: 10,
-        borderRadius: 70,
-        borderWidth: 3,
-        borderColor: '#fff',
-      }}>
-        <Image
-          source={{uri: 'https://randomuser.me/api/portraits/men/41.jpg'}}
-          style={styles.imageStyle}
-        /></View>
+        <View
+          style={{
+            shadowColor: '#000',
+            shadowOffset: {width: 10, height: 10},
+            shadowOpacity: 0.3,
+            shadowRadius: 5,
+            elevation: 10,
+            borderRadius: 70,
+            borderWidth: 3,
+            borderColor: '#fff',
+          }}>
+          <Image
+            source={{uri: 'https://randomuser.me/api/portraits/men/41.jpg'}}
+            style={styles.imageStyle}
+          />
+        </View>
         <Text style={[styles.largeText, {marginVertical: 5, color: 'black'}]}>
           Zaheer Hassan
         </Text>
         <TouchableOpacity style={styles.buttonStyle}>
-          <Text style={[styles.mediumText, {color: 'white', fontSize: 15}]}>follow</Text>
+          <Text style={[styles.mediumText, {color: 'white', fontSize: 15}]}>
+            follow
+          </Text>
         </TouchableOpacity>
         <View style={styles.statsContainer}>
-          <Text style={[styles.mediumText, {textAlign: 'center', color: 'red', fontSize: 15}]}>
+          <Text
+            style={[
+              styles.mediumText,
+              {textAlign: 'center', color: 'red', fontSize: 15},
+            ]}>
             3000{`\n`}Followers
           </Text>
           <Divider style={{height: 50, width: 2, color: 'black'}} />
-          <Text style={[styles.mediumText, {textAlign: 'center', color: 'red', fontSize: 15}]}>
+          <Text
+            style={[
+              styles.mediumText,
+              {textAlign: 'center', color: 'red', fontSize: 15},
+            ]}>
             3000{`\n`}Appllauses
           </Text>
           <Divider style={{height: 50, width: 2, color: 'black'}} />
 
-          <Text style={[styles.mediumText, {textAlign: 'center', color: 'red', fontSize: 15}]}>
+          <Text
+            style={[
+              styles.mediumText,
+              {textAlign: 'center', color: 'red', fontSize: 15},
+            ]}>
             3000{`\n`}Followers
           </Text>
         </View>
@@ -148,27 +169,28 @@ const User = ({params, navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{flex: 0.6, justifyContent: 'center', alignItems: 'center'}}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={results}
-          keyExtractor={(item) => item}
-          numColumns={3}
-          contentContainerStyle={{margin: 10}}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Home');
-                }}>
-                <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
-      <TabBar navigation={navigation} />
-    </SafeAreaView>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={results}
+        keyExtractor={(item) => item}
+        numColumns={3}
+        onEndReached={() => {
+          setIsEnd(true);
+        }}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Home');
+              }}>
+              <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
+            </TouchableOpacity>
+          );
+        }}
+      />
+
+      {!isEnd && <TabBar navigation={navigation} />}
+    </ScrollView>
   );
 };
 

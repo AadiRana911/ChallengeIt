@@ -95,11 +95,13 @@ const Challenges = ({navigation}) => {
   const [scrolling, setScrolling] = useState(false);
   const [searchState, setSearchState] = useState(false);
   const [searchWidth, setSearchWidth] = useState(new Animated.Value(0));
+  const [isEnd, setIsEnd] = useState(true);
+  const [share, setShare] = useState(false);
+
   const [buttons, setButton] = useState([
-    {id: 0, name: 'New', isActive: true},
-    {id: 1, name: 'week before', isActive: false},
-    {id: 2, name: '2 days before', isActive: false},
-    {id: 3, name: 'Recent', isActive: false},
+    {id: 0, name: 'Recent', isActive: true},
+    {id: 1, name: 'Challengers of the week', isActive: false},
+    {id: 2, name: 'Challenges of the week', isActive: false},
   ]);
   const [avatars] = useState([
     {id: 0, status: '', uri: 'https://randomuser.me/api/portraits/men/20.jpg'},
@@ -151,7 +153,7 @@ const Challenges = ({navigation}) => {
       uri:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       name: 'Zeeshan',
-      to: 'Ali Khan',
+      to: '',
       km: '2 km away',
       time: '3 hours ago',
       claps: '3000',
@@ -161,6 +163,7 @@ const Challenges = ({navigation}) => {
       shares: '200',
       isVolumeVisible: false,
       liked: false,
+      isShared: false,
     },
     {
       id: 2,
@@ -179,6 +182,7 @@ const Challenges = ({navigation}) => {
       liked: false,
 
       shares: '200',
+      isShared: false,
     },
     {
       id: 3,
@@ -186,7 +190,7 @@ const Challenges = ({navigation}) => {
       uri:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       name: 'Zeeshan',
-      to: 'Ali Khan',
+      to: '',
       km: '2 km away',
       time: '3 hours ago',
       claps: '3000',
@@ -196,6 +200,7 @@ const Challenges = ({navigation}) => {
       isMuted: true,
       liked: false,
       shares: '200',
+      isShared: false,
     },
     {
       id: 4,
@@ -213,6 +218,7 @@ const Challenges = ({navigation}) => {
       isVolumeVisible: false,
       liked: false,
       shares: '200',
+      isShared: false,
     },
     {
       id: 5,
@@ -229,6 +235,7 @@ const Challenges = ({navigation}) => {
       isVolumeVisible: false,
       liked: false,
       shares: '200',
+      isShared: false,
     },
     {
       id: 6,
@@ -245,6 +252,7 @@ const Challenges = ({navigation}) => {
       isPaused: true,
       isMuted: true,
       liked: false,
+      isShared: false,
     },
   ]);
   const toggleLike = (id) => {
@@ -290,7 +298,7 @@ const Challenges = ({navigation}) => {
   const animationToggle = () => {
     if (searchState === false) {
       Animated.timing(searchWidth, {
-        toValue: width/1.1,
+        toValue: width / 1.1,
         timing: 15000,
       }).start(() => {
         setSearchState(true);
@@ -307,7 +315,12 @@ const Challenges = ({navigation}) => {
   const renderPosts = ({item, index}) => {
     return (
       <View key={index} activeOpacity={0.9} style={[styles.cardStyle]}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginHorizontal: 5,
+          }}>
           <Image source={dummy} style={styles.userImgStyle} />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text
@@ -317,8 +330,9 @@ const Challenges = ({navigation}) => {
                   alignSelf: 'center',
 
                   marginTop: '-2%',
-                  marginLeft: 10,
-                  width: '75%',
+                  marginLeft: 15,
+                  width: '88%',
+                  // backgroundColor: 'tomato',
                 },
               ]}>
               <Text
@@ -327,26 +341,52 @@ const Challenges = ({navigation}) => {
                   {
                     marginTop: 0,
                     color: primaryColor,
-                    fontSize: 15,
+                    fontSize: 12,
+                    fontFamily: Fonts.CenturyBold,
                   },
                 ]}>
                 {item.name}
               </Text>{' '}
-              <Text style={[styles.mediumText, {fontSize: 15, color: 'black'}]}>
-                Challenged{' '}
-              </Text>
               <Text
                 style={[
                   styles.mediumText,
-                  {color: primaryColor, fontSize: 15},
-                ]}>{`${item.to} \n`}</Text>
-              <Text style={[styles.mediumText]}>
+                  {
+                    fontSize: 12,
+                    color: 'black',
+                    fontFamily: Fonts.CenturyRegular,
+                  },
+                ]}>
+                {item.to === '' ? 'posted a Challenge' : 'Challenged'}{' '}
+              </Text>
+              {
+                <Text
+                  style={[
+                    styles.mediumText,
+                    {
+                      color: primaryColor,
+                      fontSize: 12,
+                      fontFamily: Fonts.CenturyBold,
+                    },
+                  ]}>
+                  {item.to === '' ? `\n` : `${item.to} \n`}
+                </Text>
+              }
+              <Text style={[styles.mediumText, {fontSize: 10}]}>
                 {item.km}
-                {'    '} {item.time}
+                {'   '} {item.time}
+                {'    '}
+              </Text>
+              <Text
+                style={[styles.mediumText, {fontSize: 10}]}
+                onPress={() => {
+                  navigation.navigate('ViewRes');
+                  handleVideoPause(item.id);
+                }}>
+                See Full Thread
               </Text>
             </Text>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               height: 27,
               width: 20,
@@ -361,7 +401,7 @@ const Challenges = ({navigation}) => {
               handleVideoPause(item.id);
             }}>
             <AntDesign name="retweet" size={20} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={{
               height: 27,
@@ -380,7 +420,7 @@ const Challenges = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <View style={[styles.horizontalContainer, {margin: 10}]}></View>
+        <View style={[styles.horizontalContainer]}></View>
         <View>
           <DoubleTap
             singleTap={() => {
@@ -399,7 +439,7 @@ const Challenges = ({navigation}) => {
                 height: height / 2,
                 width: '100%',
                 backgroundColor: 'black',
-                borderRadius: 20,
+                // borderRadius: 20,
               }}
             />
           </DoubleTap>
@@ -409,15 +449,15 @@ const Challenges = ({navigation}) => {
               bottom: 5,
               right: 0,
               height: height / 20,
-              backgroundColor: 'rgba(100,100,100,0.4)',
-              shadowColor: '#000',
-              shadowOffset: {width: 1, height: 0},
-              shadowOpacity: 0.3,
-              shadowRadius: 5,
-              elevation: 3,
-              borderRadius: 3,
-              // borderWidth: 0.5,
-              // borderColor: '#eee',
+              // backgroundColor: 'rgba(100,100,100,0.4)',
+              // shadowColor: '#000',
+              // shadowOffset: {width: 1, height: 0},
+              // shadowOpacity: 0.3,
+              // shadowRadius: 5,
+              // elevation: 3,
+              // borderRadius: 3,
+              // // borderWidth: 0.5,
+              // // borderColor: '#eee',
               flexDirection: 'row',
               alignItems: 'center',
               marginRight: 10,
@@ -434,7 +474,6 @@ const Challenges = ({navigation}) => {
                 styles.smallText,
                 {marginTop: -3, color: 'white', fontWeight: 'bold'},
               ]}>
-              {item.views}
               {item.views}
             </Text>
           </View>
@@ -484,12 +523,81 @@ const Challenges = ({navigation}) => {
             styles.horizontalContainer,
             {justifyContent: 'space-between'},
           ]}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableWithoutFeedback onPress={() => toggleLike(item.id)}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: 4,
+                  // alignSelf: 'center',
+                  // backgroundColor: 'tomato',
+                }}>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {
+                      alignSelf: 'center',
+                      marginLeft: item.liked ? 0 : 15,
+                      marginBottom: item.liked ? -5 : 0,
+                    },
+                  ]}>
+                  {item.claps}
+                </Text>
+                {item.liked ? (
+                  <LottieView
+                    source={require('../../utils/clap.json')}
+                    style={{
+                      height: 32,
+                      width: 32,
+                      backgroundColor: 'transparent',
+                    }}
+                    progress={clapProgress}
+                    autoPlay
+                    loop
+                  />
+                ) : (
+                  <Image
+                    resizeMode={'contain'}
+                    source={clap}
+                    style={{
+                      height: 22,
+                      width: 22,
+                      tintColor: item.liked ? primaryColor : 'black',
+                      marginLeft: item.liked ? 0 : 20,
+                    }}
+                  />
+                )}
+                <Text
+                  style={[
+                    styles.smallText,
+                    {
+                      marginTop: item.liked ? -5 : 0,
+                      marginLeft: item.liked ? 0 : 15,
+                    },
+                  ]}>
+                  claps
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
           <View style={[styles.bottomContainer]}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-              <MaterialIcons
-                name="videocam"
-                style={{fontSize: width / 16.45714, color: 'black'}}
-              />
+            <TouchableOpacity>
+              <Text style={[styles.smallText, {alignSelf: 'center'}]}>
+                {item.claps}
+              </Text>
+              <TouchableOpacity
+                // onPress={() => navigation.navigate('Home')}
+                activeOpacity={0.5}>
+                <MaterialIcons
+                  name="videocam"
+                  style={{
+                    fontSize: width / 16.45714,
+                    color: 'black',
+                    alignSelf: 'center',
+                  }}
+                />
+              </TouchableOpacity>
               {/* <MaterialIcons
                 name="reply"
                 color="orange"
@@ -500,60 +608,35 @@ const Challenges = ({navigation}) => {
                   // left: '50%',
                 }}
               /> */}
-              <Text style={[styles.smallText, {marginTop: -3}]}>
-                {item.views}
-              </Text>
+              <Text style={[styles.smallText]}>views</Text>
             </TouchableOpacity>
           </View>
-          <TouchableWithoutFeedback onPress={() => toggleLike(item.id)}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 4,
-              }}>
-              {item.liked ? (
-                <LottieView
-                  source={require('../../utils/clap.json')}
-                  style={{
-                    height: 32,
-                    width: 32,
-                    backgroundColor: 'transparent',
-                  }}
-                  progress={clapProgress}
-                  autoPlay
-                  loop
-                />
-              ) : (
-                <Image
-                  resizeMode={'contain'}
-                  source={clap}
-                  style={{
-                    height: 24,
-                    width: 24,
-                    tintColor: item.liked ? primaryColor : 'black',
-                    marginLeft: 4,
-                  }}
-                />
-              )}
-              <Text style={[styles.smallText, {marginTop: 0}]}>
-                {item.claps}
-              </Text>
-            </View>
-          </TouchableWithoutFeedback>
+
           <View
             style={[
               styles.bottomContainer,
-              {flexDirection: 'row', paddingHorizontal: 10},
+              {
+                flexDirection: 'row',
+                alignSelf: 'center',
+              },
             ]}>
             <TouchableOpacity onPress={handleShare}>
-              <FontAwesome
-                name="share"
-                style={{fontSize: width / 18.70129, color: 'black'}}
-              />
-              <Text style={[styles.smallText, {marginTop: -3}]}>
-                {item.views}
+              <Text style={[styles.smallText, {alignSelf: 'center'}]}>
+                {item.claps}
               </Text>
+              <TouchableOpacity
+                onPress={() => handleShare(item.id)}
+                activeOpacity={0.5}>
+                <FontAwesome
+                  name="share"
+                  style={{
+                    fontSize: width / 18.70129,
+                    color: item.isShared ? primaryColor : 'black',
+                    alignSelf: 'center',
+                  }}
+                />
+              </TouchableOpacity>
+              <Text style={[styles.smallText, {marginTop: -1}]}>shares</Text>
             </TouchableOpacity>
           </View>
           <View
@@ -566,10 +649,14 @@ const Challenges = ({navigation}) => {
                 handleVideoPause(item.id);
                 _captureVideo();
               }}>
-              <Entypo
-                name="camera"
-                style={{fontSize: width / 18.70129, color: 'black'}}
-              />
+              <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text>
+              <TouchableOpacity activeOpacity={0.5}>
+                <Entypo
+                  name="camera"
+                  style={{fontSize: width / 18.70129, color: 'black'}}
+                />
+              </TouchableOpacity>
+              <Text style={[styles.smallText, {marginTop: -1}]}></Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -591,7 +678,21 @@ const Challenges = ({navigation}) => {
       console.log(E);
     }
   };
-  const handleShare = async () => {
+  const handleShare = async (id) => {
+    setVideos(
+      videos.map((item) => {
+        if (item.id === id)
+          return {
+            ...item,
+            isShared: !item.isShared,
+            shares:
+              item.isShared === true
+                ? parseInt(item.shares) - 1
+                : parseInt(item.shares) + 1,
+          };
+        return item;
+      }),
+    );
     let options = {
       title: 'Challenge IT',
       message: 'Hello',
@@ -643,39 +744,52 @@ const Challenges = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-    <View style = {{margin: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-      <Ionicons
-        name="chevron-back"
-        style={{fontSize: 30, marginTop: height/100}}
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
-      <View style = {{flexDirection: 'row'}}>
-      <Feather
-        name="search"
+      <View
         style={{
-          alignSelf: 'center',
-          fontSize: 26,
-          marginHorizontal: width / 30,
-        }}
-        onPress={() => {
-          animationToggle();
-        }}
-      />
-      <Animated.View style={{width: searchWidth}}>
-        <TextInput
-          placeholder="Search..."
-          style={{
-            width: '80%',
-            borderRadius: 3,
-            borderBottomWidth: searchState ? 0.8 : 0,
-            borderColor: searchState ? '#ddd' : '#fff',
-            paddingLeft: 10,
-          }}
-        />
-      </Animated.View>
-      </View>
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: primaryColor,
+        }}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            navigation.navigate('User');
+          }}>
+          <Image
+            source={dummy}
+            style={[
+              styles.userImgStyle,
+              {height: 30, width: 30, borderRadius: 15},
+            ]}
+          />
+        </TouchableWithoutFeedback>
+        <View style={{flexDirection: 'row'}}>
+          <Feather
+            name="search"
+            style={{
+              alignSelf: 'center',
+              fontSize: 26,
+              color: 'white',
+              marginHorizontal: width / 30,
+            }}
+            onPress={() => {
+              animationToggle();
+            }}
+          />
+          <Animated.View style={{width: searchWidth}}>
+            <TextInput
+              placeholder="Search..."
+              placeholderTextColor={'white'}
+              style={{
+                width: '80%',
+                borderRadius: 3,
+                borderBottomWidth: searchState ? 0.8 : 0,
+                borderColor: searchState ? '#ddd' : '#fff',
+                paddingLeft: 10,
+                color: 'white',
+              }}
+            />
+          </Animated.View>
+        </View>
       </View>
       {loading === false ? (
         <ChallengePlaceholder type={'question'} />
@@ -688,6 +802,7 @@ const Challenges = ({navigation}) => {
                 justifyContent: 'center',
                 paddingLeft: 5,
               }}>
+              <Text style={styles.mediumText}>Nearby Challengers</Text>
               <View style={{flexDirection: 'row'}}>
                 {/* <Feather
                   name="search"
@@ -718,8 +833,17 @@ const Challenges = ({navigation}) => {
                     item + index.toString();
                   }}
                   data={avatars}
+                  // onEndReached={() => {
+                  //   setIsEnd(false);
+                  // }}
+                  // onMomentumScrollEnd={() => {
+                  //   setIsEnd(false);
+                  // }}
+                  // onMomentumScrollBegin={() => {
+                  //   setIsEnd(true);
+                  // }}
                   showsHorizontalScrollIndicator={false}
-                  style = {{marginTop: 5}}
+                  style={{marginTop: 5}}
                   renderItem={({item, index}) => {
                     return (
                       <TouchableOpacity
@@ -814,6 +938,21 @@ const Challenges = ({navigation}) => {
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
           }}>
+          <AntDesign
+            onPress={() => {
+              setShowAvatar(false);
+            }}
+            name="close"
+            size={20}
+            color={'red'}
+            style={{
+              alignSelf: 'center',
+              margin: 5,
+              position: 'absolute',
+              top: 0,
+              right: 0,
+            }}
+          />
           <Image
             source={{
               uri:
@@ -830,7 +969,7 @@ const Challenges = ({navigation}) => {
           <Text
             style={[
               styles.largeText,
-              {alignSelf: 'center', marginTop: -20, color: primaryColor},
+              {alignSelf: 'center', marginTop: -30, color: primaryColor},
             ]}>
             Jhon Doe
           </Text>
@@ -860,7 +999,7 @@ const Challenges = ({navigation}) => {
                   styles.mediumText,
                   {alignSelf: 'center', fontSize: 18, margin: 5},
                 ]}>
-                Do it
+                Through a challenge
               </Text>
             </TouchableOpacity>
             <Divider style={styles.dividerStyle} />
@@ -1343,6 +1482,7 @@ const Challenges = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </RBSheet>
+      {/* {isEnd && <TabBar navigation={navigation} />} */}
     </SafeAreaView>
   );
 };

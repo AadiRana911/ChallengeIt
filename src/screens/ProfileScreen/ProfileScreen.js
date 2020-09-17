@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   ScrollView,
   View,
@@ -12,6 +12,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import Video from 'react-native-video';
+import {more, dummy, clap} from '../../assets';
 import {Fonts} from '../../utils/Fonts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -20,7 +21,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import OptionsMenu from 'react-native-options-menu';
 import Snackbar from 'react-native-snackbar';
 import RBSheet from 'react-native-raw-bottom-sheet';
-
+import LottieView from 'lottie-react-native';
 import TabBar from '../../components/navigation';
 import styles from './styles';
 import primaryColor from '../../components/colors';
@@ -31,7 +32,7 @@ const ProfileScreen = ({
   translateXImg,
   translateYImg,
   navigation,
-  animateReverse
+  animateReverse,
 }) => {
   const playListRef = useRef(null);
   const [followState, setFollowState] = useState('follow');
@@ -41,6 +42,7 @@ const ProfileScreen = ({
   const [views, setViews] = useState(0);
   const [totalChallenges, setTotalChallenges] = useState(0);
   const [acceptedChallenges, setAcceptedChallenges] = useState(0);
+  const [liked, setLiked] = useState(false);
 
   const {width, height} = Dimensions.get('window');
   const results = [
@@ -101,39 +103,38 @@ const ProfileScreen = ({
       style={[styles.container, {transform: [{translateX: translateScreen}]}]}
       contentContainerStyle={{flexGrow: 1}}>
       <View style={styles.userNameContainer}>
-      <View style = {{flexDirection: 'row'}}>
-      <Text
-          style={{
-            color: '#F03C00',
-            fontSize: width / 30,
-            fontFamily: Fonts.CenturyRegular,
-          }}
-          >
-          Zaheer Hassan{' '}
-        </Text>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: width / 30,
-            fontFamily: Fonts.CenturyRegular,
-          }}
-          >
+        <View style={{flexDirection: 'row'}}>
+          <Text
+            style={{
+              color: '#F03C00',
+              fontSize: width / 30,
+              fontFamily: Fonts.CenturyRegular,
+            }}>
+            Zaheer Hassan{' '}
+          </Text>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: width / 30,
+              fontFamily: Fonts.CenturyRegular,
+            }}>
             challanged{' '}
           </Text>
           <Text
-          style={{
-            color: '#F03C00',
-            fontSize: width / 30,
-            fontFamily: Fonts.CenturyRegular,
-          }}
-          >Waqas</Text>
-      </View>
+            style={{
+              color: '#F03C00',
+              fontSize: width / 30,
+              fontFamily: Fonts.CenturyRegular,
+            }}>
+            Waqas
+          </Text>
+        </View>
         <View style={{alignItems: 'center'}}>
           <OptionsMenu
             customButton={
               <Entypo
                 name="dots-three-vertical"
-                style={{fontSize: width/20, color: 'black'}}
+                style={{fontSize: width / 20, color: 'black'}}
               />
             }
             options={['Add to playlist', 'Report Video']}
@@ -141,7 +142,7 @@ const ProfileScreen = ({
           />
         </View>
       </View>
-      
+
       <View style={styles.videoContainer}>
         <TouchableWithoutFeedback
           style={styles.videoTouchableContainer}
@@ -183,18 +184,63 @@ const ProfileScreen = ({
         )}
       </View>
       <View style={styles.screenIconContainer}>
-        <View style={{alignItems: 'center'}}>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableWithoutFeedback onPress={() => setLiked(!liked)}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              {liked ? (
+                <LottieView
+                  source={require('../../utils/clap.json')}
+                  style={{
+                    height: 32,
+                    width: 30,
+                    backgroundColor: 'transparent',
+                  }}
+                  autoPlay
+                  loop
+                />
+              ) : (
+                <Image
+                  resizeMode={'contain'}
+                  source={clap}
+                  style={{
+                    height: 22,
+                    width: 32,
+                    // tintColor: item.liked ? primaryColor : 'black',
+                    marginLeft: liked ? 0 : 20,
+                  }}
+                />
+              )}
+              <Text
+                style={{
+                  fontSize: width / 45.71428,
+                  fontFamily: Fonts.CenturyBold,
+                  marginLeft: liked ? 0 : 15,
+                }}>
+                {shares}
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        {/* <View style={{alignItems: 'center'}}>
           <TouchableOpacity>
             <Image
               source={require('../../assets/images/clap.png')}
-              style={{height: width / 18.70129, width: width / 18.70129, tintColor: '#f03c00'}}
+              style={{
+                height: width / 18.70129,
+                width: width / 18.70129,
+                tintColor: '#f03c00',
+              }}
             />
           </TouchableOpacity>
           <Text
             style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
             {applauses}
           </Text>
-        </View>
+        </View> */}
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity>
             <FontAwesome name="share" style={{fontSize: width / 18.70129}} />
@@ -218,7 +264,7 @@ const ProfileScreen = ({
         </View>
       </View>
       {/* <Text style = {{top: height/25}}>Icons go here</Text> */}
-      
+
       <View style={styles.userStatsContainer}>
         <View
           style={{
@@ -238,7 +284,7 @@ const ProfileScreen = ({
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  color: '#f03c00'
+                  color: '#f03c00',
                 }}
               />
             </TouchableOpacity>
@@ -262,7 +308,7 @@ const ProfileScreen = ({
           style={{flex: 1}}
           renderItem={({item}) => {
             return (
-              <TouchableWithoutFeedback onPress = {animateReverse}>
+              <TouchableWithoutFeedback onPress={animateReverse}>
                 <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
               </TouchableWithoutFeedback>
             );

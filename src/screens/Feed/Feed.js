@@ -670,7 +670,7 @@ const Feed = ({navigation}) => {
             Trending
           </Text>
         </TouchableWithoutFeedback>
-        <Text style={[styles.textStyle, {color: 'white'}]}>|</Text>
+        {/* <Text style={[styles.textStyle, {color: 'white'}]}>|</Text>
         <TouchableWithoutFeedback
           onPress={() => {
             setPaused(true);
@@ -687,7 +687,7 @@ const Feed = ({navigation}) => {
             ]}>
             All Challenges
           </Text>
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback> */}
       </LinearGradient>
 
       <ProfileScreen

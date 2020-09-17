@@ -1,32 +1,28 @@
-
-
 import {Fonts} from '../../utils/Fonts';
 
 import {StyleSheet, Dimensions} from 'react-native';
-import { primaryColor } from '../../components/colors';
+import {primaryColor} from '../../components/colors';
 const {height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: 'white',
-    paddingTop: height/10,
-
+    paddingTop: 10,
   },
   imageStyle: {
-    height: 100,
-    width: 100,
-    borderRadius: 60,
-    
+    height: 80,
+    width: 80,
+    borderRadius: 50,
+
     // borderWidth: 3,
     // borderColor: '#fff',
-    
   },
   head: {
-    flex: 0.4,
+    flex: 0.3,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: height/15,
+    marginBottom: height / 15,
     // marginTop: height/20,
   },
   categoryContainer: {
@@ -81,10 +77,10 @@ const styles = StyleSheet.create({
   },
   thumbnailStyle: {
     height: 100,
-    width: 105,
-    margin: 5,
-
-    borderRadius: 10,
+    width: 100,
+    marginHorizontal: 3,
+    // borderRadius: 10,
+    marginVertical: 3,
   },
   userStatsContainer: {
     flexDirection: 'row',
