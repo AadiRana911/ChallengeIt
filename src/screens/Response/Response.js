@@ -21,7 +21,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {CheckBox} from 'react-native-elements';
 import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 import Share from 'react-native-share';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Video from 'react-native-video';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import styles from './styles';
@@ -40,7 +40,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Divider} from 'react-native-elements';
 import LottieView from 'lottie-react-native';
 
-const Feed = ({navigation, route}) => {
+const Response = ({navigation}) => {
   const reportRef = useRef(null);
   const playListRef = useRef(null);
   const animation = useRef(null);
@@ -570,15 +570,26 @@ const Feed = ({navigation, route}) => {
                 </Text>
               </View>
             </Animated.View>
-
+            <AntDesign
+              onPress={() => {
+                navigation.goBack();
+              }}
+              name="arrowleft"
+              style={{
+                fontSize: 26,
+                color: 'white',
+                position: 'absolute',
+                top: 10,
+                marginHorizontal: width / 30,
+              }}
+            />
             <Animated.View
               style={{
                 position: 'absolute',
                 bottom: height / 10,
                 left: width / 20,
                 width: '80%',
-                alignItems: 'center',
-                flexDirection: 'row',
+
                 transform: [{translateX: translateBottomImageStripX}],
               }}>
               {/* <TouchableOpacity
@@ -618,6 +629,7 @@ const Feed = ({navigation, route}) => {
                 </Text>
               </View>
             </Animated.View>
+
             {item.loading && (
               <LottieView
                 source={require('../../utils/loading.json')}
@@ -636,94 +648,7 @@ const Feed = ({navigation, route}) => {
           </TouchableOpacity>
         ))}
       </ViewPager>
-      {/* <ViewPager
-        onPageSelected={(e) => {
-          setActive(e.nativeEvent.position);
-          // setPaused(true);
-        }}
-        orientation="vertical"
-        style={{height: '93%'}}
-        initialPage={0}>
-        {vids.map((item, index) => {
-          return (
-            <TouchableOpacity key={index} activeOpacity={1}>
-              <Video
-                paused={item.paused}
-                source={{uri: item.vid}}
-                style={styles.mediaPlayer}
-                volume={0.4}
-                // onTouchStart={() => {
-                //   setPaused(!paused);
-                // }}
-                filterEnable
-                resizeMode="cover"
-                repeat={true}
-                onReadyForDisplay={() => {
-                  handleVideoLoading(item.id);
-                }}
-              />
-            
-              )}
-            </TouchableOpacity>
-          );
-        })}
-      </ViewPager> */}
-      {/* {from !== 'user' && ( */}
-      <LinearGradient
-        colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
-        style={[styles.switchTextView]}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setIsText1Active(true);
-          }}>
-          <Text
-            style={[
-              styles.textStyle,
-              {
-                marginRight: 10,
-                // color: 'rgba(255,255,255,0.5)',
-                color: 'white',
-                opacity: 0.4,
-              },
-            ]}>
-            Trending
-          </Text>
-        </TouchableWithoutFeedback>
-        {/* <Text style={[styles.textStyle, {color: 'white'}]}>|</Text>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setPaused(true);
-            navigation.navigate('Challenges');
-            setIsText1Active(false);
-          }}>
-          <Text
-            style={[
-              styles.textStyle,
-              {
-                marginLeft: 10,
-                color: 'rgba(255,255,255,0.5)',
-              },
-            ]}>
-            All Challenges
-          </Text>
-        </TouchableWithoutFeedback> */}
-      </LinearGradient>
-      {/* )} */}
-      {/* {from !== 'user' && ( */}
-      <ProfileScreen
-        translateScreen={translateXScreen}
-        translateXImg={translateXImg}
-        translateYImg={translateYImg}
-        paused={nextPaused}
-        animateReverse={animateReverse}
-        setPaused={setNextPaused}
-        style={styles.mediaPlayer}
-        volume={10}
-        navigation={navigation}
-        resizeMode="cover"
-        repeat={true}
-      />
-      {/* )} */}
+      {/* 
       <GestureRecognizer
         style={{
           position: 'absolute',
@@ -758,6 +683,7 @@ const Feed = ({navigation, route}) => {
           />
         </TouchableOpacity>
       </GestureRecognizer>
+      */}
       <RBSheet
         ref={playListRef}
         height={420}
@@ -1032,4 +958,4 @@ const Feed = ({navigation, route}) => {
   );
 };
 
-export default Feed;
+export default Response;

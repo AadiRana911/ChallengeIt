@@ -102,33 +102,34 @@ const ProfileScreen = ({
     <Animated.ScrollView
       style={[styles.container, {transform: [{translateX: translateScreen}]}]}
       contentContainerStyle={{flexGrow: 1}}>
-      <View style={styles.userNameContainer}>
+      <View
+        style={[
+          styles.userNameContainer,
+          {
+            width: '80%',
+            alignSelf: 'center',
+            justifyContent: 'space-between',
+          },
+        ]}>
         <View style={{flexDirection: 'row'}}>
+          <Text>{`\n`}</Text>
           <Text
             style={{
               color: '#F03C00',
-              fontSize: width / 30,
+              fontSize: 14,
+              alignSelf: 'center',
+
               fontFamily: Fonts.CenturyRegular,
             }}>
             Zaheer Hassan{' '}
-          </Text>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: width / 30,
-              fontFamily: Fonts.CenturyRegular,
-            }}>
-            challanged{' '}
-          </Text>
-          <Text
-            style={{
-              color: '#F03C00',
-              fontSize: width / 30,
-              fontFamily: Fonts.CenturyRegular,
-            }}>
-            Waqas
+            <Text style={{color: 'black', fontSize: 12}}>challanged</Text> Waqas
+            {`\n`}
+            <Text style={{fontSize: 10, color: 'gray'}}>
+              2 min ago {'  '}3 km away
+            </Text>
           </Text>
         </View>
+
         <View style={{alignItems: 'center'}}>
           <OptionsMenu
             customButton={
@@ -183,20 +184,24 @@ const ProfileScreen = ({
           </TouchableWithoutFeedback>
         )}
       </View>
-      <View style={styles.screenIconContainer}>
+      <View
+        style={[styles.horizontalContainer, {justifyContent: 'space-between'}]}>
         <View style={{flexDirection: 'row'}}>
           <TouchableWithoutFeedback onPress={() => setLiked(!liked)}>
             <View
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
+                marginTop: 4,
+                // alignSelf: 'center',
+                // backgroundColor: 'tomato',
               }}>
               {liked ? (
                 <LottieView
                   source={require('../../utils/clap.json')}
                   style={{
                     height: 32,
-                    width: 30,
+                    width: 32,
                     backgroundColor: 'transparent',
                   }}
                   autoPlay
@@ -208,62 +213,135 @@ const ProfileScreen = ({
                   source={clap}
                   style={{
                     height: 22,
-                    width: 32,
-                    // tintColor: item.liked ? primaryColor : 'black',
-                    marginLeft: liked ? 0 : 20,
+                    width: 22,
+                    tintColor: 'black',
                   }}
                 />
               )}
-              <Text
-                style={{
-                  fontSize: width / 45.71428,
-                  fontFamily: Fonts.CenturyBold,
-                  marginLeft: liked ? 0 : 15,
-                }}>
-                {shares}
-              </Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {
+                      alignSelf: 'center',
+                      opacity: 0.7,
+                      color: 'black',
+
+                      // marginLeft: item.liked ? 0 : 15,
+                      // marginBottom: item.liked ? -5 : 0,
+                    },
+                  ]}>
+                  100{' '}
+                </Text>
+                <Text
+                  style={[
+                    styles.smallText,
+
+                    {
+                      // marginTop: item.liked ? -5 : 0,
+                      // marginLeft: item.liked ? 0 : 15,
+                      marginBottom: 1,
+                    },
+                  ]}>
+                  claps
+                </Text>
+              </View>
             </View>
           </TouchableWithoutFeedback>
         </View>
-        {/* <View style={{alignItems: 'center'}}>
+        <View style={[styles.bottomContainer]}>
           <TouchableOpacity>
-            <Image
-              source={require('../../assets/images/clap.png')}
-              style={{
-                height: width / 18.70129,
-                width: width / 18.70129,
-                tintColor: '#f03c00',
-              }}
-            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Home')}
+              activeOpacity={0.5}>
+              <MaterialIcons
+                name="videocam"
+                style={{
+                  fontSize: width / 16.45714,
+                  color: 'black',
+                  alignSelf: 'center',
+                }}
+              />
+            </TouchableOpacity>
+            {/* <MaterialIcons
+                name="reply"
+                color="orange"
+                style={{
+                  fontSize: width / 20.57142,
+                  // position: 'absolute',
+                  // top: '50%',
+                  // left: '50%',
+                }}
+              /> */}
+            <View style={{flexDirection: 'row'}}>
+              <Text
+                style={[
+                  styles.smallText,
+                  {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                ]}>
+                100{' '}
+              </Text>
+              <Text style={[styles.smallText]}>views</Text>
+            </View>
           </TouchableOpacity>
-          <Text
-            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
-            {applauses}
-          </Text>
-        </View> */}
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity>
-            <FontAwesome name="share" style={{fontSize: width / 18.70129}} />
-          </TouchableOpacity>
-          <Text
-            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
-            {shares}
-          </Text>
         </View>
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity>
-            <Entypo name="camera" style={{fontSize: width / 18.70129}} />
+
+        <View
+          style={[
+            styles.bottomContainer,
+            {flexDirection: 'row', paddingHorizontal: 10},
+          ]}>
+          <TouchableOpacity
+            onPress={() => {
+              _captureVideo();
+            }}>
+            {/* <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text> */}
+
+            <TouchableOpacity activeOpacity={0.5} style={{marginTop: 2}}>
+              <Entypo
+                name="camera"
+                style={{
+                  fontSize: width / 18.70129,
+                  color: 'black',
+                  alignSelf: 'center',
+                }}
+              />
+            </TouchableOpacity>
+            <Text style={[styles.smallText]}>Accept</Text>
           </TouchableOpacity>
         </View>
-        <View style={{alignItems: 'center'}}>
-          <Entypo name="eye" style={{fontSize: width / 20}} />
-          <Text
-            style={{fontSize: width / 45.71428, fontFamily: Fonts.CenturyBold}}>
-            {views}
-          </Text>
+        <View
+          style={[
+            styles.bottomContainer,
+            {
+              flexDirection: 'row',
+              alignSelf: 'center',
+            },
+          ]}>
+          <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleShare()} activeOpacity={0.5}>
+              <FontAwesome
+                name="share"
+                style={{
+                  fontSize: width / 18.70129,
+                  color: 'black',
+                  alignSelf: 'center',
+                }}
+              />
+            </TouchableOpacity>
+            <View style={{flexDirection: 'row'}}>
+              <Text
+                style={[
+                  styles.smallText,
+                  {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                ]}>
+                200{' '}
+              </Text>
+              <Text style={[styles.smallText, {marginTop: -1}]}>shares</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
-      {/* <Text style = {{top: height/25}}>Icons go here</Text> */}
 
       <View style={styles.userStatsContainer}>
         <View
@@ -297,6 +375,7 @@ const ProfileScreen = ({
           </Text>
         </View>
       </View>
+
       <View style={{top: height / 10, flex: 1}}>
         <FlatList
           style={{width: width - 20, top: height / 11.67755}}
@@ -308,7 +387,10 @@ const ProfileScreen = ({
           style={{flex: 1}}
           renderItem={({item}) => {
             return (
-              <TouchableWithoutFeedback onPress={animateReverse}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  navigation.navigate('Responses');
+                }}>
                 <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
               </TouchableWithoutFeedback>
             );

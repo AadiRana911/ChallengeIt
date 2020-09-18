@@ -21,9 +21,15 @@ export default styles = StyleSheet.create({
   videoContainer: {
     marginTop: height / 18,
     backgroundColor: 'red',
-    width: width - 20,
+    // width: width - 20,
     height: height / 2.5,
-    alignSelf: 'center',
+    // alignSelf: 'center',
+  },
+  bottomContainer: {
+    // marginLeft: '4%',
+    padding: 5,
+    marginTop: 5,
+    flexDirection: 'row',
   },
   videoTouchableContainer: {
     backgroundColor: 'red',
@@ -37,6 +43,8 @@ export default styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     backgroundColor: 'black',
+    alignSelf: 'center',
+    width: '100%',
   },
   playButton: {
     opacity: 0.7,
@@ -71,6 +79,52 @@ export default styles = StyleSheet.create({
     top: height / 100,
     justifyContent: 'space-evenly',
   },
+  cardStyle: {
+    flex: 1,
+    marginVertical: 1,
+    marginHorizontal: 3,
+    padding: 3,
+    backgroundColor: 'white',
+    elevation: 10,
+    // shadowColor: '#BDBDBD',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowRadius: 5,
+    // shadowOpacity: 1.0,
+    // borderWidth: 1,
+    borderColor: '#fff',
+    borderRadius: 3,
+  },
+  userImgStyle: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    alignSelf: 'center',
+    margin: 5,
+  },
+  mediumText: {
+    fontSize: 12,
+    fontFamily: Fonts.CenturyRegular,
+    alignSelf: 'center',
+  },
+  smallText: {
+    fontFamily: Fonts.CenturyRegular,
+    fontSize: 10,
+    alignSelf: 'center',
+  },
+  largeText: {
+    fontFamily: Fonts.CenturyBold,
+    fontSize: 16,
+    // fontWeight: 'bold',
+  },
+  horizontalContainer: {
+    flexDirection: 'row',
+  },
+  verticalContainer: {
+    margin: 10,
+  },
   followButtonStyle: {
     backgroundColor: primaryColor,
     paddingHorizontal: width / 27.8,
@@ -100,9 +154,9 @@ export default styles = StyleSheet.create({
   //   paddingVertical: 10,
   // },
   thumbnailStyle: {
-    height: width / 3,
+    height: width / 2.7,
     width: width / 3,
-    marginRight: 2,
-    marginBottom: 2,
+    marginRight: 1,
+    marginBottom: 1,
   },
 });

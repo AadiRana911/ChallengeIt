@@ -13,7 +13,8 @@ import styles from './styles';
 import {Divider} from 'react-native-elements';
 import TabBar from '../../components/navigation';
 import {ProfilePlaceholder} from '../../components/Placeholder';
-
+import {primaryColor} from '../../components/colors';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const User = ({params, navigation}) => {
   const {height, width} = Dimensions.get('window');
   const [challenges, setChallenges] = useState(true);
@@ -76,6 +77,27 @@ const User = ({params, navigation}) => {
       // style={styles.mainContainer}
 
       contentContainerStyle={{flexGrow: 1}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          // backgroundColor: primaryColor,
+          paddingVertical: 10,
+          marginBottom: 4,
+        }}>
+        <AntDesign
+          onPress={() => {
+            navigation.goBack();
+          }}
+          name="arrowleft"
+          style={{
+            alignSelf: 'center',
+            fontSize: 26,
+            color: 'black',
+            marginHorizontal: width / 30,
+          }}
+        />
+        {/* */}
+      </View>
       <View style={styles.head}>
         <View
           style={{
@@ -181,7 +203,7 @@ const User = ({params, navigation}) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Home');
+                navigation.navigate('Responses');
               }}>
               <Image style={styles.thumbnailStyle} source={{uri: item.url}} />
             </TouchableOpacity>

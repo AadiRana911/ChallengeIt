@@ -76,11 +76,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   thumbnailStyle: {
-    height: 100,
+    height: 120,
     width: 100,
-    marginHorizontal: 3,
+    marginHorizontal: 1,
     // borderRadius: 10,
-    marginVertical: 3,
+    marginVertical: 1,
   },
   userStatsContainer: {
     flexDirection: 'row',

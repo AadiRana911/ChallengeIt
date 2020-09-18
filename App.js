@@ -23,6 +23,7 @@ import {
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persister, store} from './src/redux/store';
+import Responses from './src/screens/Response';
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 
@@ -58,6 +59,11 @@ function AppNav() {
         <Stack.Screen
           name="Home"
           component={Feed}
+          options={{headerShown: false, animationEnabled: true}}
+        />
+        <Stack.Screen
+          name="Responses"
+          component={Responses}
           options={{headerShown: false, animationEnabled: true}}
         />
         <Stack.Screen

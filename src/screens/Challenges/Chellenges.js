@@ -253,6 +253,7 @@ const Challenges = ({navigation}) => {
       isMuted: true,
       liked: false,
       isShared: false,
+      isBottom: true,
     },
   ]);
   const toggleLike = (id) => {
@@ -341,21 +342,22 @@ const Challenges = ({navigation}) => {
                   {
                     marginTop: 0,
                     color: primaryColor,
-                    fontSize: 12,
+                    fontSize: 14,
                     fontFamily: Fonts.CenturyBold,
                   },
                 ]}>
                 {item.name}
-              </Text>{' '}
+              </Text>
               <Text
                 style={[
                   styles.mediumText,
                   {
-                    fontSize: 12,
+                    fontSize: 14,
                     color: 'black',
                     fontFamily: Fonts.CenturyRegular,
                   },
                 ]}>
+                {' '}
                 {item.to === '' ? 'posted a Challenge' : 'Challenged'}{' '}
               </Text>
               {
@@ -364,20 +366,21 @@ const Challenges = ({navigation}) => {
                     styles.mediumText,
                     {
                       color: primaryColor,
-                      fontSize: 12,
+                      fontSize: 14,
                       fontFamily: Fonts.CenturyBold,
                     },
                   ]}>
                   {item.to === '' ? `\n` : `${item.to} \n`}
                 </Text>
               }
-              <Text style={[styles.mediumText, {fontSize: 10}]}>
+              <Text
+                style={[styles.mediumText, {fontSize: 10, color: '#696866'}]}>
                 {item.km}
                 {'   '} {item.time}
                 {'    '}
               </Text>
               <Text
-                style={[styles.mediumText, {fontSize: 10}]}
+                style={[styles.mediumText, {fontSize: 10, color: '#696866'}]}
                 onPress={() => {
                   navigation.navigate('ViewRes');
                   handleVideoPause(item.id);
@@ -533,17 +536,6 @@ const Challenges = ({navigation}) => {
                   // alignSelf: 'center',
                   // backgroundColor: 'tomato',
                 }}>
-                <Text
-                  style={[
-                    styles.smallText,
-                    {
-                      alignSelf: 'center',
-                      marginLeft: item.liked ? 0 : 15,
-                      marginBottom: item.liked ? -5 : 0,
-                    },
-                  ]}>
-                  {item.claps}
-                </Text>
                 {item.liked ? (
                   <LottieView
                     source={require('../../utils/clap.json')}
@@ -564,30 +556,45 @@ const Challenges = ({navigation}) => {
                       height: 22,
                       width: 22,
                       tintColor: item.liked ? primaryColor : 'black',
-                      marginLeft: item.liked ? 0 : 20,
+                      marginLeft: item.liked ? 0 : 15,
                     }}
                   />
                 )}
-                <Text
-                  style={[
-                    styles.smallText,
-                    {
-                      marginTop: item.liked ? -5 : 0,
-                      marginLeft: item.liked ? 0 : 15,
-                    },
-                  ]}>
-                  claps
-                </Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={[
+                      styles.smallText,
+                      {
+                        alignSelf: 'center',
+                        opacity: 0.7,
+                        color: 'black',
+
+                        // marginLeft: item.liked ? 0 : 15,
+                        // marginBottom: item.liked ? -5 : 0,
+                      },
+                    ]}>
+                    {item.claps}{' '}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.smallText,
+
+                      {
+                        // marginTop: item.liked ? -5 : 0,
+                        // marginLeft: item.liked ? 0 : 15,
+                        marginBottom: 1,
+                      },
+                    ]}>
+                    claps
+                  </Text>
+                </View>
               </View>
             </TouchableWithoutFeedback>
           </View>
           <View style={[styles.bottomContainer]}>
             <TouchableOpacity>
-              <Text style={[styles.smallText, {alignSelf: 'center'}]}>
-                {item.claps}
-              </Text>
               <TouchableOpacity
-                // onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.navigate('Responses')}
                 activeOpacity={0.5}>
                 <MaterialIcons
                   name="videocam"
@@ -608,10 +615,44 @@ const Challenges = ({navigation}) => {
                   // left: '50%',
                 }}
               /> */}
-              <Text style={[styles.smallText]}>views</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                  ]}>
+                  {item.claps}{' '}
+                </Text>
+                <Text style={[styles.smallText]}>views</Text>
+              </View>
             </TouchableOpacity>
           </View>
 
+          <View
+            style={[
+              styles.bottomContainer,
+              {flexDirection: 'row', paddingHorizontal: 10},
+            ]}>
+            <TouchableOpacity
+              onPress={() => {
+                handleVideoPause(item.id);
+                _captureVideo();
+              }}>
+              {/* <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text> */}
+
+              <TouchableOpacity activeOpacity={0.5} style={{marginTop: 2}}>
+                <Entypo
+                  name="camera"
+                  style={{
+                    fontSize: width / 18.70129,
+                    color: 'black',
+                    alignSelf: 'center',
+                  }}
+                />
+              </TouchableOpacity>
+              <Text style={[styles.smallText]}>Accept</Text>
+            </TouchableOpacity>
+          </View>
           <View
             style={[
               styles.bottomContainer,
@@ -621,9 +662,6 @@ const Challenges = ({navigation}) => {
               },
             ]}>
             <TouchableOpacity onPress={handleShare}>
-              <Text style={[styles.smallText, {alignSelf: 'center'}]}>
-                {item.claps}
-              </Text>
               <TouchableOpacity
                 onPress={() => handleShare(item.id)}
                 activeOpacity={0.5}>
@@ -636,30 +674,21 @@ const Challenges = ({navigation}) => {
                   }}
                 />
               </TouchableOpacity>
-              <Text style={[styles.smallText, {marginTop: -1}]}>shares</Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={[
-              styles.bottomContainer,
-              {flexDirection: 'row', paddingHorizontal: 10},
-            ]}>
-            <TouchableOpacity
-              onPress={() => {
-                handleVideoPause(item.id);
-                _captureVideo();
-              }}>
-              <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text>
-              <TouchableOpacity activeOpacity={0.5}>
-                <Entypo
-                  name="camera"
-                  style={{fontSize: width / 18.70129, color: 'black'}}
-                />
-              </TouchableOpacity>
-              <Text style={[styles.smallText, {marginTop: -1}]}></Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                  ]}>
+                  {item.claps}{' '}
+                </Text>
+                <Text style={[styles.smallText, {marginTop: -1}]}>shares</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
+
+        {item.isBottom && <View style={{marginVertical: 30}} />}
       </View>
     );
   };
@@ -800,9 +829,12 @@ const Challenges = ({navigation}) => {
             <View
               style={{
                 justifyContent: 'center',
-                paddingLeft: 5,
+                padding: 5,
               }}>
-              <Text style={styles.mediumText}>Nearby Challengers</Text>
+              <Text
+                style={[styles.mediumText, {fontFamily: Fonts.CenturyBold}]}>
+                Nearby Challengers
+              </Text>
               <View style={{flexDirection: 'row'}}>
                 {/* <Feather
                   name="search"
@@ -875,6 +907,7 @@ const Challenges = ({navigation}) => {
                   }}
                 />
               </View>
+              <Divider style={{height: 1, width: '100%', marginTop: 5}} />
 
               <FlatList
                 contentContainerStyle={{marginVertical: 5}}
@@ -1482,7 +1515,7 @@ const Challenges = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </RBSheet>
-      {/* {isEnd && <TabBar navigation={navigation} />} */}
+      <TabBar navigation={navigation} />
     </SafeAreaView>
   );
 };
