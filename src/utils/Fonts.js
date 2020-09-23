@@ -1,4 +1,4 @@
 export const Fonts = {
-  CenturyBold: 'CenturyGothicBold',
-  CenturyRegular: 'CenturyGothicRegular',
+  CenturyBold: 'CenturyGothic-Bold',
+  CenturyRegular: 'CenturyGothic',
 };

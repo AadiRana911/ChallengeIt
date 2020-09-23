@@ -11,7 +11,10 @@ import {
   FlatList,
   SafeAreaView,
 } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 import Video from 'react-native-video';
+import Share from 'react-native-share';
+
 import {more, dummy, clap} from '../../assets';
 import {Fonts} from '../../utils/Fonts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -24,7 +27,9 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import LottieView from 'lottie-react-native';
 import TabBar from '../../components/navigation';
 import styles from './styles';
-import primaryColor from '../../components/colors';
+import {primaryColor} from '../../components/colors';
+import DoubleTap from '../../components/DoubleTap';
+
 const ProfileScreen = ({
   translateScreen,
   paused,
@@ -43,7 +48,7 @@ const ProfileScreen = ({
   const [totalChallenges, setTotalChallenges] = useState(0);
   const [acceptedChallenges, setAcceptedChallenges] = useState(0);
   const [liked, setLiked] = useState(false);
-
+  const [sharing, setSharing] = useState(false);
   const {width, height} = Dimensions.get('window');
   const results = [
     {
@@ -98,10 +103,447 @@ const ProfileScreen = ({
         break;
     }
   };
+  const _captureVideo = async () => {
+    try {
+      ImagePicker.openPicker({
+        mediaType: 'video',
+      }).then((result) => {
+        navigation.navigate('Response', {video: result.path});
+        // setTimeout(() => {
+        //   setImages(medai);
+        // }, 200);
+      });
+    } catch (E) {
+      console.log(E);
+    }
+  };
+  const handleShare = async (id) => {
+    setSharing(true);
+    let options = {
+      title: 'Challenge IT',
+      message: 'Hello',
+    };
+    Share.open(options)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        err && console.log(err);
+      });
+  };
   return (
     <Animated.ScrollView
       style={[styles.container, {transform: [{translateX: translateScreen}]}]}
       contentContainerStyle={{flexGrow: 1}}>
+      <AntDesign
+        onPress={() => {
+          animateReverse();
+        }}
+        name="arrowleft"
+        style={{
+          fontSize: 26,
+          color: 'black',
+          marginLeft: 10,
+          marginBottom: 10,
+        }}
+      />
+      <View activeOpacity={0.9} style={[styles.cardStyle, {elevation: 0}]}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginHorizontal: 5,
+            marginTop: 10,
+          }}>
+          <Image source={dummy} style={styles.userImgStyle} />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 4,
+            }}>
+            <Text
+              numberOfLines={3}
+              style={[
+                {
+                  alignSelf: 'center',
+
+                  marginTop: '-2%',
+                  marginLeft: 15,
+                  width: '88%',
+                  // backgroundColor: 'tomato',
+                },
+              ]}>
+              <Text
+                style={[
+                  styles.mediumText,
+                  {
+                    marginTop: 3,
+                    color: primaryColor,
+                    fontSize: 16,
+                    fontFamily: Fonts.CenturyBold,
+                  },
+                ]}>
+                Zaheer01
+              </Text>
+              <Text
+                style={[
+                  styles.mediumText,
+                  {
+                    fontSize: 16,
+                    color: 'black',
+                    fontFamily: Fonts.CenturyRegular,
+                  },
+                ]}>
+                {' '}
+                Posted a{' '}
+              </Text>
+              {
+                <Text
+                  style={[
+                    styles.mediumText,
+                    {
+                      color: primaryColor,
+                      fontSize: 16,
+                      fontFamily: Fonts.CenturyBold,
+                    },
+                  ]}>
+                  Challenge {`\n`}
+                </Text>
+              }
+
+              <Text
+                style={[styles.mediumText, {fontSize: 12, color: '#696866'}]}>
+                Posted: 3 hours ago{`\n`}
+              </Text>
+              <Text
+                style={[styles.mediumText, {fontSize: 12, color: '#696866'}]}
+                onPress={() => {
+                  navigation.navigate('ViewRes');
+                  setPaused(!paused);
+                }}>
+                2 km away {'  '} See Full Thread
+              </Text>
+            </Text>
+          </View>
+          {/* <TouchableOpacity
+            style={{
+              height: 27,
+              width: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+
+              marginRight: 9,
+              marginTop: 5,
+            }}
+            onPress={() => {
+              navigation.navigate('ViewRes');
+              handleVideoPause(item.id);
+            }}>
+            <AntDesign name="retweet" size={20} />
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            style={{
+              height: 27,
+              width: 20,
+            }}>
+            <Image
+              source={more}
+              style={{
+                top: height / 70,
+                height: 17,
+                width: 17,
+                tintColor: 'black',
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+        <Text
+          style={[
+            styles.mediumText,
+            {
+              fontSize: 10,
+              color: primaryColor,
+              alignSelf: 'flex-start',
+              margin: 4,
+            },
+          ]}
+          onPress={() => {
+            navigation.navigate('Hashtag');
+            setPaused(!paused);
+          }}>
+          #Kiki Challenge
+        </Text>
+        <View style={[styles.horizontalContainer]}></View>
+        <View>
+          <DoubleTap
+            singleTap={() => {
+              setPaused(!paused);
+            }}
+            // doubleTap={() => {
+            //   toggleLike(item.id);
+            // }}
+            delay={200}>
+            <Video
+              source={{
+                uri:
+                  'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+              }}
+              paused={paused}
+              resizeMode="cover"
+              repeat
+              style={{
+                height: height / 2,
+                width: '100%',
+                backgroundColor: 'black',
+                // borderRadius: 20,
+              }}
+            />
+          </DoubleTap>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 5,
+              right: 0,
+              height: height / 20,
+              // backgroundColor: 'rgba(100,100,100,0.4)',
+              // shadowColor: '#000',
+              // shadowOffset: {width: 1, height: 0},
+              // shadowOpacity: 0.3,
+              // shadowRadius: 5,
+              // elevation: 3,
+              // borderRadius: 3,
+              // // borderWidth: 0.5,
+              // // borderColor: '#eee',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginRight: 10,
+              // width: 45,
+              justifyContent: 'space-between',
+            }}>
+            <Entypo
+              name="eye"
+              size={20}
+              style={{marginRight: 7, color: 'white'}}
+            />
+            <Text
+              style={[
+                styles.smallText,
+                {marginTop: -3, color: 'white', fontWeight: 'bold'},
+              ]}>
+              200
+            </Text>
+          </View>
+          {paused && (
+            <Entypo
+              name="controller-play"
+              color="white"
+              style={[styles.playButton]}
+              onPress={() => {
+                setPaused(!paused);
+              }}
+            />
+          )}
+        </View>
+
+        {/* {item.isVolumeVisible && (
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              handleVideoMute(item);
+            }}
+            style={[
+              {
+                position: 'absolute',
+                right: Platform.OS === 'ios' ? 80 : 20,
+                bottom: 70,
+                backgroundColor: 'black',
+                height: 22,
+                width: 22,
+                borderRadius: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+                // right: 50,
+                padding: 2,
+              },
+            ]}>
+            <Ionicons
+              name={item.isMuted ? 'volume-mute' : 'volume-high'}
+              color="white"
+              style={[styles.playButton]}
+            />
+          </TouchableOpacity>
+        )} */}
+
+        <View
+          style={[
+            styles.horizontalContainer,
+            {justifyContent: 'space-between'},
+          ]}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableWithoutFeedback onPress={() => setLiked(!liked)}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: 4,
+                  // alignSelf: 'center',
+                  // backgroundColor: 'tomato',
+                }}>
+                {liked ? (
+                  <LottieView
+                    source={require('../../utils/clap.json')}
+                    style={{
+                      height: 32,
+                      width: 32,
+                      backgroundColor: 'transparent',
+                    }}
+                    // progress={clapProgress}
+                    autoPlay
+                    loop
+                  />
+                ) : (
+                  <Image
+                    resizeMode={'contain'}
+                    source={clap}
+                    style={{
+                      height: 22,
+                      width: 22,
+                      tintColor: liked ? primaryColor : 'black',
+                      marginLeft: liked ? 0 : 15,
+                    }}
+                  />
+                )}
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={[
+                      styles.smallText,
+                      {
+                        alignSelf: 'center',
+                        opacity: 0.7,
+                        color: 'black',
+
+                        // marginLeft: item.liked ? 0 : 15,
+                        // marginBottom: item.liked ? -5 : 0,
+                      },
+                    ]}>
+                    200{' '}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.smallText,
+
+                      {
+                        // marginTop: item.liked ? -5 : 0,
+                        // marginLeft: item.liked ? 0 : 15,
+                        marginBottom: 1,
+                      },
+                    ]}>
+                    claps
+                  </Text>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={[styles.bottomContainer]}>
+            <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Responses')}
+                activeOpacity={0.5}>
+                <MaterialIcons
+                  name="videocam"
+                  style={{
+                    fontSize: width / 16.45714,
+                    color: 'black',
+                    alignSelf: 'center',
+                  }}
+                />
+              </TouchableOpacity>
+              {/* <MaterialIcons
+                name="reply"
+                color="orange"
+                style={{
+                  fontSize: width / 20.57142,
+                  // position: 'absolute',
+                  // top: '50%',
+                  // left: '50%',
+                }}
+              /> */}
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                  ]}>
+                  100{' '}
+                </Text>
+                <Text style={[styles.smallText]}>views</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={[
+              styles.bottomContainer,
+              {flexDirection: 'row', paddingHorizontal: 10},
+            ]}>
+            <TouchableOpacity
+              onPress={() => {
+                setPaused(!paused);
+                _captureVideo();
+              }}>
+              {/* <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text> */}
+
+              <TouchableOpacity activeOpacity={0.5} style={{marginTop: 2}}>
+                <Entypo
+                  name="camera"
+                  style={{
+                    fontSize: width / 18.70129,
+                    color: 'black',
+                    alignSelf: 'center',
+                  }}
+                />
+              </TouchableOpacity>
+              <Text style={[styles.smallText]}>Accept</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={[
+              styles.bottomContainer,
+              {
+                flexDirection: 'row',
+                alignSelf: 'center',
+              },
+            ]}>
+            <TouchableOpacity onPress={handleShare}>
+              <TouchableOpacity
+                onPress={() => handleShare()}
+                activeOpacity={0.5}>
+                <FontAwesome
+                  name="share"
+                  style={{
+                    fontSize: width / 18.70129,
+                    color: sharing ? primaryColor : 'black',
+                    alignSelf: 'center',
+                  }}
+                />
+              </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                  ]}>
+                  {200}{' '}
+                </Text>
+                <Text style={[styles.smallText, {marginTop: -1}]}>shares</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+      {/*       
       <View
         style={[
           styles.userNameContainer,
@@ -142,8 +584,8 @@ const ProfileScreen = ({
             // actions={[addToPlayList, () => reportRef.current.open()]}
           />
         </View>
-      </View>
-
+      </View> */}
+      {/* 
       <View style={styles.videoContainer}>
         <TouchableWithoutFeedback
           style={styles.videoTouchableContainer}
@@ -184,166 +626,9 @@ const ProfileScreen = ({
           </TouchableWithoutFeedback>
         )}
       </View>
-      <View
-        style={[styles.horizontalContainer, {justifyContent: 'space-between'}]}>
-        <View style={{flexDirection: 'row'}}>
-          <TouchableWithoutFeedback onPress={() => setLiked(!liked)}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 4,
-                // alignSelf: 'center',
-                // backgroundColor: 'tomato',
-              }}>
-              {liked ? (
-                <LottieView
-                  source={require('../../utils/clap.json')}
-                  style={{
-                    height: 32,
-                    width: 32,
-                    backgroundColor: 'transparent',
-                  }}
-                  autoPlay
-                  loop
-                />
-              ) : (
-                <Image
-                  resizeMode={'contain'}
-                  source={clap}
-                  style={{
-                    height: 22,
-                    width: 22,
-                    tintColor: 'black',
-                  }}
-                />
-              )}
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={[
-                    styles.smallText,
-                    {
-                      alignSelf: 'center',
-                      opacity: 0.7,
-                      color: 'black',
+      */}
 
-                      // marginLeft: item.liked ? 0 : 15,
-                      // marginBottom: item.liked ? -5 : 0,
-                    },
-                  ]}>
-                  100{' '}
-                </Text>
-                <Text
-                  style={[
-                    styles.smallText,
-
-                    {
-                      // marginTop: item.liked ? -5 : 0,
-                      // marginLeft: item.liked ? 0 : 15,
-                      marginBottom: 1,
-                    },
-                  ]}>
-                  claps
-                </Text>
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={[styles.bottomContainer]}>
-          <TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Home')}
-              activeOpacity={0.5}>
-              <MaterialIcons
-                name="videocam"
-                style={{
-                  fontSize: width / 16.45714,
-                  color: 'black',
-                  alignSelf: 'center',
-                }}
-              />
-            </TouchableOpacity>
-            {/* <MaterialIcons
-                name="reply"
-                color="orange"
-                style={{
-                  fontSize: width / 20.57142,
-                  // position: 'absolute',
-                  // top: '50%',
-                  // left: '50%',
-                }}
-              /> */}
-            <View style={{flexDirection: 'row'}}>
-              <Text
-                style={[
-                  styles.smallText,
-                  {alignSelf: 'center', opacity: 0.7, color: 'black'},
-                ]}>
-                100{' '}
-              </Text>
-              <Text style={[styles.smallText]}>views</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <View
-          style={[
-            styles.bottomContainer,
-            {flexDirection: 'row', paddingHorizontal: 10},
-          ]}>
-          <TouchableOpacity
-            onPress={() => {
-              _captureVideo();
-            }}>
-            {/* <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text> */}
-
-            <TouchableOpacity activeOpacity={0.5} style={{marginTop: 2}}>
-              <Entypo
-                name="camera"
-                style={{
-                  fontSize: width / 18.70129,
-                  color: 'black',
-                  alignSelf: 'center',
-                }}
-              />
-            </TouchableOpacity>
-            <Text style={[styles.smallText]}>Accept</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={[
-            styles.bottomContainer,
-            {
-              flexDirection: 'row',
-              alignSelf: 'center',
-            },
-          ]}>
-          <TouchableOpacity>
-            <TouchableOpacity onPress={() => handleShare()} activeOpacity={0.5}>
-              <FontAwesome
-                name="share"
-                style={{
-                  fontSize: width / 18.70129,
-                  color: 'black',
-                  alignSelf: 'center',
-                }}
-              />
-            </TouchableOpacity>
-            <View style={{flexDirection: 'row'}}>
-              <Text
-                style={[
-                  styles.smallText,
-                  {alignSelf: 'center', opacity: 0.7, color: 'black'},
-                ]}>
-                200{' '}
-              </Text>
-              <Text style={[styles.smallText, {marginTop: -1}]}>shares</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.userStatsContainer}>
+      {/* <View style={styles.userStatsContainer}>
         <View
           style={{
             justifyContent: 'space-between',
@@ -374,9 +659,9 @@ const ProfileScreen = ({
             ({responses})
           </Text>
         </View>
-      </View>
+      </View> */}
 
-      <View style={{top: height / 10, flex: 1}}>
+      <View style={{flex: 1, marginTop: 5}}>
         <FlatList
           style={{width: width - 20, top: height / 11.67755}}
           showsVerticalScrollIndicator={false}

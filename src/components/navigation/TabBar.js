@@ -6,11 +6,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import primaryColor from '../../components/colors';
+import {primaryColor} from '../../components/colors';
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
 
-const TabBar = ({navigation, params, animateReverse, pauser}) => {
+const TabBar = ({navigation, params, animateReverse, pauser, from}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -21,7 +21,10 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
         }>
         <MaterialCommunityIcons
           name={'fire'}
-          style={{fontSize: 34, color: 'white'}}
+          style={{
+            fontSize: 34,
+            color: from === 'Home' ? primaryColor : 'white',
+          }}
         />
       </TouchableOpacity>
       <TouchableOpacity
@@ -39,12 +42,22 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
           name={'slideshow'}
           style={{
             fontSize: 34,
-            color: 'white',
+            color: from === 'Chellenges' ? primaryColor : 'white',
           }}
         />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
+      <TouchableOpacity
+        onPress={
+          params === 'Home'
+            ? () => {
+                pauser();
+                navigation.navigate('Camera');
+              }
+            : () => {
+                navigation.navigate('Camera');
+              }
+        }>
         <MaterialCommunityIcons
           name={'plus-circle'}
           style={{fontSize: 33, color: 'white'}}
@@ -62,7 +75,13 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
                 navigation.navigate('Chat');
               }
         }>
-        <Entypo name={'message'} style={{fontSize: 28, color: 'white'}} />
+        <Entypo
+          name={'message'}
+          style={{
+            fontSize: 30,
+            color: from === 'Chat' ? primaryColor : 'white',
+          }}
+        />
       </TouchableOpacity>
 
       {/* <TouchableOpacity
@@ -96,7 +115,7 @@ const TabBar = ({navigation, params, animateReverse, pauser}) => {
           name={'bell'}
           style={{
             fontSize: 24,
-            color: 'white',
+            color: from === 'Notifications' ? primaryColor : 'white',
           }}
         />
       </TouchableOpacity>

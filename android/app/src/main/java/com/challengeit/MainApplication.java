@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.azendoo.reactnativesnackbar.SnackbarPackage;
 import cl.json.RNSharePackage;
 import com.facebook.react.ReactInstanceManager;

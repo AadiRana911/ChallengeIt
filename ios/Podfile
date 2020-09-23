@@ -16,6 +16,7 @@ target 'ChallengeIt' do
   pod 'GoogleSignIn', '~> 5.0.2'
   pod 'RNShare', :path => '../node_modules/react-native-share'
 
+  pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
   pod 'RNSnackbar', :path => '../node_modules/react-native-snackbar'
 
   target 'ChallengeItTests' do

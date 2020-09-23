@@ -14,6 +14,7 @@ import Feed from './src/screens/Feed';
 import User from './src/screens/User';
 import SignupScreen from './src/screens/SignupScreen';
 import ViewResponses from './src/screens/ViewResponses';
+import Hashtag from './src/screens/Hashtag';
 import {
   Component1,
   Component2,
@@ -24,6 +25,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persister, store} from './src/redux/store';
 import Responses from './src/screens/Response';
+import Preview from './src/screens/Preview';
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 
@@ -64,6 +66,11 @@ function AppNav() {
         <Stack.Screen
           name="Responses"
           component={Responses}
+          options={{headerShown: false, animationEnabled: true}}
+        />
+        <Stack.Screen
+          name="Hashtag"
+          component={Hashtag}
           options={{headerShown: false, animationEnabled: true}}
         />
         <Stack.Screen
@@ -114,6 +121,11 @@ function AppNav() {
         <Stack.Screen
           name="ViewRes"
           component={ViewResponses}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Preview"
+          component={Preview}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -333,6 +333,8 @@ PODS:
     - React
   - react-native-camera/RN (3.38.0):
     - React
+  - react-native-document-picker (3.5.4):
+    - React
   - react-native-fbsdk (2.0.0):
     - React
     - react-native-fbsdk/Core (= 2.0.0)
@@ -434,12 +436,12 @@ PODS:
   - RNGoogleSignin (4.0.3):
     - GoogleSignIn (~> 5.0.0)
     - React
-  - RNImageCropPicker (0.33.2):
+  - RNImageCropPicker (0.35.0):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.33.2)
+    - RNImageCropPicker/QBImagePickerController (= 0.35.0)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.33.2):
+  - RNImageCropPicker/QBImagePickerController (0.35.0):
     - React-Core
     - React-RCTImage
     - TOCropViewController
@@ -452,6 +454,8 @@ PODS:
   - RNShare (3.7.0):
     - React
   - RNSnackbar (2.2.3):
+    - React
+  - RNSVG (12.1.0):
     - React
   - RNVectorIcons (7.0.0):
     - React
@@ -506,6 +510,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-camera (from `../node_modules/react-native-camera`)
+  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-video (from `../node_modules/react-native-video`)
@@ -533,6 +538,7 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -615,6 +621,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
+  react-native-document-picker:
+    :path: "../node_modules/react-native-document-picker"
   react-native-fbsdk:
     :path: "../node_modules/react-native-fbsdk"
   react-native-safe-area-context:
@@ -669,6 +677,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share"
   RNSnackbar:
     :path: "../node_modules/react-native-snackbar"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -725,6 +735,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
   react-native-camera: 74f48f9b6e198c77e2187b10aca39126971080b2
+  react-native-document-picker: 4921045c5c6c78243010f784eae0a3f4b2af7799
   react-native-fbsdk: 00c15d138bba6d4efa628670886fc58cec858c19
   react-native-safe-area-context: 955ecfce672683b495d9294d2f154a9ad1d9796b
   react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
@@ -746,17 +757,18 @@ SPEC CHECKSUMS:
   RNFBAuth: 09c6ceda66777758b6ffebf464f3226399e5732a
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNGoogleSignin: ccf71ee4b6cfd324fd788a41e457e2043838c0d9
-  RNImageCropPicker: 82f4caef16a37c07cbb0171be95aa5584f99bd9d
+  RNImageCropPicker: 89352ad050ea8dd9bc1728802c477f5b38cd7b4c
   RNPermissions: 477d88d0be7ecb0a7b344e4d5fbb0352de104626
   RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   RNShare: a1d5064df7a0ebe778d001869b3f0a124bf0a491
   RNSnackbar: a08d0d7e1e18c7312cd2b9c6f476211267855bce
+  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   TOCropViewController: 2a1ae1242600b1f2d996fd91a5268b2309a33b5c
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e3975186399d93e706406a4fed850c225a8d6eba
+PODFILE CHECKSUM: cf4303944e0c50d57f713082ea4210587ec4961e
 
 COCOAPODS: 1.9.3

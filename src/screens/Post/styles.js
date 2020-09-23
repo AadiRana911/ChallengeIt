@@ -5,13 +5,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  playButton: {
-    opacity: 0.8,
-    fontSize: 70,
-    color: 'white',
-    position: 'absolute',
-    left: width/2-35,
-    top: height/1.65-35,
-  },
+  // playButton: {
+  //   opacity: 0.8,
+  //   fontSize: 70,
+  //   color: 'white',
+  //   position: 'absolute',
+  //   left: width / 2 - 35,
+  //   top: height / 1.5 - 35,
+  // },
 });
 export default styles;

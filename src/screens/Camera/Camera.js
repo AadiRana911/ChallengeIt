@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {primaryColor} from '../../components/colors';
-
+import CountDown from 'react-native-countdown-component';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker from 'react-native-document-picker';
 
 const Height = Dimensions.get('window').height;
@@ -27,10 +27,12 @@ class Camera extends Component {
       processing: false,
       video: [],
       cameraType: 'back',
+      isFlash: false,
+      uri: '',
     };
   }
 
-  _captureVideo = async () => {
+  pickAudio = async () => {
     try {
       const results = await DocumentPicker.pickMultiple({
         type: [DocumentPicker.types.audio],
@@ -78,16 +80,23 @@ class Camera extends Component {
         <TouchableOpacity
           activeOpacity={1}
           onPress={this.stopRecording.bind(this)}
-          style={[styles.capture, {borderColor: primaryColor}]}>
-          <Text
-            style={{
-              fontSize: 12,
-              color: 'gray',
-              fontWeight: 'bold',
-              color: primaryColor,
-            }}>
-            STOP
-          </Text>
+          style={[styles.capture, {backgroundColor: 'red'}]}>
+          <CountDown
+            until={30}
+            size={20}
+            onFinish={() => {
+              this.setState({recording: false}, () => {
+                this.stopRecording.bind(this);
+                this.props.navigation.navigate('Preview', {
+                  video: this.state.uri,
+                });
+              });
+            }}
+            digitStyle={{backgroundColor: 'transparent'}}
+            digitTxtStyle={{color: 'white'}}
+            timeToShow={['S']}
+            timeLabels={{m: null, s: null}}
+          />
         </TouchableOpacity>
       );
     }
@@ -107,6 +116,11 @@ class Camera extends Component {
             this.camera = ref;
           }}
           style={styles.preview}
+          flashMode={
+            this.state.cameraType === 'back' && this.state.isFlash
+              ? RNCamera.Constants.FlashMode.on
+              : RNCamera.Constants.FlashMode.off
+          }
           type={
             this.state.cameraType === 'back'
               ? RNCamera.Constants.Type.back
@@ -119,7 +133,25 @@ class Camera extends Component {
             buttonNegative: 'Cancel',
           }}
         />
-
+        {this.state.cameraType === 'back' && (
+          <Ionicons
+            style={{
+              position: 'absolute',
+              bottom: Height / 5,
+              right: 15,
+              // flexDirection: 'row',
+              // width: '100%',
+              // justifyContent: 'center',
+              // alignItems: 'center',
+            }}
+            onPress={() => {
+              this.setState({isFlash: !this.state.isFlash});
+            }}
+            name={this.state.isFlash ? 'flash' : 'flash-off'}
+            size={30}
+            color="white"
+          />
+        )}
         <View
           style={{
             position: 'absolute',
@@ -132,26 +164,48 @@ class Camera extends Component {
           <View
             style={{
               width: '35%',
-              alignItems: 'flex-end',
+              alignItems: 'center',
               justifyContent: 'center',
+              // flexDirection: 'row',
             }}>
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => {
-                this._captureVideo();
+                this.pickAudio();
               }}>
-              <Entypo
-                name="folder-music"
+              <FontAwesome
+                name="music"
                 size={27}
                 color="white"
-                style={{marginRight: '7%'}}
+                style={{marginRight: '10%'}}
               />
             </TouchableOpacity>
+
+            {/* <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => {
+                this.setState({
+                  cameraType:
+                    this.state.cameraType === 'back' ? 'front' : 'back',
+                });
+              }}>
+              <Ionicons
+                name="color-filter"
+                size={34}
+                color="white"
+                style={{marginLeft: '10%'}}
+              />
+            </TouchableOpacity> */}
           </View>
 
           <View style={{width: '30%'}}>{button}</View>
 
-          <View style={{width: '35%', flexDirection: 'row'}}>
+          <View
+            style={{
+              width: '35%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => {
@@ -164,11 +218,8 @@ class Camera extends Component {
                 name="ios-camera-reverse-sharp"
                 size={30}
                 color="white"
-                style={{marginLeft: '10%'}}
+                style={{marginLeft: '7%'}}
               />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.pencilContainer}>
-              <Ionicons name="pencil-sharp" size={18} color={primaryColor} />
             </TouchableOpacity>
           </View>
         </View>
@@ -184,7 +235,7 @@ class Camera extends Component {
     const type = `video/${codec}`;
 
     this.setState({processing: false, uri: uri, type: type}, () => {
-      this.props.navigation.navigate('Challenge', {video: uri});
+      this.props.navigation.navigate('Preview', {video: uri});
     });
   }
 

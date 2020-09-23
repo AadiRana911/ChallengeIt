@@ -113,4 +113,11 @@ export default StyleSheet.create({
     top: 0,
     position: 'absolute',
   },
+  gradient: {
+    height: Dimensions.get('window').height / 8,
+    bottom: 12,
+    justifyContent: 'center',
+    position: 'absolute',
+    width: '100%',
+  },
 });

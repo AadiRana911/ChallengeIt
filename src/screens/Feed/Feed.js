@@ -21,7 +21,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {CheckBox} from 'react-native-elements';
 import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 import Share from 'react-native-share';
-
+import DoubleTap from '../../components/DoubleTap';
 import Video from 'react-native-video';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import styles from './styles';
@@ -75,7 +75,8 @@ const Feed = ({navigation, route}) => {
     {
       id: 0,
       vid:
-        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+
       // [paused, setPaused]: useState(false),
       name: '@ Zaheer01',
       hashtag: '#Kiki Challange',
@@ -435,13 +436,24 @@ const Feed = ({navigation, route}) => {
         style={{flex: 1}}
         initialPage={0}>
         {vids.map((item) => (
-          <TouchableOpacity
+          // <TouchableOpacity
+          //   key={item.id}
+          //   style={{flex: 1}}
+          //   activeOpacity={1}
+          //   onPress={() => {
+          //     setPaused(!paused);
+          //   }}>
+
+          <DoubleTap
             key={item.id}
             style={{flex: 1}}
-            activeOpacity={1}
-            onPress={() => {
+            singleTap={() => {
               setPaused(!paused);
-            }}>
+            }}
+            doubleTap={() => {
+              toggleLike(item.id);
+            }}
+            delay={200}>
             <Video
               paused={Number(item.id) !== active || paused}
               source={{uri: item.vid}}
@@ -453,29 +465,60 @@ const Feed = ({navigation, route}) => {
                 handleVideoLoading(item.id);
               }}
             />
+
             <Animated.View
               style={{
                 position: 'absolute',
-                height: height / 4,
+                height: height / 3.5,
                 width: width / 8,
                 bottom: height / 6,
-                left: width - 60,
+                left: width - 62,
 
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
+                // justifyContent: 'space-between',
+                // alignItems: 'center',
                 transform: [{translateX: translateBottomIconsX}],
               }}>
               <OptionsMenu
                 customButton={
                   <Entypo
                     name="dots-three-horizontal"
-                    style={{fontSize: 30, color: 'white', marginVertical: 2}}
+                    style={{
+                      fontSize: 30,
+                      color: 'white',
+                      // marginVertical: 4,
+                      alignSelf: 'center',
+                    }}
                   />
                 }
                 options={['Add to playlist', 'Report Video']}
                 actions={[addToPlayList, () => reportRef.current.open()]}
               />
 
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: -2,
+                }}>
+                <TouchableOpacity>
+                  <Entypo
+                    name="eye"
+                    size={25}
+                    style={{
+                      color: 'white',
+                      alignSelf: 'center',
+                    }}
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 9,
+                    color: 'white',
+                    fontFamily: Fonts.CenturyBold,
+                  }}>
+                  {item.downloads}
+                </Text>
+              </View>
               <TouchableWithoutFeedback
                 onPress={() => {
                   toggleLike(item.id);
@@ -484,7 +527,7 @@ const Feed = ({navigation, route}) => {
                   style={{
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginVertical: 2,
+                    marginTop: 10,
                   }}>
                   {item.liked ? (
                     <LottieView
@@ -528,7 +571,7 @@ const Feed = ({navigation, route}) => {
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginVertical: 2,
+                  marginTop: 10,
                 }}>
                 <TouchableOpacity onPress={() => download()}>
                   <MaterialCommunityIcons
@@ -550,7 +593,7 @@ const Feed = ({navigation, route}) => {
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginVertical: 2,
+                  marginTop: 10,
                 }}>
                 <Entypo
                   name="forward"
@@ -574,9 +617,9 @@ const Feed = ({navigation, route}) => {
             <Animated.View
               style={{
                 position: 'absolute',
-                bottom: height / 10,
-                left: width / 20,
-                width: '80%',
+                bottom: height / 15,
+                // left: width / 20,
+                width: '100%',
                 alignItems: 'center',
                 flexDirection: 'row',
                 transform: [{translateX: translateBottomImageStripX}],
@@ -599,24 +642,32 @@ const Feed = ({navigation, route}) => {
                   resizeMode="cover"
                 />
               </TouchableOpacity> */}
-              <View>
+
+              <LinearGradient
+                colors={['rgba(0,0,0,0.00)', 'transparent']}
+                style={[styles.gradient]}>
                 <Text
                   style={{
                     color: 'white',
                     fontSize: width / 22,
                     fontFamily: Fonts.CenturyBold,
+                    marginLeft: 13,
                   }}>
                   {item.name}
                 </Text>
                 <Text
+                  onPress={() => {
+                    navigation.navigate('Hashtag');
+                  }}
                   style={{
                     color: 'white',
                     fontFamily: Fonts.CenturyRegular,
                     fontSize: width / 30,
+                    marginLeft: 13,
                   }}>
                   {item.hashtag}
                 </Text>
-              </View>
+              </LinearGradient>
             </Animated.View>
             {item.loading && (
               <LottieView
@@ -633,9 +684,10 @@ const Feed = ({navigation, route}) => {
                 loop
               />
             )}
-          </TouchableOpacity>
+          </DoubleTap>
         ))}
       </ViewPager>
+
       {/* <ViewPager
         onPageSelected={(e) => {
           setActive(e.nativeEvent.position);
@@ -669,45 +721,7 @@ const Feed = ({navigation, route}) => {
         })}
       </ViewPager> */}
       {/* {from !== 'user' && ( */}
-      <LinearGradient
-        colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.01)']}
-        style={[styles.switchTextView]}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setIsText1Active(true);
-          }}>
-          <Text
-            style={[
-              styles.textStyle,
-              {
-                marginRight: 10,
-                // color: 'rgba(255,255,255,0.5)',
-                color: 'white',
-                opacity: 0.4,
-              },
-            ]}>
-            Trending
-          </Text>
-        </TouchableWithoutFeedback>
-        {/* <Text style={[styles.textStyle, {color: 'white'}]}>|</Text>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setPaused(true);
-            navigation.navigate('Challenges');
-            setIsText1Active(false);
-          }}>
-          <Text
-            style={[
-              styles.textStyle,
-              {
-                marginLeft: 10,
-                color: 'rgba(255,255,255,0.5)',
-              },
-            ]}>
-            All Challenges
-          </Text>
-        </TouchableWithoutFeedback> */}
-      </LinearGradient>
+
       {/* )} */}
       {/* {from !== 'user' && ( */}
       <ProfileScreen
@@ -1027,6 +1041,7 @@ const Feed = ({navigation, route}) => {
         params={'Home'}
         animateReverse={animateReverse}
         pauser={() => setPaused(true)}
+        from={'Home'}
       />
     </View>
   );

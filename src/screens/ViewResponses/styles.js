@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   userImgStyle: {
-    height: 45,
-    width: 45,
-    borderRadius: 22.5,
+    height: 40,
+    width: 40,
+    borderRadius: 20,
     alignSelf: 'center',
     margin: 5,
   },

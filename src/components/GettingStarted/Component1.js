@@ -70,6 +70,7 @@ const Component1 = ({navigation}) => {
       'email',
       'user_friends',
     ]);
+    console.log(result);
     setRes(results);
 
     if (result.isCancelled) {
@@ -104,7 +105,11 @@ const Component1 = ({navigation}) => {
           }}>
           <View style={{marginBottom: 20}}>
             <Text
-              style={{fontSize: 25, color: primaryColor, fontFamily: Fonts.CenturyBold}}>
+              style={{
+                fontSize: 25,
+                color: primaryColor,
+                fontFamily: Fonts.CenturyBold,
+              }}>
               Sign up
             </Text>
             <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>
@@ -139,16 +144,27 @@ const Component1 = ({navigation}) => {
         <TouchableOpacity
           style={styles.nextButtonStyle}
           onPress={() => navigation.navigate('C2')}>
-          <Text style={{fontSize: 20, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: Fonts.CenturyBold,
+              color: primaryColor,
+            }}>
             Next
           </Text>
         </TouchableOpacity>
         <View style={{flex: 0.25, marginTop: height / 15}}>
           <View style={{flex: 1}}>
-            <Text style = {{fontFamily: Fonts.CenturyRegular}}>Already have an account?</Text>
+            <Text style={{fontFamily: Fonts.CenturyRegular}}>
+              Already have an account?
+            </Text>
             <TouchableOpacity>
               <Text
-                style={{fontSize: 16, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
+                style={{
+                  fontSize: 16,
+                  fontFamily: Fonts.CenturyBold,
+                  color: primaryColor,
+                }}>
                 Sign in
               </Text>
             </TouchableOpacity>

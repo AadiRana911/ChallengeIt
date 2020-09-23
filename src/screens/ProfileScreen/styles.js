@@ -98,9 +98,9 @@ export default styles = StyleSheet.create({
     borderRadius: 3,
   },
   userImgStyle: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
+    height: 50,
+    width: 50,
+    borderRadius: 25,
     alignSelf: 'center',
     margin: 5,
   },

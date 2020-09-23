@@ -33,7 +33,7 @@ import {primaryColor} from '../../components/colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import {CheckBox, Avatar, Badge} from 'react-native-elements';
+import {CheckBox, Avatar, Badge, Header} from 'react-native-elements';
 import Textarea from 'react-native-textarea';
 import Modal from 'react-native-modal';
 import {Divider} from 'react-native-paper';
@@ -47,29 +47,30 @@ import TabBar from '../../components/navigation';
 
 const Challenges = ({navigation}) => {
   useEffect(() => {
-    (async () => {
-      requestMultiple(
-        (Platform.OS = 'android' && [
-          PERMISSIONS.ANDROID.CAMERA,
-          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-        ]),
-      ).then((res) => {
-        if (
-          res[PERMISSIONS.ANDROID.CAMERA] == 'granted' &&
-          res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
-          res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
-        ) {
-        } else {
-          Alert.alert('ChallengeIt', 'Please allow all permission', [
-            {
-              text: 'OPEN SETTINGS',
-              onPress: () => Linking.openSettings(),
-            },
-          ]);
-        }
-      });
-    })();
+    // (async () => {
+    //   requestMultiple(
+    //     (Platform.OS = 'android' && [
+    //       PERMISSIONS.ANDROID.CAMERA,
+    //       PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+    //       PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+    //     ]),
+    //   ).then((res) => {
+    //     if (
+    //       res[PERMISSIONS.ANDROID.CAMERA] == 'granted' &&
+    //       res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
+    //       res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
+    //     ) {
+    //     } else {
+    //       Alert.alert('ChallengeIt', 'Please allow all permission', [
+    //         {
+    //           text: 'OPEN SETTINGS',
+    //           onPress: () => Linking.openSettings(),
+    //         },
+    //       ]);
+    //     }
+    //   });
+    // })();
+    return () => console.log('Component will unmount');
   }, []);
 
   const rbsheet = useRef(null);
@@ -159,7 +160,7 @@ const Challenges = ({navigation}) => {
       claps: '3000',
       views: '300',
       isPaused: true,
-      isMuted: true,
+      isMuted: false,
       shares: '200',
       isVolumeVisible: false,
       liked: false,
@@ -178,7 +179,7 @@ const Challenges = ({navigation}) => {
       views: '300',
       isPaused: true,
       isVolumeVisible: false,
-      isMuted: true,
+      isMuted: false,
       liked: false,
 
       shares: '200',
@@ -197,7 +198,7 @@ const Challenges = ({navigation}) => {
       views: '300',
       isPaused: true,
       isVolumeVisible: false,
-      isMuted: true,
+      isMuted: false,
       liked: false,
       shares: '200',
       isShared: false,
@@ -214,7 +215,7 @@ const Challenges = ({navigation}) => {
       claps: '3000',
       views: '300',
       isPaused: true,
-      isMuted: true,
+      isMuted: false,
       isVolumeVisible: false,
       liked: false,
       shares: '200',
@@ -231,7 +232,7 @@ const Challenges = ({navigation}) => {
       claps: '3000',
       views: '300',
       isPaused: true,
-      isMuted: true,
+      isMuted: false,
       isVolumeVisible: false,
       liked: false,
       shares: '200',
@@ -250,7 +251,7 @@ const Challenges = ({navigation}) => {
       shares: '200',
       isVolumeVisible: false,
       isPaused: true,
-      isMuted: true,
+      isMuted: false,
       liked: false,
       isShared: false,
       isBottom: true,
@@ -295,7 +296,18 @@ const Challenges = ({navigation}) => {
       }),
     );
   };
-
+  const handleVideoMute = (id) => {
+    setVideos(
+      videos.map((item) => {
+        if (item.id === id)
+          return {
+            ...item,
+            isMuted: !item.isMuted,
+          };
+        return item;
+      }),
+    );
+  };
   const animationToggle = () => {
     if (searchState === false) {
       Animated.timing(searchWidth, {
@@ -323,8 +335,75 @@ const Challenges = ({navigation}) => {
             marginHorizontal: 5,
           }}>
           <Image source={dummy} style={styles.userImgStyle} />
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View
+            style={{
+              marginTop: 7,
+              width: '80%',
+            }}>
             <Text
+              style={[
+                // styles.mediumText,
+                {
+                  color: primaryColor,
+                  fontSize: 16,
+                  fontFamily: Fonts.CenturyRegular,
+                  alignSelf: 'flex-start',
+                  width: '100%',
+                },
+              ]}>
+              {item.name}{' '}
+              <Text
+                style={[
+                  // styles.mediumText,
+                  {
+                    fontSize: 16,
+                    color: 'black',
+                    fontFamily: Fonts.CenturyRegular,
+                  },
+                ]}>
+                {item.to === '' ? 'posted a Challenge' : 'Challenged'}
+              </Text>{' '}
+              <Text
+                style={[
+                  // styles.mediumText,
+                  {
+                    color: primaryColor,
+                    fontSize: 16,
+                    fontFamily: Fonts.CenturyBold,
+                    marginBottom: 4,
+                  },
+                ]}>
+                {item.to === '' ? `\n` : `${item.to} \n`}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 5,
+                }}>
+                <Ionicons
+                  name="md-location-sharp"
+                  style={{fontSize: 11, color: 'skyblue', alignSelf: 'center'}}
+                />
+                <Text
+                  style={{
+                    fontSize: 11,
+                    fontFamily: Fonts.century,
+                    color: 'skyblue',
+                  }}>
+                  Giga Mall,DHA Phase 2{'   '}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    fontFamily: Fonts.century,
+                    color: 'black',
+                  }}>
+                  3 Km away{'   '} 4 min ago
+                </Text>
+              </View>
+            </Text>
+
+            {/* <Text
               numberOfLines={3}
               style={[
                 {
@@ -337,22 +416,14 @@ const Challenges = ({navigation}) => {
                 },
               ]}>
               <Text
-                style={[
-                  styles.mediumText,
-                  {
-                    marginTop: 0,
-                    color: primaryColor,
-                    fontSize: 14,
-                    fontFamily: Fonts.CenturyBold,
-                  },
-                ]}>
+                >
                 {item.name}
               </Text>
               <Text
                 style={[
                   styles.mediumText,
                   {
-                    fontSize: 14,
+                    fontSize: 16,
                     color: 'black',
                     fontFamily: Fonts.CenturyRegular,
                   },
@@ -366,7 +437,7 @@ const Challenges = ({navigation}) => {
                     styles.mediumText,
                     {
                       color: primaryColor,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontFamily: Fonts.CenturyBold,
                     },
                   ]}>
@@ -375,19 +446,12 @@ const Challenges = ({navigation}) => {
               }
               <Text
                 style={[styles.mediumText, {fontSize: 10, color: '#696866'}]}>
+                {item.time}
+                {'  '}
                 {item.km}
-                {'   '} {item.time}
-                {'    '}
+                {'   '}
               </Text>
-              <Text
-                style={[styles.mediumText, {fontSize: 10, color: '#696866'}]}
-                onPress={() => {
-                  navigation.navigate('ViewRes');
-                  handleVideoPause(item.id);
-                }}>
-                See Full Thread
-              </Text>
-            </Text>
+            </Text> */}
           </View>
           {/* <TouchableOpacity
             style={{
@@ -422,7 +486,22 @@ const Challenges = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-
+        <Text
+          style={[
+            styles.mediumText,
+            {
+              fontSize: 14,
+              color: primaryColor,
+              alignSelf: 'flex-start',
+              margin: 4,
+            },
+          ]}
+          onPress={() => {
+            navigation.navigate('Hashtag');
+            handleVideoPause(item.id);
+          }}>
+          #Kiki Challenge
+        </Text>
         <View style={[styles.horizontalContainer]}></View>
         <View>
           <DoubleTap
@@ -438,6 +517,7 @@ const Challenges = ({navigation}) => {
               paused={item.isPaused}
               resizeMode="cover"
               repeat
+              muted={item.isMuted}
               style={{
                 height: height / 2,
                 width: '100%',
@@ -446,40 +526,69 @@ const Challenges = ({navigation}) => {
               }}
             />
           </DoubleTap>
+
           <View
             style={{
+              width: '100%',
               position: 'absolute',
               bottom: 5,
-              right: 0,
-              height: height / 20,
-              // backgroundColor: 'rgba(100,100,100,0.4)',
-              // shadowColor: '#000',
-              // shadowOffset: {width: 1, height: 0},
-              // shadowOpacity: 0.3,
-              // shadowRadius: 5,
-              // elevation: 3,
-              // borderRadius: 3,
-              // // borderWidth: 0.5,
-              // // borderColor: '#eee',
               flexDirection: 'row',
-              alignItems: 'center',
-              marginRight: 10,
-              // width: 45,
               justifyContent: 'space-between',
             }}>
-            <Entypo
-              name="eye"
-              size={20}
-              style={{marginRight: 7, color: 'white'}}
-            />
-            <Text
+            <View
+              style={{
+                height: height / 20,
+
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: 7,
+                alignSelf: 'center',
+                // width: 45,
+              }}>
+              <Entypo
+                name="eye"
+                size={25}
+                style={{marginRight: 7, color: 'white'}}
+              />
+              <Text
+                style={[
+                  styles.smallText,
+                  {
+                    marginTop: -3,
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: 14,
+                  },
+                ]}>
+                {item.views}
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                handleVideoMute(item.id);
+              }}
               style={[
-                styles.smallText,
-                {marginTop: -3, color: 'white', fontWeight: 'bold'},
+                {
+                  height: 25,
+                  width: 25,
+                  borderRadius: 12.5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  padding: 2,
+                  marginRight: 7,
+                },
               ]}>
-              {item.views}
-            </Text>
+              <Ionicons
+                name={item.isMuted ? 'volume-mute' : 'volume-high'}
+                color="white"
+                size={20}
+              />
+            </TouchableOpacity>
           </View>
+
           {item.isPaused && (
             <Entypo
               name="controller-play"
@@ -491,36 +600,23 @@ const Challenges = ({navigation}) => {
             />
           )}
         </View>
-
-        {/* {item.isVolumeVisible && (
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              handleVideoMute(item);
-            }}
-            style={[
-              {
-                position: 'absolute',
-                right: Platform.OS === 'ios' ? 80 : 20,
-                bottom: 70,
-                backgroundColor: 'black',
-                height: 22,
-                width: 22,
-                borderRadius: 12,
-                justifyContent: 'center',
-                alignItems: 'center',
-                // right: 50,
-                padding: 2,
-              },
-            ]}>
-            <Ionicons
-              name={item.isMuted ? 'volume-mute' : 'volume-high'}
-              color="white"
-              style={[styles.playButton]}
-            />
-          </TouchableOpacity>
-        )} */}
-
+        <Text
+          style={[
+            styles.mediumText,
+            {
+              fontSize: 14,
+              alignSelf: 'flex-start',
+              marginVertical: 5,
+              fontFamily: Fonts.CenturyRegular,
+              color: primaryColor,
+            },
+          ]}
+          onPress={() => {
+            navigation.navigate('ViewRes');
+            handleVideoPause(item.id);
+          }}>
+          See Full Thread
+        </Text>
         <View
           style={[
             styles.horizontalContainer,
@@ -791,6 +887,7 @@ const Challenges = ({navigation}) => {
             ]}
           />
         </TouchableWithoutFeedback>
+
         <View style={{flexDirection: 'row'}}>
           <Feather
             name="search"
@@ -820,6 +917,7 @@ const Challenges = ({navigation}) => {
           </Animated.View>
         </View>
       </View>
+
       {loading === false ? (
         <ChallengePlaceholder type={'question'} />
       ) : (
@@ -966,7 +1064,7 @@ const Challenges = ({navigation}) => {
       {showAvatar && (
         <View
           style={{
-            height: 240,
+            height: height / 2.7,
             width: '100%',
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
@@ -1030,7 +1128,7 @@ const Challenges = ({navigation}) => {
               <Text
                 style={[
                   styles.mediumText,
-                  {alignSelf: 'center', fontSize: 18, margin: 5},
+                  {alignSelf: 'center', fontSize: 16, margin: 5},
                 ]}>
                 Through a challenge
               </Text>
@@ -1056,7 +1154,7 @@ const Challenges = ({navigation}) => {
               <Text
                 style={[
                   styles.mediumText,
-                  {alignSelf: 'center', fontSize: 18, margin: 5},
+                  {alignSelf: 'center', fontSize: 16, margin: 5},
                 ]}>
                 View Profile
               </Text>
@@ -1515,7 +1613,23 @@ const Challenges = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </RBSheet>
-      <TabBar navigation={navigation} />
+
+      <TabBar
+        navigation={navigation}
+        params={'Chellenges'}
+        from={'Chellenges'}
+        pauser={() =>
+          setVideos(
+            videos.map((item) => {
+              return {
+                ...item,
+                isPaused: true,
+              };
+              return item;
+            }),
+          )
+        }
+      />
     </SafeAreaView>
   );
 };
