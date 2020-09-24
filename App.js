@@ -15,6 +15,9 @@ import User from './src/screens/User';
 import SignupScreen from './src/screens/SignupScreen';
 import ViewResponses from './src/screens/ViewResponses';
 import Hashtag from './src/screens/Hashtag';
+import Settings from './src/screens/Settings';
+import Playlists from './src/screens/Playlists';
+
 import {
   Component1,
   Component2,
@@ -26,6 +29,9 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persister, store} from './src/redux/store';
 import Responses from './src/screens/Response';
 import Preview from './src/screens/Preview';
+import Conversation from './src/screens/Conversation';
+import PlaylistDetail from './src/screens/Playlists/PlaylistDetail';
+import Interests from './src/screens/ChooseInterest';
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 
@@ -89,6 +95,11 @@ function AppNav() {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="Conversation"
+          component={Conversation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="UserScreen"
           component={UserScreen}
           options={{headerShown: false}}
@@ -126,6 +137,26 @@ function AppNav() {
         <Stack.Screen
           name="Preview"
           component={Preview}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Playlists"
+          component={Playlists}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PlaylistDetail"
+          component={PlaylistDetail}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Interests"
+          component={Interests}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

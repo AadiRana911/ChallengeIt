@@ -19,6 +19,8 @@ target 'ChallengeIt' do
   pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
   pod 'RNSnackbar', :path => '../node_modules/react-native-snackbar'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'ChallengeItTests' do
     inherit! :complete
     # Pods for testing

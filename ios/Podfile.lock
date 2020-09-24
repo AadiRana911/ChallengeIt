@@ -333,6 +333,8 @@ PODS:
     - React
   - react-native-camera/RN (3.38.0):
     - React
+  - react-native-cameraroll (4.0.0):
+    - React
   - react-native-document-picker (3.5.4):
     - React
   - react-native-fbsdk (2.0.0):
@@ -431,17 +433,19 @@ PODS:
     - Firebase/Auth (~> 6.30.0)
     - React
     - RNFBApp
+  - RNFS (2.16.6):
+    - React
   - RNGestureHandler (1.7.0):
     - React
   - RNGoogleSignin (4.0.3):
     - GoogleSignIn (~> 5.0.0)
     - React
-  - RNImageCropPicker (0.35.0):
+  - RNImageCropPicker (0.33.2):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.35.0)
+    - RNImageCropPicker/QBImagePickerController (= 0.33.2)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.35.0):
+  - RNImageCropPicker/QBImagePickerController (0.33.2):
     - React-Core
     - React-RCTImage
     - TOCropViewController
@@ -510,6 +514,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-camera (from `../node_modules/react-native-camera`)
+  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -530,6 +535,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
@@ -621,6 +627,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
+  react-native-cameraroll:
+    :path: "../node_modules/@react-native-community/cameraroll"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-fbsdk:
@@ -661,6 +669,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
     :path: "../node_modules/@react-native-firebase/auth"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -735,6 +745,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
   react-native-camera: 74f48f9b6e198c77e2187b10aca39126971080b2
+  react-native-cameraroll: ae0a7c0cc8462508855707ff623b1e789b692865
   react-native-document-picker: 4921045c5c6c78243010f784eae0a3f4b2af7799
   react-native-fbsdk: 00c15d138bba6d4efa628670886fc58cec858c19
   react-native-safe-area-context: 955ecfce672683b495d9294d2f154a9ad1d9796b
@@ -755,9 +766,10 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNFBApp: e4321cad5dd23b43b3b4f0ca060300b9f85cb7a4
   RNFBAuth: 09c6ceda66777758b6ffebf464f3226399e5732a
+  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNGoogleSignin: ccf71ee4b6cfd324fd788a41e457e2043838c0d9
-  RNImageCropPicker: 89352ad050ea8dd9bc1728802c477f5b38cd7b4c
+  RNImageCropPicker: 82f4caef16a37c07cbb0171be95aa5584f99bd9d
   RNPermissions: 477d88d0be7ecb0a7b344e4d5fbb0352de104626
   RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
@@ -769,6 +781,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: cf4303944e0c50d57f713082ea4210587ec4961e
+PODFILE CHECKSUM: b0871c19e7d7e5ec9a9f0b292f6064314309e8f5
 
 COCOAPODS: 1.9.3

@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   cardStyle: {
     flex: 1,
     marginVertical: 1,
-    marginHorizontal: 3,
-    padding: 3,
+    // marginHorizontal: 3,
+    // padding: 3,
     backgroundColor: 'white',
     elevation: 10,
     // shadowColor: '#BDBDBD',

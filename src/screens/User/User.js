@@ -103,7 +103,9 @@ const User = ({params, navigation}) => {
   // return <ProfilePlaceholder />;
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        showsVerticalScrollIndicator={false}>
         <View
           style={{
             flexDirection: 'row',
@@ -136,13 +138,16 @@ const User = ({params, navigation}) => {
                 }}
               />
             }
-            options={['Share Profile', 'Report']}
+            // options={['Share Profile', 'Report']}
+            options={['Playlists', 'Settings']}
             actions={[
               () => {
-                handleShare();
+                // handleShare();
+                navigation.navigate('Playlists');
               },
               () => {
-                alert('Reported');
+                // alert('Reported');
+                navigation.navigate('Settings');
               },
             ]}
           />
@@ -210,6 +215,13 @@ const User = ({params, navigation}) => {
 
           <Text style={[styles.largeText, {marginVertical: 5, color: 'black'}]}>
             Zaheer Hassan
+          </Text>
+          <Text
+            style={[
+              styles.mediumText,
+              {marginVertical: 2, color: 'black', fontSize: 14},
+            ]}>
+            @Zaheer01
           </Text>
           <View
             style={{

@@ -20,7 +20,7 @@ const Chat = ({navigation}) => {
       <View style={styles.mainContianer}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('StudyGuide')}>
+          onPress={() => navigation.navigate('Conversation')}>
           <View style={{flexDirection: 'row'}}>
             {/* // Avatar with mini badge */}
             <View style={{marginLeft: 10}}>

@@ -44,6 +44,7 @@ import DoubleTap from '../../components/DoubleTap';
 import {Fonts} from '../../utils/Fonts';
 import LottieView from 'lottie-react-native';
 import TabBar from '../../components/navigation';
+import Camera from '../Camera';
 
 const Challenges = ({navigation}) => {
   useEffect(() => {
@@ -732,7 +733,7 @@ const Challenges = ({navigation}) => {
             <TouchableOpacity
               onPress={() => {
                 handleVideoPause(item.id);
-                _captureVideo();
+                navigation.navigate('Camera');
               }}>
               {/* <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text> */}
 
@@ -877,6 +878,7 @@ const Challenges = ({navigation}) => {
         }}>
         <TouchableWithoutFeedback
           onPress={() => {
+            setAllVidsPause();
             navigation.navigate('User');
           }}>
           <Image
@@ -1616,19 +1618,9 @@ const Challenges = ({navigation}) => {
 
       <TabBar
         navigation={navigation}
-        params={'Chellenges'}
+        params={'Home'}
         from={'Chellenges'}
-        pauser={() =>
-          setVideos(
-            videos.map((item) => {
-              return {
-                ...item,
-                isPaused: true,
-              };
-              return item;
-            }),
-          )
-        }
+        pauser={() => setAllVidsPause()}
       />
     </SafeAreaView>
   );

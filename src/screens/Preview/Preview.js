@@ -173,6 +173,7 @@ const Preview = ({navigation, route}) => {
             showHistory
           />
         </RBSheet>
+     
       </View>
     </View>
   );

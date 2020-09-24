@@ -35,7 +35,7 @@ const Component4 = ({navigation}) => {
   }, []);
   const handleRegister = () => {
     // confetti.current.start();
-    navigation.navigate('Home');
+    navigation.navigate('Interests');
 
     // const interval = setTimeout(() => {
     // }, 3000);

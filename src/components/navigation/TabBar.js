@@ -16,8 +16,13 @@ const TabBar = ({navigation, params, animateReverse, pauser, from}) => {
       <TouchableOpacity
         onPress={
           params !== 'Home'
-            ? () => navigation.navigate('Home')
-            : () => animateReverse()
+            ? () => {
+                pauser();
+                navigation.navigate('Home');
+              }
+            : () => {
+                navigation.navigate('Home');
+              }
         }>
         <MaterialCommunityIcons
           name={'fire'}

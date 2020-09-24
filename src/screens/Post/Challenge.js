@@ -17,7 +17,7 @@ import primaryColor from '../../components/colors';
 import {Fonts} from '../../utils/Fonts';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import RBSheet from 'react-native-raw-bottom-sheet';
-
+import {Picker} from '@react-native-community/picker';
 const Challenge = ({route, navigation}) => {
   const {height, width} = Dimensions.get('window');
   const [isPrivate, setIsPrivate] = useState(true);
@@ -25,6 +25,17 @@ const Challenge = ({route, navigation}) => {
   const [isChanging, setIsChanging] = useState(false);
   const [pasue, setPause] = useState(true);
   const {video} = route.params;
+  const [interest, setInterest] = useState('');
+  const [categories, setCategories] = useState([
+    {id: 0, name: 'Entertainment'},
+    {id: 1, name: 'Art'},
+    {id: 2, name: 'Talent'},
+    {id: 3, name: 'Religious'},
+    {id: 4, name: 'Technology'},
+    {id: 5, name: 'Skill'},
+    {id: 6, name: 'Food'},
+    {id: 7, name: 'Travelling'},
+  ]);
   const placesRef = useRef(true);
   const [location, setLocation] = useState('Select your Location');
   // const [heigh, setHeigh] = useState(40)
@@ -40,12 +51,12 @@ const Challenge = ({route, navigation}) => {
         />
       </View>
       <View style={{alignItems: 'flex-end'}}>
-        <Entypo name="dots-three-vertical" style={{fontSize: 20}} />
+        {/* <Entypo name="dots-three-vertical" style={{fontSize: 20}} /> */}
       </View>
       <Text
         style={{
           fontSize: 15,
-          fontFamily: Fonts.CenturyRegular,
+          fontFamily: Fonts.CenturyBold,
           marginVertical: 10,
         }}>
         Enter Challenge Name
@@ -70,7 +81,7 @@ const Challenge = ({route, navigation}) => {
         <Text
           style={{
             fontSize: 15,
-            fontFamily: Fonts.CenturyRegular,
+            fontFamily: Fonts.CenturyBold,
             marginVertical: 10,
           }}>
           Challenge Privacy
@@ -96,8 +107,8 @@ const Challenge = ({route, navigation}) => {
             />
             <Text
               style={{
-                color: isPrivate ? '#F03C00' : 'gray',
-                fontFamily: Fonts.CenturyBold,
+                color: isPrivate ? '#F03C00' : 'black',
+                fontFamily: Fonts.CenturyRegular,
               }}>
               {' '}
               Public
@@ -109,12 +120,12 @@ const Challenge = ({route, navigation}) => {
             onPress={() => setIsPrivate(true)}>
             <Fontisto
               name="locked"
-              style={{fontSize: 15, color: !isPrivate ? '#F03C00' : 'gray'}}
+              style={{fontSize: 15, color: !isPrivate ? '#F03C00' : 'black'}}
             />
             <Text
               style={{
-                color: !isPrivate ? '#F03C00' : 'gray',
-                fontFamily: Fonts.CenturyBold,
+                color: !isPrivate ? '#F03C00' : 'black',
+                fontFamily: Fonts.CenturyRegular,
               }}>
               {' '}
               Private
@@ -127,7 +138,7 @@ const Challenge = ({route, navigation}) => {
         <Text
           style={{
             fontSize: 15,
-            fontFamily: Fonts.CenturyRegular,
+            fontFamily: Fonts.CenturyBold,
             marginVertical: 10,
           }}>
           Challenge Type
@@ -145,12 +156,12 @@ const Challenge = ({route, navigation}) => {
             onPress={() => setisOpen(true)}>
             <Fontisto
               name="locked"
-              style={{fontSize: 15, color: isOpen ? '#F03C00' : 'gray'}}
+              style={{fontSize: 15, color: isOpen ? '#F03C00' : 'black'}}
             />
             <Text
               style={{
-                color: isOpen ? '#F03C00' : 'gray',
-                fontFamily: Fonts.CenturyBold,
+                color: isOpen ? '#F03C00' : 'black',
+                fontFamily: Fonts.CenturyRegular,
               }}>
               {' '}
               Open
@@ -166,12 +177,12 @@ const Challenge = ({route, navigation}) => {
             onPress={() => setisOpen(false)}>
             <Entypo
               name="globe"
-              style={{fontSize: 17, color: !isOpen ? '#F03C00' : 'gray'}}
+              style={{fontSize: 17, color: !isOpen ? '#F03C00' : 'black'}}
             />
             <Text
               style={{
-                color: !isOpen ? '#F03C00' : 'gray',
-                fontFamily: Fonts.CenturyBold,
+                color: !isOpen ? '#F03C00' : 'black',
+                fontFamily: Fonts.CenturyRegular,
               }}>
               {' '}
               Specific
@@ -198,8 +209,8 @@ const Challenge = ({route, navigation}) => {
         />
       )}
 
-      <View style={{marginBottom: height / 30}}>
-        <Text style={{fontFamily: Fonts.CenturyRegular, fontSize: 15}}>
+      <View style={{marginBottom: height / 60}}>
+        <Text style={{fontFamily: Fonts.CenturyBold, fontSize: 15}}>
           Location
         </Text>
         <TouchableOpacity
@@ -232,7 +243,57 @@ const Challenge = ({route, navigation}) => {
           </Text>
         </TouchableOpacity>
       </View>
-
+      <Text
+        style={{
+          fontSize: 15,
+          fontFamily: Fonts.CenturyBold,
+          marginBottom: 10,
+        }}>
+        This video relates to
+      </Text>
+      <View
+        style={{
+          width: '99%',
+          padding: 10,
+          backgroundColor: 'white',
+          elevation: 4,
+          borderRadius: 2,
+          marginBottom: 10,
+        }}>
+        <Picker
+          selectedValue={interest}
+          style={{
+            height: 25,
+            color: 'black',
+          }}
+          prompt={'Select Categories'}
+          placeholder={'none'}
+          onValueChange={(value) => {
+            setInterest(value);
+          }}>
+          {categories &&
+            categories.map((item, index) => {
+              switch (index) {
+                case index === '0':
+                  return (
+                    <Picker.Item
+                      key={index}
+                      label={item.name}
+                      value={item.name}
+                    />
+                  );
+                default:
+                  return (
+                    <Picker.Item
+                      key={index}
+                      label={item.name}
+                      value={item.name}
+                    />
+                  );
+              }
+            })}
+        </Picker>
+      </View>
       <TouchableOpacity onPress={() => setPause(!pasue)} activeOpacity={1}>
         <Video
           paused={pasue}

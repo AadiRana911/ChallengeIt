@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import {Fonts} from '../../utils/Fonts';
 import Textarea from 'react-native-textarea';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import OptionsMenu from 'react-native-options-menu';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {CheckBox} from 'react-native-elements';
@@ -39,7 +40,8 @@ import ProfileScreen from '../ProfileScreen';
 import {useFocusEffect} from '@react-navigation/native';
 import {Divider} from 'react-native-elements';
 import LottieView from 'lottie-react-native';
-
+import RNFS from 'react-native-fs';
+import CameraRoll from '@react-native-community/cameraroll';
 const Feed = ({navigation, route}) => {
   const reportRef = useRef(null);
   const playListRef = useRef(null);
@@ -297,41 +299,113 @@ const Feed = ({navigation, route}) => {
       },
     });
   };
-  actualDownload = () => {
-    var date = new Date();
-    setProgress(0);
-    setIsLoading(true);
-    let dirs = RNFetchBlob.fs.dirs;
-    RNFetchBlob.config({
-      // add this option that makes response data to be stored as a file,
-      // this is much more performant.
-      path:
-        dirs.DCIMDir +
-        '/Videos/video_' +
-        Math.floor(date.getTime() + date.getSeconds() / 2) +
-        '.mp4',
-      fileCache: true,
-    })
-      .fetch('GET', vids[0].vid, {
-        //some headers ..
-      })
-      .progress((received, total) => {
-        console.log('progress', received / total);
-        setProgress(received / total);
-      })
-      .then((res) => {
-        console.log(dirs);
-        console.log('The file saved to ', res.path());
-        setProgress(100);
-        setIsLoading(false);
-        ToastAndroid.showWithGravity(
-          'Your file has been downloaded to downloads folder!',
-          ToastAndroid.SHORT,
-          ToastAndroid.BOTTOM,
-        );
-      });
+  /*download file*/
+  const actualDownload = (vid) => {
+    // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+
+    // image
+    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.jpg`;
+    // const formUrl = 'http://img.kaiyanapp.com/c7b46c492261a7c19fa880802afe93b3.png?imageMogr2/quality/60/format/jpg';
+
+    // file
+    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.zip`;
+    // const formUrl = 'http://files.cnblogs.com/zhuqil/UIWebViewDemo.zip';
+
+    // video
+    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.mp4`;
+    // http://gslb.miaopai.com/stream/SnY~bbkqbi2uLEBMXHxGqnNKqyiG9ub8.mp4?vend=miaopai&
+    // https://gslb.miaopai.com/stream/BNaEYOL-tEwSrAiYBnPDR03dDlFavoWD.mp4?vend=miaopai&
+    // const formUrl = 'https://gslb.miaopai.com/stream/9Q5ADAp2v5NHtQIeQT7t461VkNPxvC2T.mp4?vend=miaopai&';
+
+    // audio
+    const downloadDest = `${RNFS.DocumentDirectoryPath}/${
+      (Math.random() * 1000) | 0
+    }.mp4`;
+    // http://wvoice.spriteapp.cn/voice/2015/0902/55e6fc6e4f7b9.mp3
+    const formUrl = vid;
+
+    const options = {
+      fromUrl: formUrl,
+      toFile: downloadDest,
+      background: true,
+      begin: (res) => {
+        console.log('begin', res);
+        console.log('contentLength:', res.contentLength / 1024 / 1024, 'M');
+      },
+      progress: (res) => {
+        let pro = res.bytesWritten / res.contentLength;
+      },
+    };
+    try {
+      const ret = RNFS.downloadFile(options);
+      ret.promise
+        .then((res) => {
+          console.log('success', res);
+
+          console.log('file://' + downloadDest);
+
+          // such as saving a picture
+          CameraRoll.save(downloadDest)
+            .then(() => {
+              ToastAndroid.showWithGravity(
+                'Your file has been downloaded',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+              );
+            })
+            .catch(() => {
+              ToastAndroid.showWithGravity(
+                'Something bad happened',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+              );
+            });
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    } catch (e) {
+      console.log(error);
+    }
   };
-  const download = async () => {
+
+  // const actualDownload = () => {
+  //   let date = new Date();
+  //   setProgress(0);
+  //   setIsLoading(true);
+  //   let dirs = RNFetchBlob.fs.dirs.PictureDir;
+  //   RNFetchBlob.config({
+  //     // add this option that makes response data to be stored as a file,
+  //     // this is much more performant.
+  //     path:
+  //       dirs +
+  //       'video_' +
+  //       Math.floor(date.getTime() + date.getSeconds() / 2) +
+  //       '.mp4',
+  //     fileCache: true,
+  //     useDownloadManager: true,
+  //     notification: true,
+  //   })
+  //     .fetch('GET', vids[0].vid, {
+  //       //some headers ..
+  //     })
+  //     .progress((received, total) => {
+  //       console.log('progress', received / total);
+  //       setProgress(received / total);
+  //     })
+  //     .then((res) => {
+  //       console.log(dirs);
+  //       console.log('The file saved to ', res.path());
+  //       setProgress(100);
+  //       setIsLoading(false);
+  //       ToastAndroid.showWithGravity(
+  //         'Your file has been downloaded to downloads folder!',
+  //         ToastAndroid.SHORT,
+  //         ToastAndroid.BOTTOM,
+  //       );
+  //     });
+  // };
+  const download = async (vid) => {
     try {
       requestMultiple(
         (Platform.OS = 'android' && [
@@ -343,7 +417,7 @@ const Feed = ({navigation, route}) => {
           res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
           res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
         ) {
-          actualDownload();
+          actualDownload(vid);
         } else {
           Alert.alert('ChallengeIt', 'Please allow all permission', [
             {
@@ -461,6 +535,7 @@ const Feed = ({navigation, route}) => {
               volume={0.4}
               resizeMode="cover"
               repeat={true}
+              rate={0.5}
               onReadyForDisplay={() => {
                 handleVideoLoading(item.id);
               }}
@@ -478,6 +553,12 @@ const Feed = ({navigation, route}) => {
                 // alignItems: 'center',
                 transform: [{translateX: translateBottomIconsX}],
               }}>
+              <Ionicons
+                name="checkmark-circle"
+                color="white"
+                size={25}
+                style={{alignSelf: 'center'}}
+              />
               <OptionsMenu
                 customButton={
                   <Entypo
@@ -573,7 +654,7 @@ const Feed = ({navigation, route}) => {
                   justifyContent: 'center',
                   marginTop: 10,
                 }}>
-                <TouchableOpacity onPress={() => download()}>
+                <TouchableOpacity onPress={() => download(item.vid)}>
                   <MaterialCommunityIcons
                     name="download"
                     style={{fontSize: 30, color: 'white'}}
@@ -647,6 +728,9 @@ const Feed = ({navigation, route}) => {
                 colors={['rgba(0,0,0,0.00)', 'transparent']}
                 style={[styles.gradient]}>
                 <Text
+                  onPress={() => {
+                    navigation.navigate('User');
+                  }}
                   style={{
                     color: 'white',
                     fontSize: width / 22,
