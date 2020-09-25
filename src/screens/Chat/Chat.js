@@ -118,8 +118,6 @@ const Chat = ({navigation}) => {
         keyExtractor={(item) => item}
         renderItem={renderItem}
       />
-
-      <TabBar navigation={navigation} params={'Chat'} from={'Chat'} />
     </SafeAreaView>
   );
 };

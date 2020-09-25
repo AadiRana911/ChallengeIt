@@ -17,6 +17,7 @@ import ViewResponses from './src/screens/ViewResponses';
 import Hashtag from './src/screens/Hashtag';
 import Settings from './src/screens/Settings';
 import Playlists from './src/screens/Playlists';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 import {
   Component1,
@@ -32,6 +33,7 @@ import Preview from './src/screens/Preview';
 import Conversation from './src/screens/Conversation';
 import PlaylistDetail from './src/screens/Playlists/PlaylistDetail';
 import Interests from './src/screens/ChooseInterest';
+import BottomTab from './src/navigation/BottomTab';
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 
@@ -64,11 +66,11 @@ function AppNav() {
           component={Component4}
           options={{headerShown: false, animationEnabled: true}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Home"
           component={Feed}
           options={{headerShown: false, animationEnabled: true}}
-        />
+        /> */}
         <Stack.Screen
           name="Responses"
           component={Responses}
@@ -79,21 +81,21 @@ function AppNav() {
           component={Hashtag}
           options={{headerShown: false, animationEnabled: true}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Notifications"
           component={NotificationScreen}
           options={{headerShown: false, animationEnabled: true}}
-        />
+        /> */}
         <Stack.Screen
           name="Add"
           component={AddScreen}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Chat"
           component={Chat}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="Conversation"
           component={Conversation}
@@ -104,16 +106,16 @@ function AppNav() {
           component={UserScreen}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Challenges"
           component={Challenges}
           options={{headerShown: false}}
-        />
-        <Stack.Screen
+        /> */}
+        {/* <Stack.Screen
           name="Camera"
           component={Camera}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="User"
           component={User}
@@ -159,6 +161,14 @@ function AppNav() {
           component={Interests}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Home" options={{headerShown: false}}>
+          {(props) => <BottomTab {...props} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

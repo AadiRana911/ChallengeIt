@@ -19,7 +19,7 @@ import Textarea from 'react-native-textarea';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import OptionsMenu from 'react-native-options-menu';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {CheckBox} from 'react-native-elements';
+import {CheckBox, Header} from 'react-native-elements';
 import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 import Share from 'react-native-share';
 import DoubleTap from '../../components/DoubleTap';
@@ -532,10 +532,8 @@ const Feed = ({navigation, route}) => {
               paused={Number(item.id) !== active || paused}
               source={{uri: item.vid}}
               style={styles.mediaPlayer}
-              volume={0.4}
               resizeMode="cover"
               repeat={true}
-              rate={0.5}
               onReadyForDisplay={() => {
                 handleVideoLoading(item.id);
               }}
@@ -808,7 +806,7 @@ const Feed = ({navigation, route}) => {
 
       {/* )} */}
       {/* {from !== 'user' && ( */}
-      <ProfileScreen
+      {/* <ProfileScreen
         translateScreen={translateXScreen}
         translateXImg={translateXImg}
         translateYImg={translateYImg}
@@ -820,7 +818,7 @@ const Feed = ({navigation, route}) => {
         navigation={navigation}
         resizeMode="cover"
         repeat={true}
-      />
+      /> */}
       {/* )} */}
       <GestureRecognizer
         style={{
@@ -841,7 +839,11 @@ const Feed = ({navigation, route}) => {
             transform: [{translateX: translateXStrip}],
           }}
         />
-        <TouchableOpacity onPress={animate}>
+        <TouchableOpacity
+          onPress={() => {
+            setPaused(true);
+            navigation.navigate('ProfileScreen');
+          }}>
           <Animated.Image
             source={require('../../assets/images/samplechallenger.jpg')}
             style={{
@@ -1120,13 +1122,13 @@ const Feed = ({navigation, route}) => {
           </Text>
         </TouchableOpacity>
       </RBSheet>
-      <TabBar
+      {/* <TabBar
         navigation={navigation}
         params={'Home'}
         animateReverse={animateReverse}
         pauser={() => setPaused(true)}
         from={'Home'}
-      />
+      /> */}
     </View>
   );
 };

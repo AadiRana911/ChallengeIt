@@ -113,12 +113,6 @@ const Notification = ({navigation}) => {
         keyExtractor={(item) => item}
         renderItem={renderItem}
       />
-
-      <TabBar
-        navigation={navigation}
-        params={'Notification'}
-        from={'Notifications'}
-      />
     </SafeAreaView>
   );
 };

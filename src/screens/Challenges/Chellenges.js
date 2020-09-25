@@ -255,7 +255,6 @@ const Challenges = ({navigation}) => {
       isMuted: false,
       liked: false,
       isShared: false,
-      isBottom: true,
     },
   ]);
   const toggleLike = (id) => {
@@ -312,7 +311,7 @@ const Challenges = ({navigation}) => {
   const animationToggle = () => {
     if (searchState === false) {
       Animated.timing(searchWidth, {
-        toValue: width / 1.1,
+        toValue: width / 1.5,
         timing: 15000,
       }).start(() => {
         setSearchState(true);
@@ -608,6 +607,7 @@ const Challenges = ({navigation}) => {
               fontSize: 14,
               alignSelf: 'flex-start',
               marginVertical: 5,
+              marginLeft: 5,
               fontFamily: Fonts.CenturyRegular,
               color: primaryColor,
             },
@@ -621,7 +621,7 @@ const Challenges = ({navigation}) => {
         <View
           style={[
             styles.horizontalContainer,
-            {justifyContent: 'space-between'},
+            {justifyContent: 'space-between', marginHorizontal: 4},
           ]}>
           <View style={{flexDirection: 'row'}}>
             <TouchableWithoutFeedback onPress={() => toggleLike(item.id)}>
@@ -784,8 +784,6 @@ const Challenges = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-
-        {item.isBottom && <View style={{marginVertical: 30}} />}
       </View>
     );
   };
@@ -870,55 +868,60 @@ const Challenges = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <View
+      <Header
+        backgroundColor={primaryColor}
+        leftComponent={
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setAllVidsPause();
+              navigation.navigate('User');
+            }}>
+            <Image
+              source={dummy}
+              style={[
+                styles.userImgStyle,
+                {height: 30, width: 30, borderRadius: 15},
+              ]}
+            />
+          </TouchableWithoutFeedback>
+        }
+        rightComponent={
+          <View style={{flexDirection: 'row'}}>
+            <Feather
+              name="search"
+              style={{
+                alignSelf: 'center',
+                fontSize: 26,
+                color: 'white',
+                // marginHorizontal: width / 30,
+              }}
+              onPress={() => {
+                animationToggle();
+              }}
+            />
+            <Animated.View style={{width: searchWidth}}>
+              <TextInput
+                placeholder="Search..."
+                placeholderTextColor={'white'}
+                style={{
+                  width: '70%',
+                  borderRadius: 3,
+                  borderBottomWidth: searchState ? 0.8 : 0,
+                  borderColor: searchState ? '#ddd' : '#fff',
+                  paddingLeft: 10,
+                  color: 'white',
+                }}
+              />
+            </Animated.View>
+          </View>
+        }
+      />
+      {/* <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           backgroundColor: primaryColor,
-        }}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setAllVidsPause();
-            navigation.navigate('User');
-          }}>
-          <Image
-            source={dummy}
-            style={[
-              styles.userImgStyle,
-              {height: 30, width: 30, borderRadius: 15},
-            ]}
-          />
-        </TouchableWithoutFeedback>
-
-        <View style={{flexDirection: 'row'}}>
-          <Feather
-            name="search"
-            style={{
-              alignSelf: 'center',
-              fontSize: 26,
-              color: 'white',
-              marginHorizontal: width / 30,
-            }}
-            onPress={() => {
-              animationToggle();
-            }}
-          />
-          <Animated.View style={{width: searchWidth}}>
-            <TextInput
-              placeholder="Search..."
-              placeholderTextColor={'white'}
-              style={{
-                width: '80%',
-                borderRadius: 3,
-                borderBottomWidth: searchState ? 0.8 : 0,
-                borderColor: searchState ? '#ddd' : '#fff',
-                paddingLeft: 10,
-                color: 'white',
-              }}
-            />
-          </Animated.View>
-        </View>
-      </View>
+        }}></View> */}
 
       {loading === false ? (
         <ChallengePlaceholder type={'question'} />
@@ -1616,12 +1619,12 @@ const Challenges = ({navigation}) => {
         </TouchableOpacity>
       </RBSheet>
 
-      <TabBar
+      {/* <TabBar
         navigation={navigation}
         params={'Home'}
         from={'Chellenges'}
         pauser={() => setAllVidsPause()}
-      />
+      /> */}
     </SafeAreaView>
   );
 };

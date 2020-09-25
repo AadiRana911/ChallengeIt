@@ -1226,10 +1226,10 @@
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
-"@react-navigation/material-bottom-tabs@^5.2.16":
-  version "5.2.16"
-  resolved "https://registry.yarnpkg.com/@react-navigation/material-bottom-tabs/-/material-bottom-tabs-5.2.16.tgz#807881723fee962ceb89dc1768b7431af7271529"
-  integrity sha512-Oiz28xU19eDnZHJypF62BFKDii06yMQ/jXCe0EQICH+gcOUBkDZuFY4bC+6ZJYnEv9IqU1NcIxtb3OI4EgwwZA==
+"@react-navigation/material-bottom-tabs@^5.2.17":
+  version "5.2.17"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-bottom-tabs/-/material-bottom-tabs-5.2.17.tgz#e7da9de4bb64c35304a2d6eaf0af485db6bb10bb"
+  integrity sha512-fpmP7k108XIKTrCCrfCTcwqmUwqTiLUeZ3BA3Xd1aFcI1/pvjN9RpyYMLSX76rUNmwuDvaMukHBPWUTshCOMIQ==
 
 "@react-navigation/native@^5.7.3":
   version "5.7.3"
