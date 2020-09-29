@@ -19,12 +19,18 @@ import Settings from './src/screens/Settings';
 import Playlists from './src/screens/Playlists';
 import ProfileScreen from './src/screens/ProfileScreen';
 
-import {
-  Component1,
-  Component2,
-  Component3,
-  Component4,
-} from './src/components/GettingStarted';
+// import {
+//   Component1,
+//   Component2,
+//   Component3,
+//   Component4,
+// } from './src/components/GettingStarted';
+import Component1 from './src/components/GettingStarted/Component1';
+import Component2 from './src/components/GettingStarted/Component2';
+
+import Component3 from './src/components/GettingStarted/Component3';
+import Component4 from './src/components/GettingStarted/Component4';
+
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persister, store} from './src/redux/store';
@@ -34,17 +40,24 @@ import Conversation from './src/screens/Conversation';
 import PlaylistDetail from './src/screens/Playlists/PlaylistDetail';
 import Interests from './src/screens/ChooseInterest';
 import BottomTab from './src/navigation/BottomTab';
+import Signin from './src/screens/Signin';
 
 LogBox.ignoreLogs(['Warning: ...']);
+
 const Stack = createStackNavigator();
 
 function AppNav() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Signup">
+      <Stack.Navigator initialRouteName="Interests">
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
+          options={{headerShown: false, animationEnabled: true}}
+        />
+        <Stack.Screen
+          name="Signin"
+          component={Signin}
           options={{headerShown: false, animationEnabled: true}}
         />
         <Stack.Screen

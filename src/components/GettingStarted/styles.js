@@ -10,6 +10,14 @@ const styles = StyleSheet.create({
     paddingVertical: height / 20,
     justifyContent: 'space-around',
   },
+  imageStyle: {
+    height: 90,
+    width: 90,
+    borderRadius: 45,
+
+    // borderWidth: 3,
+    // borderColor: '#fff',
+  },
   gender: {
     height: 100,
     width: 100,

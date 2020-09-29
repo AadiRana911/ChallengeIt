@@ -6,40 +6,75 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {Fonts} from '../../utils/Fonts';
 import ImagePicker from 'react-native-image-crop-picker';
 import {primaryColor} from '../colors';
-import ConfettiCannon from 'react-native-confetti-cannon';
 
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import styles from './styles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useSafeArea} from 'react-native-safe-area-context';
-const Component4 = ({navigation}) => {
-  const [canIMove, setCanIMove] = useState(false);
+import Snackbar from 'react-native-snackbar';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+//redux
+import {connect} from 'react-redux';
+import {registerUser} from '../../redux/actions/auth';
+
+const Component4 = ({navigation, route, registerUser}) => {
   const [image, setImage] = useState('');
-  const [interval, setInterv] = useState(null);
-  const confetti = useRef(null);
   const {height} = Dimensions.get('window');
+  const [loading, setLoading] = useState(false);
 
   const pickImage = () => {
     ImagePicker.openPicker({mediaType: 'photo'}).then((image) => {
       setImage(image.path);
     });
   };
-  useEffect(() => {
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-  const handleRegister = () => {
-    // confetti.current.start();
-    navigation.navigate('Interests');
 
-    // const interval = setTimeout(() => {
-    // }, 3000);
-    // setInterv(interval);
+  const handleRegister = () => {
+    const {uname, email, gender, fname, lname, password} = route.params;
+
+    if (image === '') {
+      Snackbar.show({
+        text: 'Kindly choose profile picture',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      const time = new Date();
+      setLoading(true);
+      var formdata = new FormData();
+      formdata.append('email', email);
+      formdata.append('username', uname);
+      formdata.append('fname', fname);
+      formdata.append('lname', lname);
+      formdata.append('gender', gender);
+      formdata.append('pass', password);
+      // formdata.append('image', {
+      //   uri: image,
+      //   type: 'image/jpeg',
+      //   name: 'image_' + Math.floor(time.getTime() + time.getSeconds() / 2),
+      // });
+      // return console.log(formdata);
+      new Promise((rsl, rej) => {
+        registerUser(formdata, rsl, rej);
+      })
+        .then((res) => {
+          Snackbar.show({
+            text: res,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+          navigation.navigate('Interests');
+          setLoading(false);
+        })
+        .catch((errorData) => {
+          setLoading(false);
+          Snackbar.show({
+            text: errorData,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+        });
+    }
   };
 
   return (
@@ -47,7 +82,6 @@ const Component4 = ({navigation}) => {
       style={{flex: 1, backgroundColor: 'white'}}
       contentContainerStyle={{flexGrow: 1, backgroundColor: 'green'}}>
       <View style={styles.container}>
-        <ConfettiCannon count={200} origin={{x: -10, y: 0}} ref={confetti} />
         <View
           style={{
             flex: 0.25,
@@ -67,25 +101,75 @@ const Component4 = ({navigation}) => {
               tap to upload your profile picture
             </Text>
           </View>
-          {image === '' ? (
+
+          <View
+            style={{
+              shadowColor: '#000',
+              shadowOffset: {width: 10, height: 10},
+              shadowOpacity: 0.1,
+              shadowRadius: 5,
+              elevation: 10,
+              borderRadius: 70,
+              borderWidth: 3,
+              borderColor: '#fff',
+              alignSelf: 'center',
+            }}>
+            {image === '' ? (
+              <TouchableOpacity
+                style={styles.imageStyle}
+                onPress={() => {
+                  pickImage();
+                }}>
+                <Image
+                  source={{
+                    uri:
+                      'https://st3.depositphotos.com/4111759/13425/v/450/depositphotos_134255626-stock-illustration-avatar-male-profile-gray-person.jpg ',
+                  }}
+                  style={[styles.imageStyle, {borderColor: 'white'}]}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.imageStyle}
+                onPress={() => {
+                  pickImage();
+                }}>
+                <Image
+                  source={{uri: image}}
+                  style={[styles.imageStyle, {borderColor: 'white'}]}
+                />
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
-              style={styles.gender}
-              onPress={() => {
-                pickImage();
+              style={{
+                position: 'absolute',
+                top: 3,
+                color: primaryColor,
+                right: -4,
+                backgroundColor: 'white',
+                borderRadius: 10,
+                padding: 4,
+                height: 20,
+                width: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                elevation: 2,
               }}
-            />
-          ) : (
-            <TouchableOpacity
-              style={styles.gender}
               onPress={() => {
                 pickImage();
               }}>
-              <Image
-                source={{uri: image}}
-                style={[styles.gender, {borderWidth: 2, borderColor: 'white'}]}
+              <MaterialCommunityIcons
+                name="pencil"
+                style={{
+                  alignSelf: 'center',
+                  fontSize: 14,
+                  color: 'black',
+
+                  color: primaryColor,
+                }}
               />
             </TouchableOpacity>
-          )}
+          </View>
         </View>
 
         <View
@@ -107,19 +191,25 @@ const Component4 = ({navigation}) => {
             ]}></View>
         </View>
         <TouchableOpacity
+          disabled={loading}
           style={styles.nextButtonStyle}
           onPress={() => handleRegister()}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontFamily: Fonts.CenturyBold,
-              color: primaryColor,
-            }}>
-            Register
-          </Text>
+          {loading ? (
+            <ActivityIndicator animating color={primaryColor} size={25} />
+          ) : (
+            <Text
+              style={{
+                fontSize: 20,
+                fontFamily: Fonts.CenturyBold,
+                color: primaryColor,
+              }}>
+              Register
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
   );
 };
-export {Component4};
+
+export default connect(null, {registerUser})(Component4);

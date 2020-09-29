@@ -1,12 +1,8 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import {Component1, Component2, Component3} from '../../components/GettingStarted'
+import React from 'react';
+import {View, Text} from 'react-native';
+import Component1 from '../../components/GettingStarted/Component1';
 const SignupScreen = ({navigation}) => {
-    return (
-        <View style = {{flex: 1}}>
-            <Component1 navigation = {navigation}/>
-        </View>
-    )
-}
+  return <Component1 navigation={navigation} />;
+};
 
-export default SignupScreen
+export default SignupScreen;

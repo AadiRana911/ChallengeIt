@@ -125,6 +125,7 @@ const User = ({params, navigation}) => {
         contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
         <View style={styles.head}>
+          
           <View
             style={{
               shadowColor: '#000',

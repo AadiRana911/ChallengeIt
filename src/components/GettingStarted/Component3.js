@@ -6,15 +6,82 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {Fonts} from '../../utils/Fonts';
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import styles from './styles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-const Component3 = ({navigation}) => {
+import Snackbar from 'react-native-snackbar';
+//redux
+import {connect} from 'react-redux';
+import {checkUsername} from '../../redux/actions/auth';
+
+const Component3 = ({
+  navigation,
+  route,
+  checkUsername,
+  isSuccess,
+  isLoading,
+}) => {
   const [canIMove, setCanIMove] = useState(false);
   const {height} = Dimensions.get('window');
+  const [fname, setFname] = useState('');
+  const [lname, setLname] = useState('');
+  const [uname, setUname] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleuser = () => {
+    const {email, gender} = route.params;
+    if (fname === '') {
+      Snackbar.show({
+        text: 'Kindly Enter First Name',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (lname === '') {
+      Snackbar.show({
+        text: 'Kindly Enter Last Name',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (uname === '') {
+      Snackbar.show({
+        text: 'Kindly Enter Username',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (password === '') {
+      Snackbar.show({
+        text: 'Kindly Enter Password',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      setLoading(true);
+      var formdata = new FormData();
+      formdata.append('username', uname);
+      new Promise((rsl, rej) => {
+        checkUsername(formdata, rsl, rej);
+      })
+        .then((res) => {
+          setLoading(false);
+          navigation.navigate('C4', {
+            uname,
+            email,
+            gender,
+            fname,
+            lname,
+            password,
+          });
+        })
+        .catch((errorData) => {
+          setLoading(false);
+          Snackbar.show({
+            text: errorData,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+        });
+    }
+  };
   return (
     <KeyboardAwareScrollView
       style={{backgroundColor: '#F7F9FC'}}
@@ -43,16 +110,39 @@ const Component3 = ({navigation}) => {
             </Text>
           </View>
           <View>
-            <TextInput style={styles.textInputStyle} placeholder="First Name" />
-            <TextInput style={styles.textInputStyle} placeholder="Last Name" />
+            <TextInput
+              style={styles.textInputStyle}
+              placeholder="First Name"
+              value={fname}
+              onChangeText={(e) => {
+                setFname(e);
+              }}
+            />
+            <TextInput
+              style={styles.textInputStyle}
+              placeholder="Last Name"
+              value={lname}
+              onChangeText={(e) => {
+                setLname(e);
+              }}
+            />
             <TextInput
               style={[styles.textInputStyle]}
               placeholder="User Name"
+              value={uname}
+              onChangeText={(e) => {
+                setUname(e);
+              }}
             />
             <View>
               <TextInput
                 style={[styles.textInputStyle]}
                 placeholder="Password"
+                secureTextEntry
+                value={password}
+                onChangeText={(e) => {
+                  setPassword(e);
+                }}
               />
 
               {/* <Text style={{color: primaryColor, fontFamily: Fonts.CenturyRegular}}>
@@ -95,18 +185,23 @@ const Component3 = ({navigation}) => {
         </View>
         <TouchableOpacity
           style={styles.nextButtonStyle}
-          onPress={() => navigation.navigate('C4')}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontFamily: Fonts.CenturyBold,
-              color: primaryColor,
-            }}>
-            Next
-          </Text>
+          onPress={() => handleuser()}>
+          {loading ? (
+            <ActivityIndicator animating size={25} color={primaryColor} />
+          ) : (
+            <Text
+              style={{
+                fontSize: 20,
+                fontFamily: Fonts.CenturyBold,
+                color: primaryColor,
+              }}>
+              Next
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
   );
 };
-export {Component3};
+
+export default connect(null, {checkUsername})(Component3);

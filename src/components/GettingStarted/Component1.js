@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {primaryColor} from '../colors';
 import {Fonts} from '../../utils/Fonts';
@@ -17,6 +18,9 @@ import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import Snackbar from 'react-native-snackbar';
+//redux
+import {connect} from 'react-redux';
+import {checkEmail} from '../../redux/actions/auth';
 
 GoogleSignin.configure({
   webClientId:
@@ -29,10 +33,12 @@ GoogleSignin.configure({
   // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
 });
 
-const Component1 = ({navigation}) => {
+const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
   const [canIMove, setCanIMove] = useState(false);
   const [results, setRes] = useState(null);
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const {height} = Dimensions.get('window');
 
   //Google sign
@@ -124,7 +130,23 @@ const Component1 = ({navigation}) => {
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
-      navigation.navigate('C2');
+      setLoading(true);
+      var formdata = new FormData();
+      formdata.append('email', email);
+      new Promise((rsl, rej) => {
+        checkEmail(formdata, rsl, rej);
+      })
+        .then((res) => {
+          setLoading(false);
+          navigation.navigate('C2', {email});
+        })
+        .catch((errorData) => {
+          setLoading(false);
+          Snackbar.show({
+            text: errorData,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+        });
     }
   };
   return (
@@ -181,17 +203,23 @@ const Component1 = ({navigation}) => {
         </View>
         <TouchableOpacity
           activeOpacity={0.7}
+          disabled={loading}
           style={styles.nextButtonStyle}
           onPress={() => handleEmail()}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontFamily: Fonts.CenturyBold,
-              color: primaryColor,
-            }}>
-            Next
-          </Text>
+          {loading ? (
+            <ActivityIndicator animating color={primaryColor} size={25} />
+          ) : (
+            <Text
+              style={{
+                fontSize: 20,
+                fontFamily: Fonts.CenturyBold,
+                color: primaryColor,
+              }}>
+              Next
+            </Text>
+          )}
         </TouchableOpacity>
+
         <View style={{flex: 0.25, marginTop: height / 15}}>
           <View style={{flex: 1}}>
             <Text style={{fontFamily: Fonts.CenturyRegular}}>
@@ -251,4 +279,5 @@ const Component1 = ({navigation}) => {
     </KeyboardAwareScrollView>
   );
 };
-export {Component1};
+
+export default connect(null, {checkEmail})(Component1);

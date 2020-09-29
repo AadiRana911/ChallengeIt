@@ -9,17 +9,36 @@ import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
-import {Fonts} from '../../utils/Fonts'
+import {Fonts} from '../../utils/Fonts';
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
-const Component2 = ({navigation}) => {
+import Snackbar from 'react-native-snackbar';
+
+const Component2 = ({navigation, route}) => {
   const {height} = Dimensions.get('window');
   const [male, setMale] = useState(false);
   const [female, setFemale] = useState(false);
   const [transgender, setTrans] = useState(false);
-
+  const handleGender = () => {
+    const {email} = route.params;
+    if (male) {
+      let gender = 'male';
+      navigation.navigate('C3', {gender, email});
+    } else if (female) {
+      let gender = 'female';
+      navigation.navigate('C3', {gender, email});
+    } else if (transgender) {
+      let gender = 'transgender';
+      navigation.navigate('C3', {gender, email});
+    } else {
+      Snackbar.show({
+        text: 'Kindly choose your gender',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    }
+  };
   return (
     <SafeAreaView
       style={{
@@ -39,10 +58,17 @@ const Component2 = ({navigation}) => {
           />
         </View>
         <View style={{margin: 15}}>
-          <Text style={{fontSize: 25, color: primaryColor, fontFamily: Fonts.CenturyBold}}>
+          <Text
+            style={{
+              fontSize: 25,
+              color: primaryColor,
+              fontFamily: Fonts.CenturyBold,
+            }}>
             Sign up
           </Text>
-          <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>Please choose your gender</Text>
+          <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>
+            Please choose your gender
+          </Text>
         </View>
         <View style={style.genderContainer}>
           <TouchableOpacity
@@ -114,8 +140,13 @@ const Component2 = ({navigation}) => {
         </View>
         <TouchableOpacity
           style={style.nextButtonStyle}
-          onPress={() => navigation.navigate('C3')}>
-          <Text style={{fontSize: 20, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
+          onPress={() => handleGender()}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: Fonts.CenturyBold,
+              color: primaryColor,
+            }}>
             Next
           </Text>
         </TouchableOpacity>
@@ -172,4 +203,4 @@ const style = StyleSheet.create({
     width: '60%',
   },
 });
-export {Component2};
+export default Component2;

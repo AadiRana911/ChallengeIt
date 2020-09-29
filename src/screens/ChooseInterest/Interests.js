@@ -4,25 +4,43 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import cstyles from '../../components/cstyles';
 import {Fonts} from '../../utils/Fonts';
 import {primaryColor} from '../../components/colors';
-function Interests({navigation}) {
-  const [interests, setInterests] = useState([
-    {id: 0, name: 'Entertainment'},
-    {id: 1, name: 'Art'},
-    {id: 2, name: 'Talent'},
-    {id: 3, name: 'Religious'},
-    {id: 4, name: 'Technology'},
-    {id: 5, name: 'Skill'},
-    {id: 6, name: 'Food'},
-    {id: 7, name: 'Travelling'},
-  ]);
-  const [selected, setSelected] = useState([]);
+import {Loading} from '../../components/Loading';
+import Snackbar from 'react-native-snackbar';
+//redux
+import {connect} from 'react-redux';
+import {getInterests} from '../../redux/actions/app';
 
+function Interests({navigation, getInterests, interests}) {
+  const [selected, setSelected] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [localInterests, setInterests] = useState([]);
   selectInterest = (interest) => {
     setSelected([...selected, interest]);
-    const newInterest = interests.filter((item) => interest.id !== item.id);
+    const newInterest = localInterests.filter(
+      (item) => interest.Id !== item.Id,
+    );
     setInterests(newInterest);
   };
+  useEffect(() => {
+    setLoading(true);
+    new Promise((rsl, rej) => {
+      getInterests(rsl, rej);
+    })
+      .then((res) => {
+        setInterests(interests);
+        console.log('Local', res);
+        setLoading(false);
+        // navigation.navigate('Home');
+      })
+      .catch((errorData) => {
+        setLoading(false);
 
+        Snackbar.show({
+          text: errorData,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      });
+  }, []);
   return (
     <Fragment>
       <SafeAreaView style={[cstyles.container, {backgroundColor: 'white'}]}>
@@ -45,7 +63,7 @@ function Interests({navigation}) {
                       // onPress={() => deSelectInterest(item)}
                     >
                       <Text style={cstyles.gradientButtonText}>
-                        {item.name}
+                        {item.Interest}
                       </Text>
                     </TouchableOpacity>
                   ))}
@@ -55,13 +73,13 @@ function Interests({navigation}) {
             <View style={[cstyles.container, cstyles.mt_15]}>
               <Text style={styles.boldText}>Interests to Select..</Text>
               <View style={[cstyles.row, styles.buttonContainer]}>
-                {interests &&
-                  interests.map((interest) => (
+                {localInterests &&
+                  localInterests.map((interest) => (
                     <TouchableOpacity
-                      key={interest}
+                      key={interests.Id}
                       style={styles.buttonStyle}
                       onPress={() => selectInterest(interest)}>
-                      <Text>{interest.name}</Text>
+                      <Text>{interest.Interest}</Text>
                     </TouchableOpacity>
                   ))}
               </View>
@@ -87,12 +105,18 @@ function Interests({navigation}) {
             </TouchableOpacity>
           )}
         </ScrollView>
+        <Loading visible={loading} />
       </SafeAreaView>
     </Fragment>
   );
 }
-
-export default Interests;
+const mapStateToProps = (state) => {
+  const {interests} = state.app;
+  return {
+    interests,
+  };
+};
+export default connect(mapStateToProps, {getInterests})(Interests);
 
 const styles = StyleSheet.create({
   input: {
