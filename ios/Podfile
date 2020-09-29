@@ -21,6 +21,8 @@ target 'ChallengeIt' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'RNSoundPlayer', :path => '../node_modules/react-native-sound-player'
+
   target 'ChallengeItTests' do
     inherit! :complete
     # Pods for testing

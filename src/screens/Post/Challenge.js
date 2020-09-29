@@ -100,7 +100,7 @@ const Challenge = ({route, navigation}) => {
               alignItems: 'center',
               justifyContent: 'center',
             }}
-            onPress={() => setIsPrivate(false)}>
+            onPress={() => setIsPrivate(true)}>
             <Entypo
               name="globe"
               style={{fontSize: 17, color: isPrivate ? '#F03C00' : 'gray'}}
@@ -117,7 +117,7 @@ const Challenge = ({route, navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             style={{flexDirection: 'row', alignItems: 'center'}}
-            onPress={() => setIsPrivate(true)}>
+            onPress={() => setIsPrivate(false)}>
             <Fontisto
               name="locked"
               style={{fontSize: 15, color: !isPrivate ? '#F03C00' : 'black'}}
@@ -386,12 +386,13 @@ const Challenge = ({route, navigation}) => {
           query={{
             key: 'AIzaSyCMMLQ0eIHkhBeOXAqY4mnjGKoR1PPuVrU',
             language: 'en', // language of the results
+            components: 'country:pk',
             // types: '(cities)' // default: 'geocode'
           }}
           nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
           GooglePlacesSearchQuery={{
             rankby: 'distance',
-            types: 'gym',
+            types: '',
           }}
           filterReverseGeocodingByTypes={[
             'locality',

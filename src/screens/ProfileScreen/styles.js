@@ -82,10 +82,9 @@ export default styles = StyleSheet.create({
   cardStyle: {
     flex: 1,
     marginVertical: 1,
-    marginHorizontal: 3,
-    padding: 3,
+    // marginHorizontal: 3,
     backgroundColor: 'white',
-    elevation: 10,
+    // elevation: 10,
     // shadowColor: '#BDBDBD',
     // shadowOffset: {
     //   width: 0,
@@ -98,9 +97,9 @@ export default styles = StyleSheet.create({
     borderRadius: 3,
   },
   userImgStyle: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
+    height: 45,
+    width: 45,
+    borderRadius: 22.5,
     alignSelf: 'center',
     margin: 5,
   },

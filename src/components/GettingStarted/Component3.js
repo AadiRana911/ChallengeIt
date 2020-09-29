@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {Fonts} from '../../utils/Fonts'
+import {Fonts} from '../../utils/Fonts';
 import {primaryColor} from '../colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import styles from './styles';
@@ -17,8 +17,11 @@ const Component3 = ({navigation}) => {
   const {height} = Dimensions.get('window');
   return (
     <KeyboardAwareScrollView
-      style={{flex: 1, backgroundColor: 'red'}}
-      contentContainerStyle={{flexGrow: 1, backgroundColor: 'green'}}>
+      style={{backgroundColor: '#F7F9FC'}}
+      enableAutomaticScroll
+      contentContainerStyle={{
+        flexGrow: 1,
+      }}>
       <View style={styles.container}>
         <View
           style={{
@@ -28,7 +31,11 @@ const Component3 = ({navigation}) => {
           }}>
           <View style={{marginBottom: 20}}>
             <Text
-              style={{fontSize: 25, color: primaryColor, fontFamily: Fonts.CenturyBold}}>
+              style={{
+                fontSize: 25,
+                color: primaryColor,
+                fontFamily: Fonts.CenturyBold,
+              }}>
               Sign up
             </Text>
             <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>
@@ -38,12 +45,17 @@ const Component3 = ({navigation}) => {
           <View>
             <TextInput style={styles.textInputStyle} placeholder="First Name" />
             <TextInput style={styles.textInputStyle} placeholder="Last Name" />
+            <TextInput
+              style={[styles.textInputStyle]}
+              placeholder="User Name"
+            />
             <View>
               <TextInput
-                style={[styles.textInputStyle, {marginBottom: 5}]}
-                placeholder="User Name"
+                style={[styles.textInputStyle]}
+                placeholder="Password"
               />
-              <Text style={{color: primaryColor, fontFamily: Fonts.CenturyRegular}}>
+
+              {/* <Text style={{color: primaryColor, fontFamily: Fonts.CenturyRegular}}>
                 This username is taken try another
               </Text>
               <View
@@ -59,7 +71,7 @@ const Component3 = ({navigation}) => {
                   <Text style={styles.suggestions}>ali169</Text>
                   <Text style={styles.suggestions}>ali003</Text>
                 </View>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>
@@ -84,7 +96,12 @@ const Component3 = ({navigation}) => {
         <TouchableOpacity
           style={styles.nextButtonStyle}
           onPress={() => navigation.navigate('C4')}>
-          <Text style={{fontSize: 20, fontFamily: Fonts.CenturyBold, color: primaryColor}}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: Fonts.CenturyBold,
+              color: primaryColor,
+            }}>
             Next
           </Text>
         </TouchableOpacity>

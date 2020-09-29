@@ -21,6 +21,8 @@ import TabBar from '../../components/navigation';
 import {ProfilePlaceholder} from '../../components/Placeholder';
 import {primaryColor} from '../../components/colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {Header} from 'react-native-elements';
+
 const User = ({params, navigation}) => {
   const {height, width} = Dimensions.get('window');
   const [challenges, setChallenges] = useState(true);
@@ -103,56 +105,25 @@ const User = ({params, navigation}) => {
   // return <ProfilePlaceholder />;
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView
-        contentContainerStyle={{flexGrow: 1}}
-        showsVerticalScrollIndicator={false}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            // backgroundColor: primaryColor,
-            paddingVertical: 10,
-            marginBottom: 4,
-          }}>
+      <Header
+        backgroundColor={'transparent'}
+        leftComponent={
           <AntDesign
             onPress={() => {
               navigation.goBack();
             }}
             name="arrowleft"
             style={{
-              alignSelf: 'center',
               fontSize: 26,
               color: 'black',
-              marginHorizontal: width / 30,
             }}
           />
-          <OptionsMenu
-            customButton={
-              <Entypo
-                name="dots-three-horizontal"
-                style={{
-                  fontSize: 24,
-                  color: 'black',
-                  margin: 5,
-                  alignSelf: 'center',
-                }}
-              />
-            }
-            // options={['Share Profile', 'Report']}
-            options={['Playlists', 'Settings']}
-            actions={[
-              () => {
-                // handleShare();
-                navigation.navigate('Playlists');
-              },
-              () => {
-                // alert('Reported');
-                navigation.navigate('Settings');
-              },
-            ]}
-          />
-          {/* */}
-        </View>
+        }
+      />
+
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.head}>
           <View
             style={{

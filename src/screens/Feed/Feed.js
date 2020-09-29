@@ -12,7 +12,6 @@ import {
   BackHandler,
   Alert,
   Platform,
-  Easing,
 } from 'react-native';
 import {Fonts} from '../../utils/Fonts';
 import Textarea from 'react-native-textarea';
@@ -46,12 +45,16 @@ const Feed = ({navigation, route}) => {
   const reportRef = useRef(null);
   const playListRef = useRef(null);
   const animation = useRef(null);
+
   // const {from} = route.params && route.params;
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = setPaused(false);
 
-      return () => unsubscribe;
+      return () => {
+        setPaused(!paused);
+        unsubscribe;
+      };
     }, []),
   );
   let player;
@@ -533,7 +536,7 @@ const Feed = ({navigation, route}) => {
               source={{uri: item.vid}}
               style={styles.mediaPlayer}
               resizeMode="cover"
-              repeat={true}
+              volume={0.4}
               onReadyForDisplay={() => {
                 handleVideoLoading(item.id);
               }}
@@ -555,7 +558,7 @@ const Feed = ({navigation, route}) => {
                 name="checkmark-circle"
                 color="white"
                 size={25}
-                style={{alignSelf: 'center'}}
+                style={{alignSelf: 'center', color: '#4cc76c'}}
               />
               <OptionsMenu
                 customButton={
@@ -615,7 +618,7 @@ const Feed = ({navigation, route}) => {
                         height: 37,
                         width: 37,
 
-                        marginRight: -22,
+                        // marginRight: -22,
                         overflow: 'hidden',
                       }}
                       autoPlay
@@ -636,7 +639,7 @@ const Feed = ({navigation, route}) => {
                   <Text
                     style={{
                       fontSize: 9,
-                      marginRight: item.liked ? -25 : 0,
+                      // marginRight: item.liked ? -25 : 0,
                       marginLeft: item.liked ? 0 : 4,
                       color: 'white',
                       fontFamily: Fonts.CenturyBold,
@@ -696,11 +699,11 @@ const Feed = ({navigation, route}) => {
             <Animated.View
               style={{
                 position: 'absolute',
-                bottom: height / 15,
+                bottom: height / 30,
                 // left: width / 20,
                 width: '100%',
-                alignItems: 'center',
-                flexDirection: 'row',
+                // alignItems: 'center',
+                // flexDirection: 'row',
                 transform: [{translateX: translateBottomImageStripX}],
               }}>
               {/* <TouchableOpacity
@@ -722,36 +725,36 @@ const Feed = ({navigation, route}) => {
                 />
               </TouchableOpacity> */}
 
-              <LinearGradient
-                colors={['rgba(0,0,0,0.00)', 'transparent']}
-                style={[styles.gradient]}>
+              <Text
+                onPress={() => {
+                  navigation.navigate('User');
+                }}
+                style={{
+                  color: 'white',
+                  fontSize: width / 22,
+                  fontFamily: Fonts.CenturyBold,
+                  marginLeft: 13,
+                }}>
+                {item.name}
+              </Text>
+              <TouchableOpacity
+                style={{padding: 10}}
+                onPress={() => {
+                  navigation.navigate('Hashtag');
+                }}>
                 <Text
-                  onPress={() => {
-                    navigation.navigate('User');
-                  }}
-                  style={{
-                    color: 'white',
-                    fontSize: width / 22,
-                    fontFamily: Fonts.CenturyBold,
-                    marginLeft: 13,
-                  }}>
-                  {item.name}
-                </Text>
-                <Text
-                  onPress={() => {
-                    navigation.navigate('Hashtag');
-                  }}
                   style={{
                     color: 'white',
                     fontFamily: Fonts.CenturyRegular,
                     fontSize: width / 30,
-                    marginLeft: 13,
+                    marginLeft: 7,
+                    // marginVertical: 5,
                   }}>
                   {item.hashtag}
                 </Text>
-              </LinearGradient>
+              </TouchableOpacity>
             </Animated.View>
-            {item.loading && (
+            {/* {item.loading && (
               <LottieView
                 source={require('../../utils/loading.json')}
                 style={{
@@ -765,7 +768,7 @@ const Feed = ({navigation, route}) => {
                 autoPlay
                 loop
               />
-            )}
+            )} */}
           </DoubleTap>
         ))}
       </ViewPager>
@@ -820,7 +823,7 @@ const Feed = ({navigation, route}) => {
         repeat={true}
       /> */}
       {/* )} */}
-      <GestureRecognizer
+      <View
         style={{
           position: 'absolute',
           top: height / 6,
@@ -841,7 +844,9 @@ const Feed = ({navigation, route}) => {
         />
         <TouchableOpacity
           onPress={() => {
-            setPaused(true);
+            setPaused(!paused);
+            setActive(1);
+            console.log('profile', paused, active);
             navigation.navigate('ProfileScreen');
           }}>
           <Animated.Image
@@ -857,7 +862,7 @@ const Feed = ({navigation, route}) => {
             resizeMode="cover"
           />
         </TouchableOpacity>
-      </GestureRecognizer>
+      </View>
       <RBSheet
         ref={playListRef}
         height={420}

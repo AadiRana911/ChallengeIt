@@ -15,6 +15,8 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import Snackbar from 'react-native-snackbar';
 
 GoogleSignin.configure({
   webClientId:
@@ -30,7 +32,10 @@ GoogleSignin.configure({
 const Component1 = ({navigation}) => {
   const [canIMove, setCanIMove] = useState(false);
   const [results, setRes] = useState(null);
+  const [email, setEmail] = useState('');
   const {height} = Dimensions.get('window');
+
+  //Google sign
   signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -63,6 +68,7 @@ const Component1 = ({navigation}) => {
     }
   };
 
+  //Facebook signin
   const onFacebookButtonPress = async () => {
     // Attempt login with permissions
     const result = await LoginManager.logInWithPermissions([
@@ -92,6 +98,35 @@ const Component1 = ({navigation}) => {
     // Sign-in the user with the credential
     return auth().signInWithCredential(facebookCredential);
   };
+  //apple signin
+  handleAppleSignin = async () => {
+    return (appleAuthRequestResponse = await appleAuth
+      .performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      })
+      .then((appleAuthRequestResponse) => {
+        let {identifyToken, email} = appleAuthRequestResponse;
+        console.log(identifyToken);
+      }));
+  };
+  //handle Email
+  const handleEmail = () => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (email === '') {
+      Snackbar.show({
+        text: 'Kindly Enter email address',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (!reg.test(email)) {
+      Snackbar.show({
+        text: 'Kindly Enter valid email',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      navigation.navigate('C2');
+    }
+  };
   return (
     <KeyboardAwareScrollView
       style={{flex: 1, backgroundColor: 'red'}}
@@ -120,6 +155,9 @@ const Component1 = ({navigation}) => {
             <TextInput
               style={styles.textInputStyle}
               placeholder="johndoe@gmail.com"
+              value={email}
+              keyboardType={'email-address'}
+              onChangeText={(email) => setEmail(email)}
             />
           </View>
         </View>
@@ -142,8 +180,9 @@ const Component1 = ({navigation}) => {
           {/* <View style = {styles.paginationView}></View> */}
         </View>
         <TouchableOpacity
+          activeOpacity={0.7}
           style={styles.nextButtonStyle}
-          onPress={() => navigation.navigate('C2')}>
+          onPress={() => handleEmail()}>
           <Text
             style={{
               fontSize: 20,
@@ -158,7 +197,10 @@ const Component1 = ({navigation}) => {
             <Text style={{fontFamily: Fonts.CenturyRegular}}>
               Already have an account?
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Signin');
+              }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -193,6 +235,16 @@ const Component1 = ({navigation}) => {
                 style={{height: 30, width: 30}}
               />
             </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={styles.socialIconsStyle}
+              onPress={() => {
+                handleAppleSignin();
+              }}>
+              <Image
+                source={require('../../assets/images/apple.png')}
+                style={{height: 30, width: 30}}
+              />
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

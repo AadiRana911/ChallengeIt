@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignSelf: 'center',
     flexDirection: 'row',
-    width: '40%',
+    width: '80%',
     alignItems: 'center',
     marginTop: 20,
   },

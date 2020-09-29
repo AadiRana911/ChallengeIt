@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://skilink.coviknow.com/';
+export const BASE_URL = 'http://challengeit.coviknow.com/';

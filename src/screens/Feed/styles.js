@@ -114,12 +114,11 @@ export default StyleSheet.create({
     position: 'absolute',
   },
   gradient: {
-    // height: Dimensions.get('window').height / 15,
-    // justifyContent: 'center',
+    height: Dimensions.get('window').height / 15,
+    justifyContent: 'center',
     padding: 10,
     position: 'absolute',
-    bottom: -10,
+    // bottom:0,
     width: '100%',
-    backgroundColor: 'tomato',
   },
 });

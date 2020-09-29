@@ -2,8 +2,18 @@ import {StyleSheet} from 'react-native';
 import {Fonts} from '../../utils/Fonts';
 const styles = StyleSheet.create({
   mainContianer: {
+    // flex: 1,
+    // borderColor: '#D3D3D3',
     flex: 1,
-    borderColor: '#D3D3D3',
+    // margin: 12,
+    // padding: 2,
+    // elevation: 1,
+    shadowOpacity: 1,
+    shadowColor: 'white',
+    // borderWidth: 0.75,
+    // borderRadius: 5,
+    // backgroundColor: 'white',
+    // borderColor: 'lightgray',
   },
   firstButton: {
     flex: 1,

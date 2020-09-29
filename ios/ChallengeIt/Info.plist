@@ -21,8 +21,6 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
-
-
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
@@ -61,7 +59,6 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
@@ -96,7 +93,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-
 	<false/>
 </dict>
 </plist>

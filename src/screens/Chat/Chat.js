@@ -13,11 +13,32 @@ import {CheckBox, Avatar, Badge, Header} from 'react-native-elements';
 import {Divider} from 'react-native-paper';
 import {Fonts} from '../../utils/Fonts';
 import {primaryColor} from '../../components/colors';
-
+import Swipeout from 'react-native-swipeout';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const Chat = ({navigation}) => {
+  let swipeoutBtns = [
+    {
+      component: (
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}>
+          <MaterialIcons name="delete" size={30} color="white" />
+        </View>
+      ),
+      backgroundColor: primaryColor,
+      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+      onPress: () => {
+        alert('hi');
+      },
+    },
+  ];
   const renderItem = ({item, index}) => {
     return (
-      <View style={styles.mainContianer}>
+      <Swipeout right={swipeoutBtns} style={styles.mainContianer} autoClose>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => navigation.navigate('Conversation')}>
@@ -72,7 +93,7 @@ const Chat = ({navigation}) => {
             </View>
           </View>
         </TouchableOpacity>
-      </View>
+      </Swipeout>
     );
   };
   return (

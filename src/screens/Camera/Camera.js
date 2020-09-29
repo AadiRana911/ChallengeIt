@@ -15,7 +15,7 @@ import CountDown from 'react-native-countdown-component';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker from 'react-native-document-picker';
-
+import Sound from 'react-native-sound';
 const Height = Dimensions.get('window').height;
 
 class Camera extends Component {
@@ -29,6 +29,7 @@ class Camera extends Component {
       cameraType: 'back',
       isFlash: false,
       uri: '',
+      audio: '',
     };
   }
 
@@ -44,6 +45,7 @@ class Camera extends Component {
           res.name,
           res.size,
         );
+        this.setState({audio: res.uri});
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -115,12 +117,14 @@ class Camera extends Component {
           ref={(ref) => {
             this.camera = ref;
           }}
+          playSoundOnCapture={false}
           style={styles.preview}
-          flashMode={
-            this.state.cameraType === 'back' && this.state.isFlash
-              ? RNCamera.Constants.FlashMode.on
-              : RNCamera.Constants.FlashMode.off
-          }
+          flashMode={RNCamera.Constants.FlashMode.on}
+          // flashMode={
+          //   this.state.cameraType === 'back' && this.state.isFlash
+          //     ? RNCamera.Constants.FlashMode.on
+          //     : RNCamera.Constants.FlashMode.off
+          // }
           type={
             this.state.cameraType === 'back'
               ? RNCamera.Constants.Type.back
@@ -228,19 +232,45 @@ class Camera extends Component {
   }
 
   async startRecording() {
-    this.setState({recording: true});
-    // default to mp4 for android as codec is not set
+    this.sound = new Sound(
+      'https://www.bensound.com/bensound-music/bensound-dubstep.mp3',
+      '',
+      (error) => {
+        if (error) {
+          console.log('failed to load the sound', error);
+          Alert.alert('Notice', 'audio file error. (Error code : 1)');
+          // this.setState({playState: 'paused'});
+        } else {
+          if (this.sound.isLoaded) {
+            // this.setState({loading: false});
+          }
+          // this.setState({
+          //   playState: 'playing',
+          //   duration: this.sound.getDuration(),
+          // });
+          this.sound.play();
+          this.setState({recording: true}, () => {
+            this.videoRec();
+          });
+        }
+      },
+    );
+  }
+
+  async videoRec() {
     const {uri, codec = 'mp4', size} = await this.camera.recordAsync();
     this.setState({recording: false, processing: true});
     const type = `video/${codec}`;
 
     this.setState({processing: false, uri: uri, type: type}, () => {
+      this.sound.pause();
       this.props.navigation.navigate('Preview', {video: uri});
     });
   }
 
   stopRecording() {
     this.camera.stopRecording();
+    this.sound.pause();
   }
 }
 

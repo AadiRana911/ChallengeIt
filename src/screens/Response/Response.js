@@ -579,7 +579,7 @@ const Response = ({navigation}) => {
                 fontSize: 26,
                 color: 'white',
                 position: 'absolute',
-                top: 10,
+                top: height / 10,
                 marginHorizontal: width / 30,
               }}
             />
@@ -630,7 +630,7 @@ const Response = ({navigation}) => {
               </View>
             </Animated.View>
 
-            {item.loading && (
+            {/* {item.loading && (
               <LottieView
                 source={require('../../utils/loading.json')}
                 style={{
@@ -644,7 +644,7 @@ const Response = ({navigation}) => {
                 autoPlay
                 loop
               />
-            )}
+            )} */}
           </TouchableOpacity>
         ))}
       </ViewPager>
@@ -948,12 +948,12 @@ const Response = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </RBSheet>
-      <TabBar
+      {/* <TabBar
         navigation={navigation}
         params={'Home'}
         animateReverse={animateReverse}
         pauser={() => setPaused(true)}
-      />
+      /> */}
     </View>
   );
 };

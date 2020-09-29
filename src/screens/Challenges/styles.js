@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginVertical: 1,
     // marginHorizontal: 3,
     backgroundColor: 'white',
-    elevation: 10,
+    // elevation: 10,
     // shadowColor: '#BDBDBD',
     // shadowOffset: {
     //   width: 0,

@@ -23,6 +23,7 @@
 		D093E3D3251867D900AA6D6C /* CenturyGothic-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D093E3D12518660000AA6D6C /* CenturyGothic-Bold.ttf */; };
 		D09616CD251C6234007FD3EE /* GOTHIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = D09616CC251C6234007FD3EE /* GOTHIC.TTF */; };
 		D0CE40B425075CAD00FD6A06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0CE40B325075CAD00FD6A06 /* GoogleService-Info.plist */; };
+		114DFB23182545A39401A9D6 /* libRNVideoProcessing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6A85D87074F44E3A7C011F9 /* libRNVideoProcessing.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ChallengeIt/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9CAB56FFECF4C65D185A5E97 /* Pods-ChallengeIt-ChallengeItTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeIt-ChallengeItTests.debug.xcconfig"; path = "Target Support Files/Pods-ChallengeIt-ChallengeItTests/Pods-ChallengeIt-ChallengeItTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9D1CEB48527E5994EB40DC61 /* Pods-ChallengeIt-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeIt-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ChallengeIt-tvOS/Pods-ChallengeIt-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		D02302E5251E0403007E2D6B /* ChallengeIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ChallengeIt.entitlements; path = ChallengeIt/ChallengeIt.entitlements; sourceTree = "<group>"; };
+		D02302E6251E11A3007E2D6B /* ChallengeItDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ChallengeItDebug.entitlements; path = ChallengeIt/ChallengeItDebug.entitlements; sourceTree = "<group>"; };
 		D093E3D12518660000AA6D6C /* CenturyGothic-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CenturyGothic-Bold.ttf"; sourceTree = "<group>"; };
 		D093E3D52518683800AA6D6C /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Entypo.ttf; path = ../android/app/src/main/assets/fonts/Entypo.ttf; sourceTree = "<group>"; };
 		D093E3D62518683800AA6D6C /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = ../android/app/src/main/assets/fonts/SimpleLineIcons.ttf; sourceTree = "<group>"; };
@@ -89,6 +92,8 @@
 		F41E0C75C4084E960AE2168E /* libPods-ChallengeIt-ChallengeItTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChallengeIt-ChallengeItTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D0518C494A4F54AF8AC116 /* Pods-ChallengeIt-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeIt-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ChallengeIt-tvOS/Pods-ChallengeIt-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		F5C5EAC380EC3C5538C8F041 /* libPods-ChallengeIt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChallengeIt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C353BC9C6AEE408F98560211 /* RNVideoProcessing.xcodeproj */ = {isa = PBXFileReference; name = "RNVideoProcessing.xcodeproj"; path = "../node_modules/react-native-video-processing/ios/RNVideoProcessing.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		C6A85D87074F44E3A7C011F9 /* libRNVideoProcessing.a */ = {isa = PBXFileReference; name = "libRNVideoProcessing.a"; path = "libRNVideoProcessing.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23D5CE1DDFEE0F5DAA6E143E /* libPods-ChallengeIt.a in Frameworks */,
+				114DFB23182545A39401A9D6 /* libRNVideoProcessing.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +153,8 @@
 		13B07FAE1A68108700A75B9A /* ChallengeIt */ = {
 			isa = PBXGroup;
 			children = (
+				D02302E6251E11A3007E2D6B /* ChallengeItDebug.entitlements */,
+				D02302E5251E0403007E2D6B /* ChallengeIt.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -175,6 +183,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C353BC9C6AEE408F98560211 /* RNVideoProcessing.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -332,9 +341,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = W7M5BUZXPC;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = W7M5BUZXPC;
 						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 					};
@@ -746,6 +757,7 @@
 			baseConfigurationReference = 9CAB56FFECF4C65D185A5E97 /* Pods-ChallengeIt-ChallengeItTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = W7M5BUZXPC;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -761,6 +773,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChallengeIt.app/ChallengeIt";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
+				);
 			};
 			name = Debug;
 		};
@@ -770,6 +790,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = W7M5BUZXPC;
 				INFOPLIST_FILE = ChallengeItTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -781,6 +802,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChallengeIt.app/ChallengeIt";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
+				);
 			};
 			name = Release;
 		};
@@ -790,10 +819,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ChallengeIt/ChallengeItDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W7M5BUZXPC;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ChallengeIt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -802,12 +832,16 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.ChallengeIt;
 				PRODUCT_NAME = ChallengeIt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
+				);
 			};
 			name = Debug;
 		};
@@ -817,10 +851,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ChallengeIt/ChallengeIt.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W7M5BUZXPC;
 				INFOPLIST_FILE = ChallengeIt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -828,11 +863,15 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.ChallengeIt;
 				PRODUCT_NAME = ChallengeIt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
+				);
 			};
 			name = Release;
 		};
@@ -861,6 +900,14 @@
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
+				);
 			};
 			name = Debug;
 		};
@@ -889,6 +936,14 @@
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
+				);
 			};
 			name = Release;
 		};
@@ -916,6 +971,14 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChallengeIt-tvOS.app/ChallengeIt-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
+				);
 			};
 			name = Debug;
 		};
@@ -943,6 +1006,14 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChallengeIt-tvOS.app/ChallengeIt-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
+				);
 			};
 			name = Release;
 		};

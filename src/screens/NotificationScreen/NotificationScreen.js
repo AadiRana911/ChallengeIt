@@ -13,15 +13,20 @@ import {CheckBox, Avatar, Badge, Header} from 'react-native-elements';
 import {Divider} from 'react-native-paper';
 import {Fonts} from '../../utils/Fonts';
 import {primaryColor} from '../../components/colors';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import OptionsMenu from 'react-native-options-menu';
 
 const Notification = ({navigation}) => {
   const renderItem = ({item, index}) => {
     return (
       <View style={styles.mainContianer}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate('StudyGuide')}>
-          <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity activeOpacity={0.8}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {/* // Avatar with mini badge */}
             <View style={{marginLeft: 10}}>
               <Avatar
@@ -65,6 +70,24 @@ const Notification = ({navigation}) => {
                 10:24 PM
               </Text>
             </View>
+            <OptionsMenu
+              customButton={
+                <SimpleLineIcons
+                  name="options"
+                  size={20}
+                  style={{alignSelf: 'center', margin: 3}}
+                />
+              }
+              options={['Hide', 'Mute']}
+              actions={[
+                () => {
+                  alert('Hided');
+                },
+                () => {
+                  alert('Muted');
+                },
+              ]}
+            />
           </View>
         </TouchableOpacity>
       </View>

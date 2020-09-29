@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Camera from './src/screens/Camera';
@@ -34,13 +34,14 @@ import Conversation from './src/screens/Conversation';
 import PlaylistDetail from './src/screens/Playlists/PlaylistDetail';
 import Interests from './src/screens/ChooseInterest';
 import BottomTab from './src/navigation/BottomTab';
+
+LogBox.ignoreLogs(['Warning: ...']);
 const Stack = createStackNavigator();
-console.disableYellowBox = true;
 
 function AppNav() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Signup">
         <Stack.Screen
           name="Signup"
           component={SignupScreen}

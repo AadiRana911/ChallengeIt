@@ -29,6 +29,7 @@ import TabBar from '../../components/navigation';
 import styles from './styles';
 import {primaryColor} from '../../components/colors';
 import DoubleTap from '../../components/DoubleTap';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ProfileScreen = ({navigation}) => {
   const playListRef = useRef(null);
@@ -42,8 +43,8 @@ const ProfileScreen = ({navigation}) => {
   const [liked, setLiked] = useState(false);
   const [sharing, setSharing] = useState(false);
   const {width, height} = Dimensions.get('window');
-
-  const [paused, setPaused] = useState(true);
+  const [muted, setMuted] = useState(false);
+  const [singlePaused, setsinglePaused] = useState(true);
   const results = [
     {
       url:
@@ -78,7 +79,7 @@ const ProfileScreen = ({navigation}) => {
         text: 'Change',
         textColor: 'tomato',
         onPress: () => {
-          setPaused(true);
+          setsinglePaused(true);
           playListRef.current.open();
         },
       },
@@ -98,7 +99,7 @@ const ProfileScreen = ({navigation}) => {
     }
   };
 
-  const handleShare = async (id) => {
+  const handleShare = async () => {
     setSharing(true);
     let options = {
       title: 'Challenge IT',
@@ -113,13 +114,13 @@ const ProfileScreen = ({navigation}) => {
       });
   };
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <View style={{flex: 1}}>
       <Header
         backgroundColor={primaryColor}
         leftComponent={
           <AntDesign
             onPress={() => {
-              setPaused(true);
+              setsinglePaused(true);
               navigation.goBack();
             }}
             name="arrowleft"
@@ -131,106 +132,149 @@ const ProfileScreen = ({navigation}) => {
         }
       />
       <ScrollView style={{flex: 1}} contentContainerStyle={{flexGrow: 1}}>
-        <View activeOpacity={0.9} style={[styles.cardStyle, {elevation: 0}]}>
+        <View activeOpacity={0.9} style={[styles.cardStyle]}>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-around',
               marginHorizontal: 5,
-              marginTop: 10,
             }}>
             <Image source={dummy} style={styles.userImgStyle} />
+
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 4,
+                marginTop: 7,
+                width: '80%',
               }}>
               <Text
-                numberOfLines={3}
                 style={[
+                  // styles.mediumText,
                   {
-                    alignSelf: 'center',
-
-                    marginTop: '-2%',
-                    marginLeft: 15,
-                    width: '88%',
-                    // backgroundColor: 'tomato',
+                    color: primaryColor,
+                    fontSize: 16,
+                    fontFamily: Fonts.CenturyRegular,
+                    alignSelf: 'flex-start',
+                    width: '100%',
                   },
                 ]}>
+                Zaheer01{' '}
+                <Text
+                  style={[
+                    // styles.mediumText,
+                    {
+                      fontSize: 12,
+                      color: '#212121',
+                      fontFamily: Fonts.CenturyRegular,
+                      // opacity: 0.6,
+                    },
+                  ]}>
+                  posted a Challenge at{' '}
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: Fonts.CenturyRegular,
+                      color: 'skyblue',
+                    }}>
+                    Giga Mall,DHA Phase 2{'   '}
+                  </Text>
+                </Text>{' '}
+                <Text
+                  style={[
+                    // styles.mediumText,
+                    {
+                      color: primaryColor,
+                      fontSize: 16,
+                      fontFamily: Fonts.CenturyRegular,
+                      marginBottom: 4,
+                    },
+                  ]}>
+                  {`\n`}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: 5,
+                  }}>
+                  {/* <Ionicons
+                  name="md-location-sharp"
+                  style={{fontSize: 11, color: 'skyblue', alignSelf: 'center'}}
+                /> */}
+                  {/* <Text
+                  style={{
+                    fontSize: 11,
+                    fontFamily: Fonts.century,
+                    color: 'skyblue',
+                  }}>
+                  Giga Mall,DHA Phase 2{'   '}
+                </Text> */}
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      fontFamily: Fonts.CenturyRegular,
+                      color: 'gray',
+                    }}>
+                    3 Km away{'   '} 4 min ago
+                  </Text>
+                </View>
+              </Text>
+
+              {/* <Text
+              numberOfLines={3}
+              style={[
+                {
+                  alignSelf: 'center',
+
+                  marginTop: '-2%',
+                  marginLeft: 15,
+                  width: '88%',
+                  // backgroundColor: 'tomato',
+                },
+              ]}>
+              <Text
+                >
+                {item.name}
+              </Text>
+              <Text
+                style={[
+                  styles.mediumText,
+                  {
+                    fontSize: 16,
+                    color: 'black',
+                    fontFamily: Fonts.CenturyRegular,
+                  },
+                ]}>
+                {' '}
+                {item.to === '' ? 'posted a Challenge' : 'Challenged'}{' '}
+              </Text>
+              {
                 <Text
                   style={[
                     styles.mediumText,
                     {
-                      marginTop: 3,
                       color: primaryColor,
                       fontSize: 16,
                       fontFamily: Fonts.CenturyBold,
                     },
                   ]}>
-                  Zaheer01
+                  {item.to === '' ? `\n` : `${item.to} \n`}
                 </Text>
-                <Text
-                  style={[
-                    styles.mediumText,
-                    {
-                      fontSize: 16,
-                      color: 'black',
-                      fontFamily: Fonts.CenturyRegular,
-                    },
-                  ]}>
-                  {' '}
-                  Posted a{' '}
-                </Text>
-                {
-                  <Text
-                    style={[
-                      styles.mediumText,
-                      {
-                        color: primaryColor,
-                        fontSize: 16,
-                        fontFamily: Fonts.CenturyBold,
-                      },
-                    ]}>
-                    Challenge {`\n`}
-                  </Text>
-                }
-
-                <Text
-                  style={[styles.mediumText, {fontSize: 12, color: '#696866'}]}>
-                  Posted: 3 hours ago{`\n`}
-                </Text>
-                <Text
-                  style={[styles.mediumText, {fontSize: 12, color: '#696866'}]}
-                  onPress={() => {
-                    navigation.navigate('ViewRes');
-                    setPaused(!paused);
-                  }}>
-                  2 km away {'  '} See Full Thread
-                </Text>
+              }
+              <Text
+                style={[styles.mediumText, {fontSize: 10, color: '#696866'}]}>
+                {item.time}
+                {'  '}
+                {item.km}
+                {'   '}
               </Text>
+            </Text> */}
             </View>
-            {/* <TouchableOpacity
-            style={{
-              height: 27,
-              width: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
 
-              marginRight: 9,
-              marginTop: 5,
-            }}
-            onPress={() => {
-              navigation.navigate('ViewRes');
-              handleVideoPause(item.id);
-            }}>
-            <AntDesign name="retweet" size={20} />
-          </TouchableOpacity> */}
             <TouchableOpacity
               style={{
                 height: 27,
                 width: 20,
-              }}>
+              }}
+              onPress={() => optionSheet.current.open()}>
               <Image
                 source={more}
                 style={{
@@ -246,7 +290,7 @@ const ProfileScreen = ({navigation}) => {
             style={[
               styles.mediumText,
               {
-                fontSize: 10,
+                fontSize: 14,
                 color: primaryColor,
                 alignSelf: 'flex-start',
                 margin: 4,
@@ -254,28 +298,24 @@ const ProfileScreen = ({navigation}) => {
             ]}
             onPress={() => {
               navigation.navigate('Hashtag');
-              setPaused(!paused);
+              // setsinglePaused(!singlePaused)
             }}>
             #Kiki Challenge
           </Text>
           <View style={[styles.horizontalContainer]}></View>
           <View>
-            <DoubleTap
-              singleTap={() => {
-                setPaused(!paused);
-              }}
-              // doubleTap={() => {
-              //   toggleLike(item.id);
-              // }}
-              delay={200}>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setsinglePaused(!singlePaused);
+              }}>
               <Video
                 source={{
                   uri:
-                    'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+                    'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
                 }}
-                paused={paused}
+                paused={singlePaused}
                 resizeMode="cover"
-                repeat
+                muted={muted}
                 style={{
                   height: height / 2,
                   width: '100%',
@@ -283,89 +323,105 @@ const ProfileScreen = ({navigation}) => {
                   // borderRadius: 20,
                 }}
               />
-            </DoubleTap>
+            </TouchableWithoutFeedback>
+
             <View
               style={{
+                width: '100%',
                 position: 'absolute',
                 bottom: 5,
-                right: 0,
-                height: height / 20,
-                // backgroundColor: 'rgba(100,100,100,0.4)',
-                // shadowColor: '#000',
-                // shadowOffset: {width: 1, height: 0},
-                // shadowOpacity: 0.3,
-                // shadowRadius: 5,
-                // elevation: 3,
-                // borderRadius: 3,
-                // // borderWidth: 0.5,
-                // // borderColor: '#eee',
                 flexDirection: 'row',
-                alignItems: 'center',
-                marginRight: 10,
-                // width: 45,
                 justifyContent: 'space-between',
               }}>
-              <Entypo
-                name="eye"
-                size={20}
-                style={{marginRight: 7, color: 'white'}}
-              />
-              <Text
+              <View
+                style={{
+                  height: height / 20,
+
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginLeft: 7,
+                  alignSelf: 'center',
+                  // width: 45,
+                }}>
+                <Entypo
+                  name="eye"
+                  size={25}
+                  style={{marginRight: 7, color: 'white'}}
+                />
+                <Text
+                  style={[
+                    styles.smallText,
+                    {
+                      marginTop: -3,
+                      color: 'white',
+                      fontWeight: 'bold',
+                      fontSize: 14,
+                    },
+                  ]}>
+                  100
+                </Text>
+              </View>
+
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => {
+                  setMuted(!muted);
+                }}
                 style={[
-                  styles.smallText,
-                  {marginTop: -3, color: 'white', fontWeight: 'bold'},
+                  {
+                    height: 25,
+                    width: 25,
+                    borderRadius: 12.5,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    padding: 2,
+                    marginRight: 7,
+                  },
                 ]}>
-                200
-              </Text>
+                <Ionicons
+                  name={muted ? 'volume-mute' : 'volume-high'}
+                  color="white"
+                  size={20}
+                />
+              </TouchableOpacity>
             </View>
-            {paused && (
+
+            {singlePaused && (
               <Entypo
                 name="controller-play"
                 color="white"
                 style={[styles.playButton]}
                 onPress={() => {
-                  setPaused(!paused);
+                  // setsinglePaused(!singlePaused)
+                  setsinglePaused(!singlePaused);
                 }}
               />
             )}
           </View>
-
-          {/* {item.isVolumeVisible && (
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              handleVideoMute(item);
-            }}
+          <Text
             style={[
+              styles.mediumText,
               {
-                position: 'absolute',
-                right: Platform.OS === 'ios' ? 80 : 20,
-                bottom: 70,
-                backgroundColor: 'black',
-                height: 22,
-                width: 22,
-                borderRadius: 12,
-                justifyContent: 'center',
-                alignItems: 'center',
-                // right: 50,
-                padding: 2,
+                fontSize: 14,
+                alignSelf: 'flex-end',
+                margin: 5,
+                fontFamily: Fonts.CenturyRegular,
+                color: primaryColor,
               },
-            ]}>
-            <Ionicons
-              name={item.isMuted ? 'volume-mute' : 'volume-high'}
-              color="white"
-              style={[styles.playButton]}
-            />
-          </TouchableOpacity>
-        )} */}
-
+            ]}
+            onPress={() => {
+              navigation.navigate('ViewRes');
+            }}>
+            See Full Thread
+          </Text>
           <View
             style={[
               styles.horizontalContainer,
-              {justifyContent: 'space-between'},
+              {justifyContent: 'space-between', marginHorizontal: 4},
             ]}>
             <View style={{flexDirection: 'row'}}>
-              <TouchableWithoutFeedback onPress={() => setLiked(!liked)}>
+              <TouchableWithoutFeedback onPress={() => setLiked(!liked.liked)}>
                 <View
                   style={{
                     alignItems: 'center',
@@ -382,7 +438,7 @@ const ProfileScreen = ({navigation}) => {
                         width: 32,
                         backgroundColor: 'transparent',
                       }}
-                      // progress={clapProgress}
+                      progress={clapProgress}
                       autoPlay
                       loop
                     />
@@ -407,8 +463,8 @@ const ProfileScreen = ({navigation}) => {
                           opacity: 0.7,
                           color: 'black',
 
-                          // marginLeft: item.liked ? 0 : 15,
-                          // marginBottom: item.liked ? -5 : 0,
+                          // marginLeft: liked ? 0 : 15,
+                          // marginBottom: liked ? -5 : 0,
                         },
                       ]}>
                       200{' '}
@@ -418,8 +474,8 @@ const ProfileScreen = ({navigation}) => {
                         styles.smallText,
 
                         {
-                          // marginTop: item.liked ? -5 : 0,
-                          // marginLeft: item.liked ? 0 : 15,
+                          // marginTop: liked ? -5 : 0,
+                          // marginLeft: liked ? 0 : 15,
                           marginBottom: 1,
                         },
                       ]}>
@@ -459,7 +515,7 @@ const ProfileScreen = ({navigation}) => {
                       styles.smallText,
                       {alignSelf: 'center', opacity: 0.7, color: 'black'},
                     ]}>
-                    100{' '}
+                    200{' '}
                   </Text>
                   <Text style={[styles.smallText]}>views</Text>
                 </View>
@@ -473,7 +529,8 @@ const ProfileScreen = ({navigation}) => {
               ]}>
               <TouchableOpacity
                 onPress={() => {
-                  setPaused(!paused);
+                  setsinglePaused(!singlePaused);
+                  navigation.navigate('Camera');
                 }}>
                 {/* <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text> */}
 
@@ -494,36 +551,32 @@ const ProfileScreen = ({navigation}) => {
               style={[
                 styles.bottomContainer,
                 {
-                  flexDirection: 'row',
-                  alignSelf: 'center',
+                  flexDirection: 'column',
+                  // alignSelf: 'center',
                 },
               ]}>
-              <TouchableOpacity onPress={handleShare}>
-                <TouchableOpacity
-                  onPress={() => handleShare()}
-                  activeOpacity={0.5}>
-                  <FontAwesome
-                    name="share"
-                    style={{
-                      fontSize: width / 18.70129,
-                      color: sharing ? primaryColor : 'black',
-                      alignSelf: 'center',
-                    }}
-                  />
-                </TouchableOpacity>
-                <View style={{flexDirection: 'row'}}>
-                  <Text
-                    style={[
-                      styles.smallText,
-                      {alignSelf: 'center', opacity: 0.7, color: 'black'},
-                    ]}>
-                    {200}{' '}
-                  </Text>
-                  <Text style={[styles.smallText, {marginTop: -1}]}>
-                    shares
-                  </Text>
-                </View>
+              <TouchableOpacity
+                onPress={() => handleShare()}
+                activeOpacity={0.5}>
+                <FontAwesome
+                  name="share"
+                  style={{
+                    fontSize: width / 18.70129,
+                    color: sharing ? primaryColor : 'black',
+                    alignSelf: 'center',
+                  }}
+                />
               </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                  ]}>
+                  200{' '}
+                </Text>
+                <Text style={[styles.smallText, {marginTop: -1}]}>shares</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -555,7 +608,7 @@ const ProfileScreen = ({navigation}) => {
 
         <View style={{height: height / 5}}></View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

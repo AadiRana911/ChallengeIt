@@ -335,6 +335,7 @@ const Challenges = ({navigation}) => {
             marginHorizontal: 5,
           }}>
           <Image source={dummy} style={styles.userImgStyle} />
+
           <View
             style={{
               marginTop: 7,
@@ -356,12 +357,24 @@ const Challenges = ({navigation}) => {
                 style={[
                   // styles.mediumText,
                   {
-                    fontSize: 16,
-                    color: 'black',
+                    fontSize: 12,
+                    color: '#212121',
                     fontFamily: Fonts.CenturyRegular,
+                    // opacity: 0.6,
                   },
                 ]}>
-                {item.to === '' ? 'posted a Challenge' : 'Challenged'}
+                {item.to === '' ? 'posted a Challenge at' : 'Challenged'}{' '}
+                {item.to === '' && (
+                  <Text
+                    onPress={() => {}}
+                    style={{
+                      fontSize: 13,
+                      fontFamily: Fonts.CenturyRegular,
+                      color: 'skyblue',
+                    }}>
+                    Giga Mall,DHA Phase 2{'   '}
+                  </Text>
+                )}
               </Text>{' '}
               <Text
                 style={[
@@ -369,34 +382,56 @@ const Challenges = ({navigation}) => {
                   {
                     color: primaryColor,
                     fontSize: 16,
-                    fontFamily: Fonts.CenturyBold,
+                    fontFamily: Fonts.CenturyRegular,
                     marginBottom: 4,
                   },
                 ]}>
-                {item.to === '' ? `\n` : `${item.to} \n`}
+                {item.to === '' ? `\n` : `${item.to}`}
+                {item.to !== '' && (
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: '#212121',
+                      fontFamily: Fonts.CenturyRegular,
+                    }}>
+                    {' '}
+                    at
+                  </Text>
+                )}
+                {item.to !== '' && (
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: Fonts.CenturyRegular,
+                      color: 'skyblue',
+                    }}>
+                    {' '}
+                    Giga Mall,DHA Phase 2{'   \n'}
+                  </Text>
+                )}
               </Text>
               <View
                 style={{
                   flexDirection: 'row',
                   marginTop: 5,
                 }}>
-                <Ionicons
+                {/* <Ionicons
                   name="md-location-sharp"
                   style={{fontSize: 11, color: 'skyblue', alignSelf: 'center'}}
-                />
-                <Text
+                /> */}
+                {/* <Text
                   style={{
                     fontSize: 11,
                     fontFamily: Fonts.century,
                     color: 'skyblue',
                   }}>
                   Giga Mall,DHA Phase 2{'   '}
-                </Text>
+                </Text> */}
                 <Text
                   style={{
                     fontSize: 11,
-                    fontFamily: Fonts.century,
-                    color: 'black',
+                    fontFamily: Fonts.CenturyRegular,
+                    color: 'gray',
                   }}>
                   3 Km away{'   '} 4 min ago
                 </Text>
@@ -453,6 +488,7 @@ const Challenges = ({navigation}) => {
               </Text>
             </Text> */}
           </View>
+
           {/* <TouchableOpacity
             style={{
               height: 27,
@@ -545,8 +581,8 @@ const Challenges = ({navigation}) => {
                 alignSelf: 'center',
                 // width: 45,
               }}>
-              <Entypo
-                name="eye"
+              <AntDesign
+                name="eyeo"
                 size={25}
                 style={{marginRight: 7, color: 'white'}}
               />
@@ -605,9 +641,9 @@ const Challenges = ({navigation}) => {
             styles.mediumText,
             {
               fontSize: 14,
-              alignSelf: 'flex-start',
+              alignSelf: 'flex-end',
               marginVertical: 5,
-              marginLeft: 5,
+              marginRight: 5,
               fontFamily: Fonts.CenturyRegular,
               color: primaryColor,
             },
@@ -621,7 +657,7 @@ const Challenges = ({navigation}) => {
         <View
           style={[
             styles.horizontalContainer,
-            {justifyContent: 'space-between', marginHorizontal: 4},
+            {justifyContent: 'space-between', padding: 3},
           ]}>
           <View style={{flexDirection: 'row'}}>
             <TouchableWithoutFeedback onPress={() => toggleLike(item.id)}>
@@ -652,7 +688,7 @@ const Challenges = ({navigation}) => {
                     style={{
                       height: 22,
                       width: 22,
-                      tintColor: item.liked ? primaryColor : 'black',
+                      tintColor: '#212121',
                       marginLeft: item.liked ? 0 : 15,
                     }}
                   />
@@ -663,8 +699,8 @@ const Challenges = ({navigation}) => {
                       styles.smallText,
                       {
                         alignSelf: 'center',
-                        opacity: 0.7,
-                        color: 'black',
+
+                        color: '#212121',
 
                         // marginLeft: item.liked ? 0 : 15,
                         // marginBottom: item.liked ? -5 : 0,
@@ -697,7 +733,8 @@ const Challenges = ({navigation}) => {
                   name="videocam"
                   style={{
                     fontSize: width / 16.45714,
-                    color: 'black',
+                    color: '#212121',
+
                     alignSelf: 'center',
                   }}
                 />
@@ -716,11 +753,19 @@ const Challenges = ({navigation}) => {
                 <Text
                   style={[
                     styles.smallText,
-                    {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                    {alignSelf: 'center', opacity: 0.7, color: '#212121'},
                   ]}>
                   {item.claps}{' '}
                 </Text>
-                <Text style={[styles.smallText]}>views</Text>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {
+                      color: '#212121',
+                    },
+                  ]}>
+                  views
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -742,12 +787,21 @@ const Challenges = ({navigation}) => {
                   name="camera"
                   style={{
                     fontSize: width / 18.70129,
-                    color: 'black',
+                    color: '#212121',
+
                     alignSelf: 'center',
                   }}
                 />
               </TouchableOpacity>
-              <Text style={[styles.smallText]}>Accept</Text>
+              <Text
+                style={[
+                  styles.smallText,
+                  {
+                    color: '#212121',
+                  },
+                ]}>
+                Accept
+              </Text>
             </TouchableOpacity>
           </View>
           <View
@@ -766,7 +820,7 @@ const Challenges = ({navigation}) => {
                   name="share"
                   style={{
                     fontSize: width / 18.70129,
-                    color: item.isShared ? primaryColor : 'black',
+                    color: item.isShared ? primaryColor : '#212121',
                     alignSelf: 'center',
                   }}
                 />
@@ -775,11 +829,14 @@ const Challenges = ({navigation}) => {
                 <Text
                   style={[
                     styles.smallText,
-                    {alignSelf: 'center', opacity: 0.7, color: 'black'},
+                    {alignSelf: 'center', opacity: 0.7, color: '#212121'},
                   ]}>
                   {item.claps}{' '}
                 </Text>
-                <Text style={[styles.smallText, {marginTop: -1}]}>shares</Text>
+                <Text
+                  style={[styles.smallText, {marginTop: -1, color: '#212121'}]}>
+                  shares
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -867,7 +924,7 @@ const Challenges = ({navigation}) => {
   });
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <View style={styles.mainContainer}>
       <Header
         backgroundColor={primaryColor}
         leftComponent={
@@ -880,7 +937,13 @@ const Challenges = ({navigation}) => {
               source={dummy}
               style={[
                 styles.userImgStyle,
-                {height: 30, width: 30, borderRadius: 15},
+                {
+                  height: 40,
+                  width: 40,
+                  borderRadius: 20,
+                  alignSelf: 'flex-start',
+                  margin: 0,
+                },
               ]}
             />
           </TouchableWithoutFeedback>
@@ -935,7 +998,10 @@ const Challenges = ({navigation}) => {
                 padding: 5,
               }}>
               <Text
-                style={[styles.mediumText, {fontFamily: Fonts.CenturyBold}]}>
+                style={[
+                  styles.mediumText,
+                  {fontFamily: Fonts.CenturyRegular, fontSize: 15},
+                ]}>
                 Nearby Challengers
               </Text>
               <View style={{flexDirection: 'row'}}>
@@ -1058,6 +1124,7 @@ const Challenges = ({navigation}) => {
                   );
                 }}
               />
+              <Divider style={{height: 0.7, width: '100%', marginTop: 5}} />
             </View>
           }
           keyExtractor={(item, index) => item + index.toString()}
@@ -1625,7 +1692,7 @@ const Challenges = ({navigation}) => {
         from={'Chellenges'}
         pauser={() => setAllVidsPause()}
       /> */}
-    </SafeAreaView>
+    </View>
   );
 };
 

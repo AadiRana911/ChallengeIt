@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import Video from 'react-native-video';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -16,7 +17,8 @@ import DocumentPicker from 'react-native-document-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import EmojiSelector, {Categories} from 'react-native-emoji-selector';
 import RBSheet from 'react-native-raw-bottom-sheet';
-
+import {Fonts} from '../../utils/Fonts';
+import Draggable from 'react-native-draggable';
 const {height, width} = Dimensions.get('window');
 const Preview = ({navigation, route}) => {
   const {video} = route.params;
@@ -24,7 +26,11 @@ const Preview = ({navigation, route}) => {
   const [emoji, setShowEmoji] = useState(false);
   const [emojiIcon, setEmojiIcon] = useState('');
   const emojiRef = useRef(null);
-  console.log(video);
+  const [text, setText] = useState('');
+  const [isEditable, setEditable] = useState(false);
+  const [vidOverlay, setOverly] = useState(null);
+
+  // console.log(video);
   const pickAudio = async () => {
     try {
       const results = await DocumentPicker.pickMultiple({
@@ -46,31 +52,81 @@ const Preview = ({navigation, route}) => {
       }
     }
   };
+  const handleVideo = () => {
+    setPaused(true);
+    // let overly = {text: text, emoji: emojiIcon, x};
+    // setOverly();
+    navigation.navigate('Challenge', {video});
+  };
   return (
     <View style={{flex: 1}}>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setPaused(!pause);
-        }}>
-        <Video
-          paused={pause}
-          source={{uri: video}}
-          style={styles.mediaPlayer}
-          volume={0.4}
-          resizeMode="cover"
-          repeat={true}
-        />
-      </TouchableWithoutFeedback>
-      <Text
-        style={{
-          fontSize: 90,
-          color: 'white',
-          position: 'absolute',
-          top: 20,
-          left: 10,
-        }}>
-        {emojiIcon}
-      </Text>
+      <View style={styles.mediaPlayer}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setPaused(!pause);
+          }}>
+          <Video
+            paused={pause}
+            source={{
+              uri: video,
+            }}
+            style={{height: '100%'}}
+            volume={0.4}
+            resizeMode="cover"
+            repeat={true}
+          />
+        </TouchableWithoutFeedback>
+        <Draggable
+          x={100}
+          y={200}
+          minX={0}
+          minY={0}
+          style={{position: 'absolute', top: 10, bottom: 10}}>
+          <Text
+            style={{
+              fontSize: 90,
+              color: 'white',
+            }}>
+            {emojiIcon}
+          </Text>
+        </Draggable>
+        {isEditable && (
+          <Draggable
+            x={100}
+            y={100}
+            minX={0}
+            minY={0}
+            style={{position: 'absolute', top: 10, bottom: 10}}
+            onDragRelease={(e) => {
+              console.log(e);
+            }}
+            onPress={() => {
+              setEditable(!isEditable);
+            }}>
+            <TextInput
+              multiline
+              numberOfLines={3}
+              maxLength={30}
+              placeholder="write something"
+              value={text}
+              onChangeText={(e) => {
+                setText(e);
+              }}
+              placeholderTextColor={'white'}
+              style={{
+                borderBottomWidth: text === '' ? 2 : 0,
+                borderBottomColor: primaryColor,
+                fontFamily: Fonts.CenturyRegular,
+                color: 'white',
+                width: '70%',
+                fontSize: 15,
+                padding: 0,
+              }}
+            />
+          </Draggable>
+        )}
+      </View>
+
       <View style={styles.effectsContainer}>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -85,7 +141,12 @@ const Preview = ({navigation, route}) => {
             style={{marginRight: '10%'}}
           />
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.7} style={{marginVertical: 10}}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{marginVertical: 10}}
+          onPress={() => {
+            setEditable(!isEditable), setText('');
+          }}>
           <Ionicons
             name="md-text"
             size={30}
@@ -135,8 +196,7 @@ const Preview = ({navigation, route}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setPaused(true);
-            navigation.navigate('Challenge', {video});
+            handleVideo();
           }}
           activeOpacity={0.7}
           style={{
@@ -160,7 +220,7 @@ const Preview = ({navigation, route}) => {
             container: {
               borderTopRightRadius: 30,
               borderTopLeftRadius: 30,
-              paddingTop: 10,
+              paddingTop: 20,
             },
           }}>
           <EmojiSelector
@@ -173,7 +233,6 @@ const Preview = ({navigation, route}) => {
             showHistory
           />
         </RBSheet>
-     
       </View>
     </View>
   );
@@ -195,7 +254,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: height / 4,
     width: width / 8,
-    bottom: height / 6,
+    bottom: height / 3,
     left: width - 55,
     paddingVertical: 10,
   },
