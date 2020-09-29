@@ -32,3 +32,25 @@ export const getInterests = (rsl, rej) => {
       });
   };
 };
+//get Interests
+export const saveInterests = (data, rsl, rej) => {
+  return (dispatch) => {
+    axios(`${BASE_URL}/Authentication/save_interest`, {
+      method: 'post',
+      data,
+      headers: {
+        auth: 'a1d0c6e83f027327d8461063f4ac58a6',
+      },
+    })
+      .then((res) => {
+        if (res.data.status == true) {
+          rsl(res.data.message);
+        } else {
+          rej(res.data.message);
+        }
+      })
+      .catch((err) => {
+        rej(err.message);
+      });
+  };
+};

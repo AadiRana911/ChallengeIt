@@ -8,9 +8,9 @@ import {Loading} from '../../components/Loading';
 import Snackbar from 'react-native-snackbar';
 //redux
 import {connect} from 'react-redux';
-import {getInterests} from '../../redux/actions/app';
+import {getInterests, saveInterests} from '../../redux/actions/app';
 
-function Interests({navigation, getInterests, interests}) {
+function Interests({navigation, getInterests, interests, saveInterests}) {
   const [selected, setSelected] = useState([]);
   const [loading, setLoading] = useState(false);
   const [localInterests, setInterests] = useState([]);
@@ -41,6 +41,34 @@ function Interests({navigation, getInterests, interests}) {
         });
       });
   }, []);
+  const handleSave = () => {
+    setLoading(true);
+    const formData = new FormData();
+    selected.map((item) => {
+      formData.append('interest[]', item.Id);
+    });
+
+    new Promise((rsl, rej) => {
+      saveInterests(formData, rsl, rej);
+    })
+      .then((res) => {
+        setLoading(false);
+        Snackbar.show({
+          text: res,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+        navigation.navigate('Home');
+      })
+      .catch((errorData) => {
+        setLoading(false);
+
+        Snackbar.show({
+          text: errorData,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      });
+  };
+
   return (
     <Fragment>
       <SafeAreaView style={[cstyles.container, {backgroundColor: 'white'}]}>
@@ -88,7 +116,7 @@ function Interests({navigation, getInterests, interests}) {
           {selected.length > 0 && (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Home');
+                handleSave();
               }}
               style={[
                 styles.textinput,
@@ -116,7 +144,9 @@ const mapStateToProps = (state) => {
     interests,
   };
 };
-export default connect(mapStateToProps, {getInterests})(Interests);
+export default connect(mapStateToProps, {getInterests, saveInterests})(
+  Interests,
+);
 
 const styles = StyleSheet.create({
   input: {
