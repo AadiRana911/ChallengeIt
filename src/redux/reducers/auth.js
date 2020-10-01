@@ -1,9 +1,8 @@
 import {REGISTER_USER, LOGIN_USER} from '../actions/types';
 const initialState = {
-  loggedIn: false,
   token: null,
   user: null,
-  settings: null,
+  isLoggedIn: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -17,27 +16,10 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.user,
+        isLoggedIn: true,
+        token: action.user.auth,
       };
-    case 'PROFILE':
-      return {
-        ...state,
-        profile: action.profile,
-      };
-    case 'FORGOT':
-      return {
-        ...state,
-        forgot: action.fogot,
-      };
-    case 'CHECK_EMAIL':
-      return {
-        ...state,
-        checkmail: action.checkmail,
-      };
-    case 'GET_INTERESTS':
-      return {
-        ...state,
-        interests: action.interests,
-      };
+
     default:
       return state;
   }

@@ -16,39 +16,44 @@ import Snackbar from 'react-native-snackbar';
 import styles from './styles';
 //redux
 import {connect} from 'react-redux';
-import {login} from '../../redux/actions/auth';
+import {changePass} from '../../redux/actions/auth';
 
-const Signin = ({navigation, login}) => {
-  const [canIMove, setCanIMove] = useState(false);
-  const [results, setRes] = useState(null);
+const ResetPassword = ({navigation, changePass, route}) => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-
+  const [cnfPass, setCnf] = useState('');
   const {height} = Dimensions.get('window');
-  const handleLogin = () => {
-    if (email === '') {
+
+  const resetPassword = () => {
+    const {otp, email} = route.params;
+    if (password === '') {
       Snackbar.show({
-        text: 'Kindly Enter email address',
+        text: 'Kindly Enter new password',
         duration: Snackbar.LENGTH_SHORT,
       });
-    } else if (password === '') {
+    } else if (cnfPass === '') {
       Snackbar.show({
-        text: 'Kindly Enter password',
+        text: 'Kindly confirm password',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (password !== cnfPass) {
+      Snackbar.show({
+        text: 'Passwords did not match',
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
       setLoading(true);
       var formdata = new FormData();
       formdata.append('email', email);
-      formdata.append('pass', password);
+      formdata.append('password', password);
+      formdata.append('otp', otp);
 
       new Promise((rsl, rej) => {
-        login(formdata, rsl, rej);
+        changePass(formdata, rsl, rej);
       })
         .then((res) => {
           setLoading(false);
-          navigation.navigate('Home');
+          navigation.navigate('Signin');
         })
         .catch((errorData) => {
           setLoading(false);
@@ -77,59 +82,38 @@ const Signin = ({navigation, login}) => {
                 color: primaryColor,
                 fontFamily: Fonts.CenturyBold,
               }}>
-              Sign In
+              Update Password
             </Text>
             <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>
-              Enter your email address and password to login
+              Kindly enter a new password
             </Text>
-          </View>
-          <View>
-            <TextInput
-              style={styles.textInputStyle}
-              placeholder="Enter Email"
-              value={email}
-              keyboardType={'email-address'}
-              onChangeText={(email) => setEmail(email)}
-            />
           </View>
           <View>
             <TextInput
               style={styles.textInputStyle}
               placeholder="Enter Password"
               value={password}
+              keyboardType={'default'}
+              onChangeText={(pass) => setPassword(pass)}
+            />
+          </View>
+          <View>
+            <TextInput
+              style={styles.textInputStyle}
+              placeholder="Confirm Password"
+              value={cnfPass}
               secureTextEntry
               keyboardType={'default'}
-              onChangeText={(password) => setPassword(password)}
+              onChangeText={(password) => setCnf(password)}
             />
           </View>
         </View>
-
-        <View style={{flex: 0.25, marginTop: height / 15}}>
-          <View style={{flex: 1}}>
-            <Text style={{fontFamily: Fonts.CenturyRegular}}>
-              Don't have an account?
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('C1');
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: Fonts.CenturyBold,
-                  color: primaryColor,
-                }}>
-                Sign up
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
+        <View style={{flex: 0.25, marginTop: height / 15}}></View>
         <TouchableOpacity
           activeOpacity={0.7}
           disabled={loading}
           style={styles.nextButtonStyle}
-          onPress={() => handleLogin()}>
+          onPress={() => resetPassword()}>
           {loading ? (
             <ActivityIndicator animating color={primaryColor} size={25} />
           ) : (
@@ -139,27 +123,13 @@ const Signin = ({navigation, login}) => {
                 fontFamily: Fonts.CenturyBold,
                 color: primaryColor,
               }}>
-              Login
+              Update
             </Text>
           )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{alignSelf: 'center'}}
-          onPress={() => {
-            navigation.navigate('VerifyEmail');
-          }}>
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: Fonts.CenturyBold,
-              color: primaryColor,
-            }}>
-            Forgot Password?
-          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
   );
 };
 
-export default connect(null, {login})(Signin);
+export default connect(null, {changePass})(ResetPassword);

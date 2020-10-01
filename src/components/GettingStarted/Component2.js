@@ -22,16 +22,16 @@ const Component2 = ({navigation, route}) => {
   const [female, setFemale] = useState(false);
   const [transgender, setTrans] = useState(false);
   const handleGender = () => {
-    const {email} = route.params;
+    const {email, from} = route.params;
     if (male) {
       let gender = 'male';
-      navigation.navigate('C3', {gender, email});
+      navigation.navigate('C3', {gender, email, from});
     } else if (female) {
       let gender = 'female';
-      navigation.navigate('C3', {gender, email});
+      navigation.navigate('C3', {gender, email, from});
     } else if (transgender) {
       let gender = 'transgender';
-      navigation.navigate('C3', {gender, email});
+      navigation.navigate('C3', {gender, email, from});
     } else {
       Snackbar.show({
         text: 'Kindly choose your gender',

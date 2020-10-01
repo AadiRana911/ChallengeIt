@@ -33,7 +33,7 @@ const Component4 = ({navigation, route, registerUser}) => {
   };
 
   const handleRegister = () => {
-    const {uname, email, gender, fname, lname, password} = route.params;
+    const {uname, email, gender, fname, lname, password, from} = route.params;
 
     if (image === '') {
       Snackbar.show({
@@ -50,12 +50,14 @@ const Component4 = ({navigation, route, registerUser}) => {
       formdata.append('lname', lname);
       formdata.append('gender', gender);
       formdata.append('pass', password);
+      from !== '' && formdata.append('from', from);
       // formdata.append('image', {
       //   uri: image,
       //   type: 'image/jpeg',
       //   name: 'image_' + Math.floor(time.getTime() + time.getSeconds() / 2),
       // });
       // return console.log(formdata);
+      console.log(formdata);
       new Promise((rsl, rej) => {
         registerUser(formdata, rsl, rej);
       })
@@ -64,7 +66,7 @@ const Component4 = ({navigation, route, registerUser}) => {
             text: res,
             duration: Snackbar.LENGTH_SHORT,
           });
-          navigation.navigate('Interests');
+          navigation.navigate('Signin');
           setLoading(false);
         })
         .catch((errorData) => {

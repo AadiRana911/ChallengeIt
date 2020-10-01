@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   Text,
   View,
@@ -22,8 +22,14 @@ import {ProfilePlaceholder} from '../../components/Placeholder';
 import {primaryColor} from '../../components/colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Header} from 'react-native-elements';
+import {Loading} from '../../components/Loading';
+import {useFocusEffect} from '@react-navigation/native';
+import Snackbar from 'react-native-snackbar';
+//redux
+import {connect} from 'react-redux';
+import {visitingProfile} from '../../redux/actions/app';
 
-const User = ({params, navigation}) => {
+const User = ({navigation, visitingProfile, user, visiting}) => {
   const {height, width} = Dimensions.get('window');
   const [challenges, setChallenges] = useState(true);
   const [accepted, setAccepted] = useState(false);
@@ -31,6 +37,7 @@ const User = ({params, navigation}) => {
   const [isEnd, setIsEnd] = useState(false);
   const [bio, setBio] = useState('');
   const [isEditing, setEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [areChallengesSelected, setAreChallengesSelected] = useState(true);
   const results = [
     {
@@ -82,6 +89,30 @@ const User = ({params, navigation}) => {
         'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRFU7U2h0umyF0P6E_yhTX45sGgPEQAbGaJ4g&usqp=CAU',
     },
   ];
+
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append('u_id', user.u_id);
+      const unsubscribe = new Promise((rsl, rej) => {
+        visitingProfile(formData, user.auth, rsl, rej);
+      })
+        .then((res) => {
+          setLoading(false);
+        })
+        .catch((errorData) => {
+          setLoading(false);
+          Snackbar.show({
+            text: errorData,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+        });
+
+      return () => unsubscribe;
+    }, []),
+  );
+
   //share profile
   const handleShare = async (id) => {
     let options = {
@@ -125,7 +156,6 @@ const User = ({params, navigation}) => {
         contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
         <View style={styles.head}>
-          
           <View
             style={{
               shadowColor: '#000',
@@ -149,51 +179,53 @@ const User = ({params, navigation}) => {
             ) : (
               <TouchableOpacity style={styles.imageStyle}>
                 <Image
-                  source={{uri: image}}
+                  source={visiting && {uri: `${BASE_URL}/${visiting.dp}`}}
                   style={[styles.imageStyle, {borderColor: 'white'}]}
                 />
               </TouchableOpacity>
             )}
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: 3,
-                color: primaryColor,
-                right: -4,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                padding: 4,
-                height: 20,
-                width: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-                elevation: 2,
-              }}
-              onPress={() => {
-                pickImage();
-              }}>
-              <MaterialCommunityIcons
-                name="pencil"
+            {visiting && visiting.is_edit === 'Yes' && (
+              <TouchableOpacity
                 style={{
-                  alignSelf: 'center',
-                  fontSize: 14,
-                  color: 'black',
-
+                  position: 'absolute',
+                  top: 3,
                   color: primaryColor,
+                  right: -4,
+                  backgroundColor: 'white',
+                  borderRadius: 10,
+                  padding: 4,
+                  height: 20,
+                  width: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  elevation: 2,
                 }}
-              />
-            </TouchableOpacity>
+                onPress={() => {
+                  pickImage();
+                }}>
+                <MaterialCommunityIcons
+                  name="pencil"
+                  style={{
+                    alignSelf: 'center',
+                    fontSize: 14,
+                    color: 'black',
+
+                    color: primaryColor,
+                  }}
+                />
+              </TouchableOpacity>
+            )}
           </View>
 
           <Text style={[styles.largeText, {marginVertical: 5, color: 'black'}]}>
-            Zaheer Hassan
+            {visiting && visiting.f_name + ' ' + visiting.l_name}
           </Text>
           <Text
             style={[
               styles.mediumText,
               {marginVertical: 2, color: 'black', fontSize: 14},
             ]}>
-            @Zaheer01
+            {visiting && visiting.username}
           </Text>
           <View
             style={{
@@ -242,7 +274,8 @@ const User = ({params, navigation}) => {
                 styles.mediumText,
                 {textAlign: 'center', color: 'red', fontSize: 15},
               ]}>
-              3000{`\n`}Followers
+              {visiting && visiting.followers}
+              {`\n`}Followers
             </Text>
             <Divider style={{height: 50, width: 2, color: 'black'}} />
             <Text
@@ -250,7 +283,8 @@ const User = ({params, navigation}) => {
                 styles.mediumText,
                 {textAlign: 'center', color: 'red', fontSize: 15},
               ]}>
-              3000{`\n`}Appllauses
+              {visiting && visiting.applauses}
+              {`\n`}Appllauses
             </Text>
             <Divider style={{height: 50, width: 2, color: 'black'}} />
 
@@ -259,7 +293,8 @@ const User = ({params, navigation}) => {
                 styles.mediumText,
                 {textAlign: 'center', color: 'red', fontSize: 15},
               ]}>
-              3000{`\n`}Followers
+              {visiting && visiting.following}
+              {`\n`}Following
             </Text>
           </View>
         </View>
@@ -281,7 +316,8 @@ const User = ({params, navigation}) => {
             ]}>
             <Text
               style={[styles.mediumText, {textAlign: 'center', fontSize: 16}]}>
-              Challenges{`\n`}3004
+              Challenges{`\n`}
+              {visiting && visiting.challenges}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -299,7 +335,8 @@ const User = ({params, navigation}) => {
             ]}>
             <Text
               style={[styles.mediumText, {textAlign: 'center', fontSize: 16}]}>
-              Accepted{`\n`}3000
+              Accepted{`\n`}
+              {visiting && visiting.accepted}
             </Text>
           </TouchableOpacity>
         </View>
@@ -327,11 +364,18 @@ const User = ({params, navigation}) => {
             );
           }}
         />
-
+        <Loading visible={loading} />
         {/* <TabBar navigation={navigation} /> */}
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-export default User;
+const mapStateToProps = (state) => {
+  const {user} = state.auth;
+  const {visiting} = state.app;
+  return {
+    user,
+    visiting,
+  };
+};
+export default connect(mapStateToProps, {visitingProfile})(User);

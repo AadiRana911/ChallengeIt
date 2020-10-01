@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {BASE_URL} from '../base-url';
-import {ALL_INTERESTS} from './types';
+import {ALL_INTERESTS, VISITING_PROFILE} from './types';
 
 //Local Types
 export const APP_LOADING = 'APP_LOADING';
@@ -46,6 +46,35 @@ export const saveInterests = (data, rsl, rej) => {
         if (res.data.status == true) {
           rsl(res.data.message);
         } else {
+          rej(res.data.message);
+        }
+      })
+      .catch((err) => {
+        rej(err.message);
+      });
+  };
+};
+//get profile
+export const visitingProfile = (data, token, rsl, rej) => {
+  return (dispatch) => {
+    axios(`${BASE_URL}/Authentication/user_profile`, {
+      method: 'post',
+      data,
+      headers: {
+        auth: token,
+      },
+    })
+      .then((res) => {
+        if (res.data.status == true) {
+          dispatch({
+            type: VISITING_PROFILE,
+            visiting: res.data.data[0],
+          });
+          rsl(res.data.message);
+        } else {
+          dispatch({
+            type: VISITING_PROFILE,
+          });
           rej(res.data.message);
         }
       })

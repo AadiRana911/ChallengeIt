@@ -34,7 +34,7 @@ const Component3 = ({
   const [loading, setLoading] = useState(false);
 
   const handleuser = () => {
-    const {email, gender} = route.params;
+    const {email, gender, from} = route.params;
     if (fname === '') {
       Snackbar.show({
         text: 'Kindly Enter First Name',
@@ -71,6 +71,7 @@ const Component3 = ({
             fname,
             lname,
             password,
+            from,
           });
         })
         .catch((errorData) => {

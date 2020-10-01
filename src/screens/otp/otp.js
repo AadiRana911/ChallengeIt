@@ -16,39 +16,33 @@ import Snackbar from 'react-native-snackbar';
 import styles from './styles';
 //redux
 import {connect} from 'react-redux';
-import {login} from '../../redux/actions/auth';
+import {otpVerify} from '../../redux/actions/auth';
 
-const Signin = ({navigation, login}) => {
-  const [canIMove, setCanIMove] = useState(false);
-  const [results, setRes] = useState(null);
+const OTP = ({navigation, route, otpVerify}) => {
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const {email} = route.params;
 
+  const [otp, setOTP] = useState('');
   const {height} = Dimensions.get('window');
-  const handleLogin = () => {
-    if (email === '') {
+
+  const verifyOTP = () => {
+    if (otp === '') {
       Snackbar.show({
-        text: 'Kindly Enter email address',
-        duration: Snackbar.LENGTH_SHORT,
-      });
-    } else if (password === '') {
-      Snackbar.show({
-        text: 'Kindly Enter password',
+        text: `Enter opt sent at ${email}`,
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
       setLoading(true);
       var formdata = new FormData();
+      formdata.append('otp', otp);
       formdata.append('email', email);
-      formdata.append('pass', password);
 
       new Promise((rsl, rej) => {
-        login(formdata, rsl, rej);
+        otpVerify(formdata, rsl, rej);
       })
         .then((res) => {
           setLoading(false);
-          navigation.navigate('Home');
+          navigation.navigate('Reset', {email, otp});
         })
         .catch((errorData) => {
           setLoading(false);
@@ -56,6 +50,9 @@ const Signin = ({navigation, login}) => {
             text: errorData,
             duration: Snackbar.LENGTH_SHORT,
           });
+          // navigation.navigate(
+          //   // errorData === 'No Record exit.' ? 'Signup' : 'Signin',
+          // );
         });
     }
   };
@@ -77,59 +74,33 @@ const Signin = ({navigation, login}) => {
                 color: primaryColor,
                 fontFamily: Fonts.CenturyBold,
               }}>
-              Sign In
+              Verify OTP
             </Text>
             <Text style={{fontSize: 15, fontFamily: Fonts.CenturyRegular}}>
-              Enter your email address and password to login
-            </Text>
-          </View>
-          <View>
-            <TextInput
-              style={styles.textInputStyle}
-              placeholder="Enter Email"
-              value={email}
-              keyboardType={'email-address'}
-              onChangeText={(email) => setEmail(email)}
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.textInputStyle}
-              placeholder="Enter Password"
-              value={password}
-              secureTextEntry
-              keyboardType={'default'}
-              onChangeText={(password) => setPassword(password)}
-            />
-          </View>
-        </View>
-
-        <View style={{flex: 0.25, marginTop: height / 15}}>
-          <View style={{flex: 1}}>
-            <Text style={{fontFamily: Fonts.CenturyRegular}}>
-              Don't have an account?
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('C1');
-              }}>
+              Enter the otp which have sent to your email:
               <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: Fonts.CenturyBold,
-                  color: primaryColor,
-                }}>
-                Sign up
+                style={{color: primaryColor, fontFamily: Fonts.CenturyRegular}}>
+                {email}
               </Text>
-            </TouchableOpacity>
+            </Text>
+          </View>
+          <View>
+            <TextInput
+              style={styles.textInputStyle}
+              placeholder="Enter OTP"
+              value={otp}
+              keyboardType={'number-pad'}
+              onChangeText={(otp) => setOTP(otp)}
+            />
           </View>
         </View>
+        <View style={{flex: 0.25, marginTop: height / 15}}></View>
 
         <TouchableOpacity
           activeOpacity={0.7}
           disabled={loading}
           style={styles.nextButtonStyle}
-          onPress={() => handleLogin()}>
+          onPress={() => verifyOTP()}>
           {loading ? (
             <ActivityIndicator animating color={primaryColor} size={25} />
           ) : (
@@ -139,27 +110,13 @@ const Signin = ({navigation, login}) => {
                 fontFamily: Fonts.CenturyBold,
                 color: primaryColor,
               }}>
-              Login
+              Verify
             </Text>
           )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{alignSelf: 'center'}}
-          onPress={() => {
-            navigation.navigate('VerifyEmail');
-          }}>
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: Fonts.CenturyBold,
-              color: primaryColor,
-            }}>
-            Forgot Password?
-          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
   );
 };
 
-export default connect(null, {login})(Signin);
+export default connect(null, {otpVerify})(OTP);

@@ -18,6 +18,7 @@ import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import Snackbar from 'react-native-snackbar';
+import {Loading} from '../../components/Loading';
 //redux
 import {connect} from 'react-redux';
 import {checkEmail} from '../../redux/actions/auth';
@@ -38,6 +39,10 @@ const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
   const [results, setRes] = useState(null);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [fbLoading, setFbLoading] = useState(false);
+  const [gLoading, setGLoading] = useState(false);
+
+  const [from, setFrom] = useState('');
 
   const {height} = Dimensions.get('window');
 
@@ -49,16 +54,35 @@ const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
       const userInfo = (await GoogleSignin.getCurrentUser().then(googlePromise))
         .user;
       if (userInfo) {
-        console.log(userInfo);
-        navigation.navigate('Home');
-        // const params = new FormData();
-        // params.append('email', userInfo && userInfo.email);
-        // await this.props.loginWithGmail(params);
-        // if (this.props.isSuccess) {
-        //   this.props.navigation.navigate('Home');
-        // } else {
-        //   alert(this.props.errMsg);
-        // }
+        // console.log(userInfo);
+        let email = userInfo.email;
+        // setEmail(email);
+        // setFrom('google');
+        setGLoading(true);
+        var formdata = new FormData();
+        let from = 'google';
+        formdata.append('email', email);
+        formdata.append('loginwith', from);
+
+        console.log(formdata);
+        new Promise((rsl, rej) => {
+          checkEmail(formdata, rsl, rej);
+        })
+          .then((res) => {
+            setGLoading(false);
+            console.log(res);
+            res === 3
+              ? navigation.navigate('C2', {email, from})
+              : navigation.navigate('Home');
+            // navigation.navigate('C2', {email, from});
+          })
+          .catch((errorData) => {
+            setGLoading(false);
+            Snackbar.show({
+              text: errorData,
+              duration: Snackbar.LENGTH_SHORT,
+            });
+          });
       }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -80,10 +104,10 @@ const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
     const result = await LoginManager.logInWithPermissions([
       'public_profile',
       'email',
-      'user_friends',
+      // 'user_friends',
     ]);
-    console.log(result);
-    setRes(results);
+    console.log('Login', result);
+    // setRes(results);
 
     if (result.isCancelled) {
       throw 'User cancelled the login process';
@@ -91,7 +115,8 @@ const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
 
     // Once signed in, get the users AccesToken
     const data = await AccessToken.getCurrentAccessToken();
-
+    data && setFbLoading(true);
+    // console.log('data', data);
     if (!data) {
       throw 'Something went wrong obtaining access token';
     }
@@ -138,7 +163,7 @@ const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
       })
         .then((res) => {
           setLoading(false);
-          navigation.navigate('C2', {email});
+          navigation.navigate('C2', {email, from});
         })
         .catch((errorData) => {
           setLoading(false);
@@ -149,6 +174,7 @@ const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
         });
     }
   };
+
   return (
     <KeyboardAwareScrollView
       style={{flex: 1, backgroundColor: 'red'}}
@@ -177,7 +203,7 @@ const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
             <TextInput
               style={styles.textInputStyle}
               placeholder="johndoe@gmail.com"
-              value={email}
+              // value={email}
               keyboardType={'email-address'}
               onChangeText={(email) => setEmail(email)}
             />
@@ -244,24 +270,52 @@ const Component1 = ({navigation, checkEmail, isSuccess, isLoading, errMsg}) => {
             <TouchableOpacity
               style={styles.socialIconsStyle}
               onPress={() =>
-                onFacebookButtonPress().then(() =>
-                  console.log('Login with facebook'),
-                )
+                onFacebookButtonPress().then((res) => {
+                  let email = res.additionalUserInfo.profile.email;
+                  let from = 'facebook';
+                  var formdata = new FormData();
+                  formdata.append('loginwith', from);
+                  formdata.append('email', email);
+                  new Promise((rsl, rej) => {
+                    checkEmail(formdata, rsl, rej);
+                  })
+                    .then((res) => {
+                      setFbLoading(false);
+                      res === 1
+                        ? navigation.navigate('Home')
+                        : navigation.navigate('C2', {email, from});
+                    })
+                    .catch((errorData) => {
+                      setFbLoading(false);
+                      Snackbar.show({
+                        text: errorData,
+                        duration: Snackbar.LENGTH_SHORT,
+                      });
+                    });
+                })
               }>
-              <EvilIcons
-                name="sc-facebook"
-                style={{fontSize: 40, color: '#80aaff'}}
-              />
+              {fbLoading ? (
+                <ActivityIndicator animating color={primaryColor} size={25} />
+              ) : (
+                <EvilIcons
+                  name="sc-facebook"
+                  style={{fontSize: 40, color: '#80aaff'}}
+                />
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.socialIconsStyle}
               onPress={() => {
                 signIn();
               }}>
-              <Image
-                source={require('../../assets/images/google.png')}
-                style={{height: 30, width: 30}}
-              />
+              {gLoading ? (
+                <ActivityIndicator animating color={primaryColor} size={25} />
+              ) : (
+                <Image
+                  source={require('../../assets/images/google.png')}
+                  style={{height: 30, width: 30}}
+                />
+              )}
             </TouchableOpacity>
             {/* <TouchableOpacity
               style={styles.socialIconsStyle}

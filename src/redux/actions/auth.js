@@ -34,10 +34,12 @@ export const checkEmail = (data, rsl, rej) => {
       data,
     })
       .then((res) => {
-        if (res.data.status == true) {
-          rsl(res.data.message);
-        } else {
+        if (res.data.status === 1) {
+          rsl(res.data.status);
+        } else if (res.data.status === 2) {
           rej(res.data.message);
+        } else if (res.data.status === 3) {
+          rsl(res.data.status);
         }
       })
       .catch((err) => {
@@ -102,6 +104,63 @@ export const login = (data, rsl, rej) => {
             type: LOGIN_USER,
             user: res.data.data,
           });
+        } else {
+          rej(res.data.message);
+        }
+      })
+      .catch((err) => {
+        rej(err.message);
+      });
+  };
+};
+//OTP for password reset
+export const getOtp = (data, rsl, rej) => {
+  return (dispatch) => {
+    axios(`${BASE_URL}/Authentication/forgotpassword`, {
+      method: 'post',
+      data,
+    })
+      .then((res) => {
+        if (res.data.status == true) {
+          rsl(res.data.message);
+        } else {
+          rej(res.data.message);
+        }
+      })
+      .catch((err) => {
+        rej(err.message);
+      });
+  };
+};
+//OTP Verify
+export const otpVerify = (data, rsl, rej) => {
+  return (dispatch) => {
+    axios(`${BASE_URL}/Authentication/verifyotp`, {
+      method: 'post',
+      data,
+    })
+      .then((res) => {
+        if (res.data.status == true) {
+          rsl(res.data.message);
+        } else {
+          rej(res.data.message);
+        }
+      })
+      .catch((err) => {
+        rej(err.message);
+      });
+  };
+};
+//Change password
+export const changePass = (data, rsl, rej) => {
+  return (dispatch) => {
+    axios(`${BASE_URL}/Authentication/ResetPassword`, {
+      method: 'post',
+      data,
+    })
+      .then((res) => {
+        if (res.data.status == true) {
+          rsl(res.data.message);
         } else {
           rej(res.data.message);
         }

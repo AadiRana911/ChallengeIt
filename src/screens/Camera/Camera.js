@@ -248,8 +248,9 @@ class Camera extends Component {
           //   playState: 'playing',
           //   duration: this.sound.getDuration(),
           // });
-          this.sound.play();
-          this.setState({recording: true}, () => {
+
+          this.setState({recording: true}, async () => {
+            await this.sound.play();
             this.videoRec();
           });
         }
