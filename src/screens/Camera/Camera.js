@@ -232,30 +232,29 @@ class Camera extends Component {
   }
 
   async startRecording() {
-    this.sound = new Sound(
-      'https://www.bensound.com/bensound-music/bensound-dubstep.mp3',
-      '',
-      (error) => {
-        if (error) {
-          console.log('failed to load the sound', error);
-          Alert.alert('Notice', 'audio file error. (Error code : 1)');
-          // this.setState({playState: 'paused'});
-        } else {
-          if (this.sound.isLoaded) {
-            // this.setState({loading: false});
-          }
-          // this.setState({
-          //   playState: 'playing',
-          //   duration: this.sound.getDuration(),
-          // });
-
-          this.setState({recording: true}, async () => {
-            await this.sound.play();
-            this.videoRec();
-          });
-        }
-      },
-    );
+    this.setState({recording: true}, async () => {
+      // await this.sound.play();
+      this.videoRec();
+    });
+    // this.sound = new Sound(
+    //   'https://www.bensound.com/bensound-music/bensound-dubstep.mp3',
+    //   '',
+    //   (error) => {
+    //     if (error) {
+    //       console.log('failed to load the sound', error);
+    //       Alert.alert('Notice', 'audio file error. (Error code : 1)');
+    //       // this.setState({playState: 'paused'});
+    //     } else {
+    //       if (this.sound.isLoaded) {
+    //         // this.setState({loading: false});
+    //       }
+    //       // this.setState({
+    //       //   playState: 'playing',
+    //       //   duration: this.sound.getDuration(),
+    //       // });
+    //     }
+    //   },
+    // );
   }
 
   async videoRec() {
@@ -264,14 +263,14 @@ class Camera extends Component {
     const type = `video/${codec}`;
 
     this.setState({processing: false, uri: uri, type: type}, () => {
-      this.sound.pause();
+      // this.sound.pause();
       this.props.navigation.navigate('Preview', {video: uri});
     });
   }
 
   stopRecording() {
     this.camera.stopRecording();
-    this.sound.pause();
+    // this.sound.pause();
   }
 }
 

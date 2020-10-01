@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {primaryColor} from '../../components/colors';
 import {Fonts} from '../../utils/Fonts';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -17,6 +19,9 @@ import styles from './styles';
 //redux
 import {connect} from 'react-redux';
 import {login} from '../../redux/actions/auth';
+//fcm
+import {fcmService} from '../../Notifications/FCMService';
+import {localNotificationService} from '../../Notifications/LocalNotificationService';
 
 const Signin = ({navigation, login}) => {
   const [canIMove, setCanIMove] = useState(false);
@@ -24,9 +29,49 @@ const Signin = ({navigation, login}) => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-
   const {height} = Dimensions.get('window');
-  const handleLogin = () => {
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    fcmService.registerAppWithFCM();
+    fcmService.register(onRegister, onNotification, onOpenNotification);
+    localNotificationService.configure(onOpenNotification);
+
+    function onRegister(token) {
+      console.log('ChallengeIt onRegister: ', token);
+      setToken(token);
+    }
+
+    function onNotification(notify) {
+      console.log('ChallengeIt onNotification: ', notify);
+      const options = {
+        soundName: 'default',
+        playSound: true, //,
+        // largeIcon: 'ic_launcher', // add icon large for Android (Link: app/src/main/mipmap)
+        // smallIcon: 'ic_launcher' // add icon small for Android (Link: app/src/main/mipmap)
+      };
+      localNotificationService.showNotification(
+        0,
+        notify.title,
+        notify.body,
+        notify,
+        options,
+      );
+    }
+
+    function onOpenNotification(notify) {
+      console.log('ChallengeIt onOpenNotification: ', notify);
+      alert('ChallengeIt: ' + notify.body);
+    }
+
+    return () => {
+      console.log('ChallengeIT unRegister');
+      fcmService.unRegister();
+      localNotificationService.unregister();
+    };
+  }, []);
+
+  const handleLogin = async () => {
     if (email === '') {
       Snackbar.show({
         text: 'Kindly Enter email address',
@@ -39,10 +84,18 @@ const Signin = ({navigation, login}) => {
       });
     } else {
       setLoading(true);
+      let lat = await AsyncStorage.getItem('lat');
+      let long = await AsyncStorage.getItem('long');
+      console.log('From Sign', parseFloat(lat), parseFloat(long));
+
       var formdata = new FormData();
       formdata.append('email', email);
       formdata.append('pass', password);
+      lat && formdata.append('lati', JSON.parse(lat));
+      long && formdata.append('longi', JSON.parse(long));
+      token && formdata.append('token', token);
 
+      console.log(formdata);
       new Promise((rsl, rej) => {
         login(formdata, rsl, rej);
       })

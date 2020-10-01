@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://challengeit.coviknow.com/';
+export const BASE_URL = 'https://challengeit.coviknow.com/';

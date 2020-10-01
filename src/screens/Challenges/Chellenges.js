@@ -45,33 +45,30 @@ import {Fonts} from '../../utils/Fonts';
 import LottieView from 'lottie-react-native';
 import TabBar from '../../components/navigation';
 import Camera from '../Camera';
+import {BASE_URL} from '../../redux/base-url';
+import {Loading} from '../../components/Loading';
+//redux
+//redux
+import {connect} from 'react-redux';
+import {nearbyUsers} from '../../redux/actions/app';
 
-const Challenges = ({navigation}) => {
+const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
   useEffect(() => {
-    // (async () => {
-    //   requestMultiple(
-    //     (Platform.OS = 'android' && [
-    //       PERMISSIONS.ANDROID.CAMERA,
-    //       PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-    //       PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-    //     ]),
-    //   ).then((res) => {
-    //     if (
-    //       res[PERMISSIONS.ANDROID.CAMERA] == 'granted' &&
-    //       res[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] == 'granted' &&
-    //       res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] == 'granted'
-    //     ) {
-    //     } else {
-    //       Alert.alert('ChallengeIt', 'Please allow all permission', [
-    //         {
-    //           text: 'OPEN SETTINGS',
-    //           onPress: () => Linking.openSettings(),
-    //         },
-    //       ]);
-    //     }
-    //   });
-    // })();
-    return () => console.log('Component will unmount');
+    setAvatarLoading(true);
+
+    new Promise((rsl, rej) => {
+      nearbyUsers(token, rsl, rej);
+    })
+      .then((res) => {
+        setAvatarLoading(false);
+      })
+      .catch((errorData) => {
+        setAvatarLoading(false);
+        Snackbar.show({
+          text: errorData,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      });
   }, []);
 
   const rbsheet = useRef(null);
@@ -99,55 +96,14 @@ const Challenges = ({navigation}) => {
   const [searchWidth, setSearchWidth] = useState(new Animated.Value(0));
   const [isEnd, setIsEnd] = useState(true);
   const [share, setShare] = useState(false);
-
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [singleuser, setsingleUser] = useState(null);
   const [buttons, setButton] = useState([
     {id: 0, name: 'Recent', isActive: true},
     {id: 1, name: 'Challengers of the week', isActive: false},
     {id: 2, name: 'Challenges of the week', isActive: false},
   ]);
-  const [avatars] = useState([
-    {id: 0, status: '', uri: 'https://randomuser.me/api/portraits/men/20.jpg'},
-    {
-      id: 1,
-      status: 'success',
-      uri: 'https://randomuser.me/api/portraits/men/41.jpg',
-    },
-    {
-      id: 2,
-      status: 'success',
-      uri: 'https://randomuser.me/api/portraits/men/42.jpg',
-    },
-    {
-      id: 3,
-      status: 'error',
-      uri: 'https://randomuser.me/api/portraits/men/10.jpg',
-    },
-    {
-      id: 4,
-      status: '',
-      uri: 'https://randomuser.me/api/portraits/men/14.jpg',
-    },
-    {
-      id: 5,
-      status: 'error',
-      uri: 'https://randomuser.me/api/portraits/men/30.jpg',
-    },
-    {
-      id: 6,
-      status: '',
-      uri: 'https://randomuser.me/api/portraits/men/50.jpg',
-    },
-    {
-      id: 6,
-      status: '',
-      uri: 'https://randomuser.me/api/portraits/men/50.jpg',
-    },
-    {
-      id: 6,
-      status: '',
-      uri: 'https://randomuser.me/api/portraits/men/50.jpg',
-    },
-  ]);
+
   const [videos, setVideos] = useState([
     {
       id: 1,
@@ -257,6 +213,7 @@ const Challenges = ({navigation}) => {
       isShared: false,
     },
   ]);
+
   const toggleLike = (id) => {
     setVideos(
       videos.map((item) => {
@@ -533,6 +490,8 @@ const Challenges = ({navigation}) => {
             },
           ]}
           onPress={() => {
+            setsingleUser(null);
+
             navigation.navigate('Hashtag');
             handleVideoPause(item.id);
           }}>
@@ -649,6 +608,8 @@ const Challenges = ({navigation}) => {
             },
           ]}
           onPress={() => {
+            setsingleUser(null);
+
             navigation.navigate('ViewRes');
             handleVideoPause(item.id);
           }}>
@@ -727,7 +688,11 @@ const Challenges = ({navigation}) => {
           <View style={[styles.bottomContainer]}>
             <TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Responses')}
+                onPress={() => {
+                  setsingleUser(null);
+
+                  navigation.navigate('Responses');
+                }}
                 activeOpacity={0.5}>
                 <MaterialIcons
                   name="videocam"
@@ -777,6 +742,8 @@ const Challenges = ({navigation}) => {
             ]}>
             <TouchableOpacity
               onPress={() => {
+                setsingleUser(null);
+
                 handleVideoPause(item.id);
                 navigation.navigate('Camera');
               }}>
@@ -845,20 +812,6 @@ const Challenges = ({navigation}) => {
     );
   };
 
-  const _captureVideo = async () => {
-    try {
-      ImagePicker.openPicker({
-        mediaType: 'video',
-      }).then((result) => {
-        navigation.navigate('Response', {video: result.path});
-        // setTimeout(() => {
-        //   setImages(medai);
-        // }, 200);
-      });
-    } catch (E) {
-      console.log(E);
-    }
-  };
   const handleShare = async (id) => {
     setVideos(
       videos.map((item) => {
@@ -931,7 +884,8 @@ const Challenges = ({navigation}) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setAllVidsPause();
-              navigation.navigate('User');
+              setsingleUser(null);
+              navigation.navigate('User', {uid: user && user.u_id});
             }}>
             <Image
               source={dummy}
@@ -979,12 +933,6 @@ const Challenges = ({navigation}) => {
           </View>
         }
       />
-      {/* <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: primaryColor,
-        }}></View> */}
 
       {loading === false ? (
         <ChallengePlaceholder type={'question'} />
@@ -1005,44 +953,12 @@ const Challenges = ({navigation}) => {
                 Nearby Challengers
               </Text>
               <View style={{flexDirection: 'row'}}>
-                {/* <Feather
-                  name="search"
-                  style={{
-                    alignSelf: 'center',
-                    fontSize: 30,
-                    marginHorizontal: width / 30,
-                  }}
-                  onPress={() => {
-                    animationToggle();
-                  }}
-                /> */}
-                {/* <Animated.View style={{width: searchWidth}}>
-                  <TextInput
-                    placeholder="Search..."
-                    style={{
-                      width: '80%',
-                      borderRadius: 3,
-                      borderWidth: searchState ? 0.4 : 0,
-                      borderColor: searchState ? '#ddd' : '#fff',
-                      paddingLeft: 10,
-                    }}
-                  />
-                </Animated.View> */}
                 <FlatList
                   horizontal
                   keyExtractor={(item, index) => {
                     item + index.toString();
                   }}
-                  data={avatars}
-                  // onEndReached={() => {
-                  //   setIsEnd(false);
-                  // }}
-                  // onMomentumScrollEnd={() => {
-                  //   setIsEnd(false);
-                  // }}
-                  // onMomentumScrollBegin={() => {
-                  //   setIsEnd(true);
-                  // }}
+                  data={nearby}
                   showsHorizontalScrollIndicator={false}
                   style={{marginTop: 5}}
                   renderItem={({item, index}) => {
@@ -1051,25 +967,17 @@ const Challenges = ({navigation}) => {
                         activeOpacity={1}
                         key={index}
                         onPress={() => {
+                          setsingleUser(item);
                           setAllVidsPause();
                           setShowAvatar(!showAvatar);
                         }}>
                         <Avatar
                           source={{
-                            uri: item.uri,
+                            uri: `${BASE_URL}${item.dp}`,
                           }}
                           size="medium"
                           rounded
                           containerStyle={{margin: 4}}
-                        />
-
-                        <Badge
-                          status={item.status === '' ? 'primary' : item.status}
-                          containerStyle={{
-                            position: 'absolute',
-                            top: 8,
-                            right: 6,
-                          }}
                         />
                       </TouchableOpacity>
                     );
@@ -1156,25 +1064,26 @@ const Challenges = ({navigation}) => {
               right: 0,
             }}
           />
-          <Image
-            source={{
-              uri:
-                'https://image.shutterstock.com/image-photo/islamabad-pakistan-april-25-2019-260nw-1407461093.jpg',
-            }}
-            style={{
-              height: 90,
-              width: 90,
-              borderRadius: 45,
-              top: -40,
-              alignSelf: 'center',
-            }}
-          />
+          {singleuser && (
+            <Image
+              source={{
+                uri: `${BASE_URL}${singleuser.dp}`,
+              }}
+              style={{
+                height: 90,
+                width: 90,
+                borderRadius: 45,
+                top: -40,
+                alignSelf: 'center',
+              }}
+            />
+          )}
           <Text
             style={[
               styles.largeText,
               {alignSelf: 'center', marginTop: -30, color: primaryColor},
             ]}>
-            Jhon Doe
+            {singleuser && singleuser.f_name + ' ' + singleuser.l_name}
           </Text>
           <Text style={[styles.mediumText, {alignSelf: 'center'}]}>
             1 Km away
@@ -1208,7 +1117,9 @@ const Challenges = ({navigation}) => {
             <Divider style={styles.dividerStyle} />
             <TouchableOpacity
               onPress={() => {
-                setShowAvatar(!showAvatar), navigation.navigate('User');
+                setShowAvatar(!showAvatar), setsingleUser(null);
+
+                navigation.navigate('User', {uid: singleuser.u_id});
               }}
               style={[
                 styles.horizontalContainer,
@@ -1420,7 +1331,6 @@ const Challenges = ({navigation}) => {
           }}
         />
       </RBSheet>
-
       <RBSheet
         ref={playListRef}
         height={420}
@@ -1557,7 +1467,6 @@ const Challenges = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </RBSheet>
-
       <RBSheet
         ref={reportRef}
         height={520}
@@ -1685,15 +1594,13 @@ const Challenges = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </RBSheet>
-
-      {/* <TabBar
-        navigation={navigation}
-        params={'Home'}
-        from={'Chellenges'}
-        pauser={() => setAllVidsPause()}
-      /> */}
+      <Loading visible={avatarLoading} />
     </View>
   );
 };
-
-export default Challenges;
+const mapStateToProps = (state) => {
+  const {nearby} = state.app;
+  const {token, user} = state.auth;
+  return {nearby, token, user};
+};
+export default connect(mapStateToProps, {nearbyUsers})(Challenges);

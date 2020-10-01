@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
-import {View, LogBox} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, LogBox, PermissionsAndroid} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Camera from './src/screens/Camera';
-
-import {Challenge, Response} from './src/screens/Post';
+import AsyncStorage from '@react-native-community/async-storage';
+import {Response} from './src/screens/Post';
+import Challenge from './src/screens/Post/Challenge';
 import AddScreen from './src/screens/AddScreen';
 import Chat from './src/screens/Chat';
 import NotificationScreen from './src/screens/NotificationScreen';
@@ -19,7 +19,7 @@ import Settings from './src/screens/Settings';
 import Playlists from './src/screens/Playlists';
 import ProfileScreen from './src/screens/ProfileScreen';
 import VerifyEmail from './src/screens/VerifyEmail';
-// import {
+// import
 //   Component1,
 //   Component2,
 //   Component3,
@@ -40,12 +40,65 @@ import BottomTab from './src/navigation/BottomTab';
 import Signin from './src/screens/Signin';
 import OTP from './src/screens/otp';
 import ResetPassword from './src/screens/ResetPassword';
+import Geolocation from 'react-native-geolocation-service';
+import BackgroundTimer from 'react-native-background-timer';
+import {AskPermission} from './src/components/AskPermission';
+
 //redux
 import {connect} from 'react-redux';
+import {getLocation} from './src/redux/actions/app';
 const Stack = createStackNavigator();
 
-function AppNav({user, isLoggedIn}) {
-  const initial = isLoggedIn ? 'Home' : 'Signin';
+function AppNav({user, isLoggedIn, getLocation, token}) {
+  let initial = isLoggedIn && isLoggedIn ? 'Home' : 'Signin';
+  console.log(isLoggedIn);
+  useEffect(() => {
+    let permission = PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION;
+    if (Platform.OS === 'android') AskPermission(permission);
+    getWorkerLocation();
+
+    const intervalId = BackgroundTimer.setInterval(() => {
+      getWorkerLocation();
+    }, 50000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const getWorkerLocation = () => {
+    try {
+      Geolocation.getCurrentPosition(
+        async (position) => {
+          let {latitude, longitude} = position.coords;
+          await AsyncStorage.setItem('lat', JSON.stringify(latitude));
+          await AsyncStorage.setItem('long', JSON.stringify(longitude));
+          if (latitude && longitude) {
+            const params = new FormData();
+            params.append('lati', JSON.parse(latitude));
+            params.append('longi', JSON.parse(longitude));
+
+            console.log(params);
+            new Promise((rsl, rej) => {
+              token && getLocation(params, token, rsl, rej);
+            })
+              .then((res) => {
+                console.log(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+          }
+        },
+        (error) => {
+          console.log(error);
+          // See error code charts below.
+        },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initial}>
@@ -53,7 +106,10 @@ function AppNav({user, isLoggedIn}) {
           <Stack.Screen
             name="Signup"
             component={SignupScreen}
-            options={{headerShown: false, animationEnabled: true}}
+            options={{
+              headerShown: false,
+              animationEnabled: true,
+            }}
           />
         )}
         {!isLoggedIn && (
@@ -221,10 +277,11 @@ function AppNav({user, isLoggedIn}) {
 }
 
 const mapStateToProps = (state) => {
-  const {user, isLoggedIn} = state.auth;
+  const {user, isLoggedIn, token} = state.auth;
   return {
     user,
     isLoggedIn,
+    token,
   };
 };
-export default connect(mapStateToProps)(AppNav);
+export default connect(mapStateToProps, {getLocation})(AppNav);

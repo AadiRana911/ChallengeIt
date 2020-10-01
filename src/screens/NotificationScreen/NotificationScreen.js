@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,8 +15,32 @@ import {Fonts} from '../../utils/Fonts';
 import {primaryColor} from '../../components/colors';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import OptionsMenu from 'react-native-options-menu';
+import {Loading} from '../../components/Loading';
+import HTML from 'react-native-render-html';
+import {BASE_URL} from '../../redux/base-url';
+import Snackbar from 'react-native-snackbar';
+//redux
+import {connect} from 'react-redux';
+import {getNotif} from '../../redux/actions/app';
+const Notification = ({navigation, getNotif, notifications, token}) => {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    new Promise((rsl, rej) => {
+      getNotif(token, rsl, rej);
+    })
+      .then((res) => {
+        setLoading(false);
+      })
+      .catch((errorData) => {
+        setLoading(false);
+        Snackbar.show({
+          text: errorData,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      });
+  }, []);
 
-const Notification = ({navigation}) => {
   const renderItem = ({item, index}) => {
     return (
       <View style={styles.mainContianer}>
@@ -32,7 +56,7 @@ const Notification = ({navigation}) => {
               <Avatar
                 rounded
                 source={{
-                  uri: 'https://randomuser.me/api/portraits/men/12.jpg',
+                  uri: `${BASE_URL}${item.link}`,
                 }}
                 size="medium"
                 containerStyle={{marginTop: 10}}
@@ -51,23 +75,15 @@ const Notification = ({navigation}) => {
                   justifyContent: 'space-between',
                   marginTop: 5,
                 }}>
-                <Text
-                  style={{
-                    color: primaryColor,
-                    fontFamily: Fonts.CenturyBold,
-                  }}>
-                  Zaheer01,Muhammad Bilal
-                </Text>
+                <HTML html={item.notification} />
               </View>
-              <Text style={{fontFamily: Fonts.CenturyRegular}}>
-                and 18 others posted new challenges
-              </Text>
+
               <Text
                 style={[
                   styles.smallText,
                   {alignSelf: 'flex-start', fontFamily: Fonts.CenturyRegular},
                 ]}>
-                10:24 PM
+                {item.noti_date}
               </Text>
             </View>
             <OptionsMenu
@@ -112,31 +128,20 @@ const Notification = ({navigation}) => {
           </Text>
         }
       />
-      {/* <View
-        style={{
-          backgroundColor: primaryColor,
-        }}>
-        <Text
-          style={[
-            styles.largeText,
-            {
-              color: 'white',
-              paddingVertical: 10,
-              alignSelf: 'center',
-              fontSize: 17,
-            },
-          ]}>
-          Chat
-        </Text>
-      </View> */}
 
       <FlatList
         ListFooterComponent={<View style={{margin: 15}} />}
-        data={new Array(10)}
+        data={notifications}
         keyExtractor={(item) => item}
         renderItem={renderItem}
       />
+      <Loading visible={loading} />
     </SafeAreaView>
   );
 };
-export default Notification;
+const mapStateToProps = (state) => {
+  const {notifications} = state.app;
+  const {token} = state.auth;
+  return {notifications, token};
+};
+export default connect(mapStateToProps, {getNotif})(Notification);

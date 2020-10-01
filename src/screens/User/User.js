@@ -25,19 +25,35 @@ import {Header} from 'react-native-elements';
 import {Loading} from '../../components/Loading';
 import {useFocusEffect} from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
+import {BASE_URL} from '../../redux/base-url';
 //redux
 import {connect} from 'react-redux';
-import {visitingProfile} from '../../redux/actions/app';
+import {
+  visitingProfile,
+  addBio,
+  updatePic,
+  followUser,
+} from '../../redux/actions/app';
 
-const User = ({navigation, visitingProfile, user, visiting}) => {
+const User = ({
+  navigation,
+  visitingProfile,
+  user,
+  visiting,
+  addBio,
+  updatePic,
+  followUser,
+  route,
+}) => {
   const {height, width} = Dimensions.get('window');
   const [challenges, setChallenges] = useState(true);
   const [accepted, setAccepted] = useState(false);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
   const [isEnd, setIsEnd] = useState(false);
   const [bio, setBio] = useState('');
   const [isEditing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [following, setFollowing] = useState(false);
   const [areChallengesSelected, setAreChallengesSelected] = useState(true);
   const results = [
     {
@@ -89,17 +105,27 @@ const User = ({navigation, visitingProfile, user, visiting}) => {
         'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRFU7U2h0umyF0P6E_yhTX45sGgPEQAbGaJ4g&usqp=CAU',
     },
   ];
-
+  const showIcon = () => {
+    if (isEditing && bio !== '') {
+      return 'check';
+    } else if (isEditing && bio === '') {
+      return '';
+    } else {
+      return 'pencil';
+    }
+  };
+  const {uid} = route.params;
   useFocusEffect(
     useCallback(() => {
       setLoading(true);
       const formData = new FormData();
-      formData.append('u_id', user.u_id);
+      formData.append('u_id', uid);
       const unsubscribe = new Promise((rsl, rej) => {
         visitingProfile(formData, user.auth, rsl, rej);
       })
         .then((res) => {
           setLoading(false);
+          visiting && setBio(visiting.bio);
         })
         .catch((errorData) => {
           setLoading(false);
@@ -112,6 +138,67 @@ const User = ({navigation, visitingProfile, user, visiting}) => {
       return () => unsubscribe;
     }, []),
   );
+  //add bio
+  const handleBio = () => {
+    if (bio === '') {
+      Snackbar.show({
+        text: 'Kindly enter bio',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      const formData = new FormData();
+      formData.append('bio', bio);
+      new Promise((rsl, rej) => {
+        setLoading(true);
+        addBio(formData, user.auth, rsl, rej);
+      })
+        .then((res) => {
+          Snackbar.show({
+            text: res,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+          setLoading(false);
+        })
+        .catch((errorData) => {
+          setLoading(false);
+          Snackbar.show({
+            text: errorData,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+        });
+    }
+  };
+
+  //handle Profile Pic
+  const handleProfilePic = () => {
+    const date = new Date();
+
+    const formData = new FormData();
+    formData.append('files', {
+      uri: image.path,
+      type: image.mime,
+      name: 'image_' + Math.floor(date.getTime() + date.getSeconds() / 2),
+    });
+    console.log(formData);
+    new Promise((rsl, rej) => {
+      setLoading(true);
+      updatePic(formData, user.auth, rsl, rej);
+    })
+      .then((res) => {
+        Snackbar.show({
+          text: res,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+        setLoading(false);
+      })
+      .catch((errorData) => {
+        setLoading(false);
+        Snackbar.show({
+          text: errorData,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      });
+  };
 
   //share profile
   const handleShare = async (id) => {
@@ -130,10 +217,35 @@ const User = ({navigation, visitingProfile, user, visiting}) => {
   //image picker
   const pickImage = () => {
     ImagePicker.openPicker({mediaType: 'photo'}).then((image) => {
-      setImage(image.path);
+      setImage(image);
+      image && handleProfilePic();
     });
   };
   // return <ProfilePlaceholder />;
+  // follow user
+  const handleFollow = () => {
+    const formData = new FormData();
+    user && formData.append('u_id', user.u_id);
+    new Promise((rsl, rej) => {
+      setLoading(true);
+      followUser(formData, user.auth, rsl, rej);
+    })
+      .then((res) => {
+        Snackbar.show({
+          text: res,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+        setFollowing(true);
+        setLoading(false);
+      })
+      .catch((errorData) => {
+        setLoading(false);
+        Snackbar.show({
+          text: errorData,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      });
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <Header
@@ -155,23 +267,23 @@ const User = ({navigation, visitingProfile, user, visiting}) => {
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.head}>
+        <View style={[styles.head]}>
           <View
             style={{
               shadowColor: '#000',
               shadowOffset: {width: 10, height: 10},
               shadowOpacity: 0.1,
               shadowRadius: 5,
-              elevation: 10,
+              // elevation: 10,
               borderRadius: 70,
               borderWidth: 3,
               borderColor: '#fff',
             }}>
-            {image === '' ? (
+            {visiting && visiting.dp === '' ? (
               <TouchableOpacity style={styles.imageStyle}>
                 <Image
                   source={{
-                    uri: 'https://randomuser.me/api/portraits/men/10.jpg',
+                    uri: image,
                   }}
                   style={[styles.imageStyle, {borderColor: 'white'}]}
                 />
@@ -216,7 +328,6 @@ const User = ({navigation, visitingProfile, user, visiting}) => {
               </TouchableOpacity>
             )}
           </View>
-
           <Text style={[styles.largeText, {marginVertical: 5, color: 'black'}]}>
             {visiting && visiting.f_name + ' ' + visiting.l_name}
           </Text>
@@ -229,11 +340,18 @@ const User = ({navigation, visitingProfile, user, visiting}) => {
           </Text>
           <View
             style={{
+              width: '100%',
               flexDirection: 'row',
               alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
             <TextInput
-              placeholder="Add Bio"
+              placeholder={
+                visiting && visiting.isEditing === 'No' && visiting.bio !== ''
+                  ? 'Add Bio'
+                  : 'No Bio found'
+              }
               value={bio}
               multiline
               editable={isEditing ? true : false}
@@ -249,55 +367,75 @@ const User = ({navigation, visitingProfile, user, visiting}) => {
                 setBio(bio);
               }}
             />
-            <MaterialCommunityIcons
+            {visiting && visiting.is_edit === 'Yes' && (
+              <TouchableOpacity
+                style={{
+                  justifyContent: 'center',
+                  padding: 10,
+                }}
+                onPress={() => {
+                  setEditing(!isEditing);
+                  isEditing && handleBio();
+                }}>
+                <MaterialCommunityIcons
+                  name={showIcon()}
+                  style={{
+                    fontSize: isEditing ? 20 : 16,
+                    color: 'black',
+
+                    color: primaryColor,
+                  }}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {visiting && visiting.is_edit === 'No' && (
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              disabled={visiting && visiting.follow_status === 'Following'}
               onPress={() => {
-                setEditing(!isEditing);
-              }}
-              name={isEditing ? 'check' : 'pencil'}
-              style={{
-                alignSelf: 'center',
-                fontSize: isEditing ? 20 : 16,
-                color: 'black',
-
-                color: primaryColor,
-              }}
-            />
-          </View>
-          <TouchableOpacity style={styles.buttonStyle}>
-            <Text style={[styles.mediumText, {color: 'white', fontSize: 15}]}>
-              follow
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.statsContainer}>
-            <Text
-              style={[
-                styles.mediumText,
-                {textAlign: 'center', color: 'red', fontSize: 15},
-              ]}>
-              {visiting && visiting.followers}
-              {`\n`}Followers
-            </Text>
-            <Divider style={{height: 50, width: 2, color: 'black'}} />
-            <Text
-              style={[
-                styles.mediumText,
-                {textAlign: 'center', color: 'red', fontSize: 15},
-              ]}>
-              {visiting && visiting.applauses}
-              {`\n`}Appllauses
-            </Text>
-            <Divider style={{height: 50, width: 2, color: 'black'}} />
-
-            <Text
-              style={[
-                styles.mediumText,
-                {textAlign: 'center', color: 'red', fontSize: 15},
-              ]}>
-              {visiting && visiting.following}
-              {`\n`}Following
-            </Text>
-          </View>
+                handleFollow();
+              }}>
+              <Text style={[styles.mediumText, {color: 'white', fontSize: 15}]}>
+                {visiting && visiting.follow_status === 'Following'
+                  ? 'Following'
+                  : 'Follow'}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
+
+        <View style={styles.statsContainer}>
+          <Text
+            style={[
+              styles.mediumText,
+              {textAlign: 'center', color: 'red', fontSize: 15},
+            ]}>
+            {visiting && visiting.followers}
+            {`\n`}Followers
+          </Text>
+          <Divider style={{height: 50, width: 2, color: 'black'}} />
+          <Text
+            style={[
+              styles.mediumText,
+              {textAlign: 'center', color: 'red', fontSize: 15},
+            ]}>
+            {visiting && visiting.applauses}
+            {`\n`}Appllauses
+          </Text>
+          <Divider style={{height: 50, width: 2, color: 'black'}} />
+
+          <Text
+            style={[
+              styles.mediumText,
+              {textAlign: 'center', color: 'red', fontSize: 15},
+            ]}>
+            {visiting && visiting.following}
+            {`\n`}Following
+          </Text>
+        </View>
+
         <View style={styles.userStatsContainer}>
           <TouchableOpacity
             activeOpacity={0.9}
@@ -365,11 +503,11 @@ const User = ({navigation, visitingProfile, user, visiting}) => {
           }}
         />
         <Loading visible={loading} />
-        {/* <TabBar navigation={navigation} /> */}
       </ScrollView>
     </SafeAreaView>
   );
 };
+
 const mapStateToProps = (state) => {
   const {user} = state.auth;
   const {visiting} = state.app;
@@ -378,4 +516,9 @@ const mapStateToProps = (state) => {
     visiting,
   };
 };
-export default connect(mapStateToProps, {visitingProfile})(User);
+export default connect(mapStateToProps, {
+  visitingProfile,
+  addBio,
+  updatePic,
+  followUser,
+})(User);

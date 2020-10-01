@@ -294,7 +294,6 @@ const Feed = ({navigation, route}) => {
       duration: Snackbar.LENGTH_LONG,
       action: {
         text: 'Change',
-        textColor: 'tomato',
         onPress: () => {
           setPaused(true);
           playListRef.current.open();
@@ -701,7 +700,7 @@ const Feed = ({navigation, route}) => {
                 position: 'absolute',
                 bottom: height / 30,
                 // left: width / 20,
-                width: '100%',
+                // width: '100%',
                 // alignItems: 'center',
                 // flexDirection: 'row',
                 transform: [{translateX: translateBottomImageStripX}],
@@ -727,7 +726,7 @@ const Feed = ({navigation, route}) => {
 
               <Text
                 onPress={() => {
-                  navigation.navigate('User');
+                  navigation.navigate('User', {uid: 57});
                 }}
                 style={{
                   color: 'white',

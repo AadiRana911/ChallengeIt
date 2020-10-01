@@ -18,14 +18,24 @@ import {Fonts} from '../../utils/Fonts';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {Picker} from '@react-native-community/picker';
-const Challenge = ({route, navigation}) => {
+import Snackbar from 'react-native-snackbar';
+//redux
+import {connect} from 'react-redux';
+import {postChallenge} from '../../redux/actions/app';
+import {Loading} from '../../components/Loading';
+import {ActivityIndicator} from 'react-native-paper';
+
+const Challenge = ({route, navigation, postChallenge, token}) => {
   const {height, width} = Dimensions.get('window');
   const [isPrivate, setIsPrivate] = useState(true);
   const [isOpen, setisOpen] = useState(true);
   const [isChanging, setIsChanging] = useState(false);
   const [pasue, setPause] = useState(true);
+  const [coords, setCoords] = useState(null);
+  const [loading, setLoading] = useState(false);
   const {video} = route.params;
   const [interest, setInterest] = useState('');
+  const [name, setName] = useState('');
   const [categories, setCategories] = useState([
     {id: 0, name: 'Entertainment'},
     {id: 1, name: 'Art'},
@@ -39,6 +49,41 @@ const Challenge = ({route, navigation}) => {
   const placesRef = useRef(true);
   const [location, setLocation] = useState('Select your Location');
   // const [heigh, setHeigh] = useState(40)
+  const handlePost = () => {
+    try {
+      let time = new Date();
+      const formData = new FormData();
+      formData.append('challengename', name);
+      formData.append('privacy', isPrivate ? 'Public' : 'Private');
+      formData.append('type', isOpen ? 'Open' : 'Specific');
+      formData.append('location', location);
+      formData.append('category', interest);
+      formData.append('files', {
+        uri: video,
+        type: 'video/mp4',
+        name: 'vid_' + Math.floor(time.getTime() + time.getSeconds() / 2),
+      });
+      formData.append('chlng_lati', coords.lat);
+      formData.append('chlng_longi', coords.lng);
+      console.log(JSON.stringify(formData));
+      setLoading(true);
+      new Promise((rsl, rej) => {
+        postChallenge(formData, token, rsl, rej);
+      })
+        .then((res) => {
+          setLoading(false);
+        })
+        .catch((errorData) => {
+          setLoading(false);
+          Snackbar.show({
+            text: errorData,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <ScrollView style={[styles.container]} keyboardShouldPersistTaps="always">
       <View>
@@ -75,6 +120,10 @@ const Challenge = ({route, navigation}) => {
           padding: 10,
         }}
         placeholder=" #ChallengeName"
+        value={name}
+        onChangeText={(e) => {
+          setName(e);
+        }}
       />
 
       <View style={{width: '100%', marginVertical: 10}}>
@@ -297,7 +346,10 @@ const Challenge = ({route, navigation}) => {
       <TouchableOpacity onPress={() => setPause(!pasue)} activeOpacity={1}>
         <Video
           paused={pasue}
-          source={{uri: video}}
+          source={{
+            uri:
+              'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+          }}
           style={{width: '100%', height: 200}}
           volume={1}
           resizeMode={'cover'}
@@ -319,6 +371,9 @@ const Challenge = ({route, navigation}) => {
       )} */}
 
       <TouchableOpacity
+        onPress={() => {
+          handlePost();
+        }}
         style={{
           marginVertical: height / 20,
           paddingVertical: 10,
@@ -336,7 +391,11 @@ const Challenge = ({route, navigation}) => {
           shadowRadius: 5,
           elevation: 10,
         }}>
-        <Text style={{color: 'white'}}>Post challenge</Text>
+        {loading ? (
+          <ActivityIndicator animating color={'white'} />
+        ) : (
+          <Text style={{color: 'white'}}>Post challenge</Text>
+        )}
       </TouchableOpacity>
 
       <RBSheet
@@ -377,6 +436,7 @@ const Challenge = ({route, navigation}) => {
           renderDescription={(row) => row.description} // custom description render
           onPress={(data, details = null) => {
             let coordinates = details.geometry.location;
+            setCoords(coordinates);
             setLocation(details.address_components[0].long_name),
               placesRef.current.close();
             //display details in console!
@@ -404,5 +464,8 @@ const Challenge = ({route, navigation}) => {
     </ScrollView>
   );
 };
-
-export {Challenge};
+const mapStateToProps = (state) => {
+  const {token} = state.auth;
+  return {token};
+};
+export default connect(mapStateToProps, {postChallenge})(Challenge);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,7 +15,32 @@ import {Fonts} from '../../utils/Fonts';
 import {primaryColor} from '../../components/colors';
 import Swipeout from 'react-native-swipeout';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-const Chat = ({navigation}) => {
+import {BASE_URL} from '../../redux/base-url';
+import Snackbar from 'react-native-snackbar';
+import {Loading} from '../../components/Loading';
+import Moment from 'moment';
+//redux
+import {connect} from 'react-redux';
+import {getMsg} from '../../redux/actions/app';
+
+const Chat = ({navigation, getMsg, messages, token}) => {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    new Promise((rsl, rej) => {
+      getMsg(token, rsl, rej);
+    })
+      .then((res) => {
+        setLoading(false);
+      })
+      .catch((errorData) => {
+        setLoading(false);
+        Snackbar.show({
+          text: errorData,
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      });
+  }, []);
   let swipeoutBtns = [
     {
       component: (
@@ -32,7 +57,7 @@ const Chat = ({navigation}) => {
       backgroundColor: primaryColor,
       underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
       onPress: () => {
-        alert('hi');
+        alert('deleted');
       },
     },
   ];
@@ -48,21 +73,10 @@ const Chat = ({navigation}) => {
               <Avatar
                 rounded
                 source={{
-                  uri: 'https://randomuser.me/api/portraits/men/41.jpg',
+                  uri: `${BASE_URL}${item.dp}`,
                 }}
                 size="medium"
                 containerStyle={{marginTop: 10}}
-              />
-
-              <Badge
-                status="success"
-                badgeStyle={{width: 8, height: 8, top: 15}}
-                containerStyle={{
-                  position: 'absolute',
-                  zIndex: 6,
-                  alignSelf: 'flex-end',
-                  marginBottom: -20,
-                }}
               />
             </View>
             <View
@@ -83,12 +97,12 @@ const Chat = ({navigation}) => {
                     color: primaryColor,
                     fontFamily: Fonts.CenturyBold,
                   }}>
-                  Jhon Doe
+                  {item.f_name + ' ' + item.l_name}
                 </Text>
-                <Text>10:24 PM</Text>
+                <Text>{Moment(item.date).format('LT')}</Text>
               </View>
               <Text style={{marginTop: 5, fontFamily: Fonts.CenturyRegular}}>
-                i like to work with you
+                {item.content}
               </Text>
             </View>
           </View>
@@ -106,7 +120,6 @@ const Chat = ({navigation}) => {
               styles.largeText,
               {
                 color: 'white',
-                // paddingVertical: 10,
                 alignSelf: 'center',
                 fontSize: 17,
               },
@@ -115,31 +128,19 @@ const Chat = ({navigation}) => {
           </Text>
         }
       />
-      {/* <View
-        style={{
-          backgroundColor: primaryColor,
-        }}>
-        <Text
-          style={[
-            styles.largeText,
-            {
-              color: 'white',
-              paddingVertical: 10,
-              alignSelf: 'center',
-              fontSize: 17,
-            },
-          ]}>
-          Chat
-        </Text>
-      </View> */}
 
       <FlatList
-        ListFooterComponent={<View style={{margin: 15}} />}
-        data={new Array(10)}
+        data={messages}
         keyExtractor={(item) => item}
         renderItem={renderItem}
       />
+      <Loading visible={loading} />
     </SafeAreaView>
   );
 };
-export default Chat;
+const mapStateToProps = (state) => {
+  const {messages} = state.app;
+  const {token} = state.auth;
+  return {messages, token};
+};
+export default connect(mapStateToProps, {getMsg})(Chat);

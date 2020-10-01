@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     shadowColor: 'white',
     // borderWidth: 0.75,
     // borderRadius: 5,
-    // backgroundColor: 'white',
+    backgroundColor: 'white',
     // borderColor: 'lightgray',
   },
   firstButton: {
