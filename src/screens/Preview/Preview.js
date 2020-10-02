@@ -70,6 +70,7 @@ const Preview = ({navigation, route}) => {
             source={{
               uri: video,
             }}
+            muted
             style={{height: '100%'}}
             volume={0.4}
             resizeMode="cover"

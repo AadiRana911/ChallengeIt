@@ -29,6 +29,7 @@ const AddScreen = ({navigation, route}) => {
           source={{uri: video}}
           style={styles.mediaPlayer}
           volume={1}
+          muted
           resizeMode={'cover'}
           style={{
             aspectRatio: 1,

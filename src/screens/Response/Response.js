@@ -447,6 +447,7 @@ const Response = ({navigation}) => {
               source={{uri: item.vid}}
               style={styles.mediaPlayer}
               volume={0.4}
+              muted
               resizeMode="cover"
               repeat={true}
               onReadyForDisplay={() => {

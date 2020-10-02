@@ -148,6 +148,7 @@ const ViewResponses = ({navigation}) => {
       uri: 'https://randomuser.me/api/portraits/men/50.jpg',
     },
   ]);
+  
   const [videos, setVideos] = useState([
     {
       id: 1,
@@ -257,6 +258,7 @@ const ViewResponses = ({navigation}) => {
       isShared: false,
     },
   ]);
+  
   const toggleLike = (id) => {
     setVideos(
       videos.map((item) => {
@@ -553,7 +555,7 @@ const ViewResponses = ({navigation}) => {
               paused={item.isPaused}
               resizeMode="cover"
               repeat
-              muted={item.isMuted}
+              muted={muted}
               style={{
                 height: height / 2,
                 width: '100%',

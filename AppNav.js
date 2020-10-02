@@ -59,7 +59,7 @@ function AppNav({user, isLoggedIn, getLocation, token}) {
 
     const intervalId = BackgroundTimer.setInterval(() => {
       getWorkerLocation();
-    }, 50000);
+    }, 3600000);
     return () => clearInterval(intervalId);
   }, []);
 

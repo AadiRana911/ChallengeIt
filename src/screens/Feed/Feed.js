@@ -41,7 +41,20 @@ import {Divider} from 'react-native-elements';
 import LottieView from 'lottie-react-native';
 import RNFS from 'react-native-fs';
 import CameraRoll from '@react-native-community/cameraroll';
-const Feed = ({navigation, route}) => {
+import Geolocation from 'react-native-geolocation-service';
+
+//redux
+import {connect} from 'react-redux';
+import {getChallenges} from '../../redux/actions/app';
+
+const Feed = ({
+  navigation,
+  route,
+  getChallenges,
+  token,
+  user,
+  allchallenges,
+}) => {
   const reportRef = useRef(null);
   const playListRef = useRef(null);
   const animation = useRef(null);
@@ -50,6 +63,7 @@ const Feed = ({navigation, route}) => {
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = setPaused(false);
+      grabChallenges();
 
       return () => {
         setPaused(!paused);
@@ -303,23 +317,6 @@ const Feed = ({navigation, route}) => {
   };
   /*download file*/
   const actualDownload = (vid) => {
-    // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-
-    // image
-    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.jpg`;
-    // const formUrl = 'http://img.kaiyanapp.com/c7b46c492261a7c19fa880802afe93b3.png?imageMogr2/quality/60/format/jpg';
-
-    // file
-    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.zip`;
-    // const formUrl = 'http://files.cnblogs.com/zhuqil/UIWebViewDemo.zip';
-
-    // video
-    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.mp4`;
-    // http://gslb.miaopai.com/stream/SnY~bbkqbi2uLEBMXHxGqnNKqyiG9ub8.mp4?vend=miaopai&
-    // https://gslb.miaopai.com/stream/BNaEYOL-tEwSrAiYBnPDR03dDlFavoWD.mp4?vend=miaopai&
-    // const formUrl = 'https://gslb.miaopai.com/stream/9Q5ADAp2v5NHtQIeQT7t461VkNPxvC2T.mp4?vend=miaopai&';
-
-    // audio
     const downloadDest = `${RNFS.DocumentDirectoryPath}/${
       (Math.random() * 1000) | 0
     }.mp4`;
@@ -371,42 +368,51 @@ const Feed = ({navigation, route}) => {
     }
   };
 
-  // const actualDownload = () => {
-  //   let date = new Date();
-  //   setProgress(0);
-  //   setIsLoading(true);
-  //   let dirs = RNFetchBlob.fs.dirs.PictureDir;
-  //   RNFetchBlob.config({
-  //     // add this option that makes response data to be stored as a file,
-  //     // this is much more performant.
-  //     path:
-  //       dirs +
-  //       'video_' +
-  //       Math.floor(date.getTime() + date.getSeconds() / 2) +
-  //       '.mp4',
-  //     fileCache: true,
-  //     useDownloadManager: true,
-  //     notification: true,
-  //   })
-  //     .fetch('GET', vids[0].vid, {
-  //       //some headers ..
-  //     })
-  //     .progress((received, total) => {
-  //       console.log('progress', received / total);
-  //       setProgress(received / total);
-  //     })
-  //     .then((res) => {
-  //       console.log(dirs);
-  //       console.log('The file saved to ', res.path());
-  //       setProgress(100);
-  //       setIsLoading(false);
-  //       ToastAndroid.showWithGravity(
-  //         'Your file has been downloaded to downloads folder!',
-  //         ToastAndroid.SHORT,
-  //         ToastAndroid.BOTTOM,
-  //       );
-  //     });
-  // };
+  const grabChallenges = () => {
+    try {
+      Geolocation.getCurrentPosition(
+        async (position) => {
+          let {latitude, longitude} = position.coords;
+          if (latitude && longitude) {
+            const params = new FormData();
+            params.append('lat', latitude);
+            params.append('long', longitude);
+            new Promise((rsl, rej) => {
+              getChallenges(params, token, rsl, rej);
+            })
+              .then((res) => {
+                allchallenges &&
+                  setVideos(
+                    allchallenges.map((item) => {
+                      return {
+                        ...item,
+                        isPaused: true,
+                        isMuted: false,
+                        liked: false,
+                        isShared: false,
+                      };
+                    }),
+                  );
+                // setLoading(false);
+                console.log(res);
+              })
+              .catch((err) => {
+                // setLoading(false);
+                console.log(err);
+              });
+          }
+        },
+        (error) => {
+          console.log(error);
+          // See error code charts below.
+        },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const download = async (vid) => {
     try {
       requestMultiple(
@@ -511,201 +517,202 @@ const Feed = ({navigation, route}) => {
         orientation="vertical"
         style={{flex: 1}}
         initialPage={0}>
-        {vids.map((item) => (
-          // <TouchableOpacity
-          //   key={item.id}
-          //   style={{flex: 1}}
-          //   activeOpacity={1}
-          //   onPress={() => {
-          //     setPaused(!paused);
-          //   }}>
+        {allchallenges &&
+          allchallenges.map((item) => (
+            // <TouchableOpacity
+            //   key={item.id}
+            //   style={{flex: 1}}
+            //   activeOpacity={1}
+            //   onPress={() => {
+            //     setPaused(!paused);
+            //   }}>
 
-          <DoubleTap
-            key={item.id}
-            style={{flex: 1}}
-            singleTap={() => {
-              setPaused(!paused);
-            }}
-            doubleTap={() => {
-              toggleLike(item.id);
-            }}
-            delay={200}>
-            <Video
-              paused={Number(item.id) !== active || paused}
-              source={{uri: item.vid}}
-              style={styles.mediaPlayer}
-              resizeMode="cover"
-              volume={0.4}
-              onReadyForDisplay={() => {
-                handleVideoLoading(item.id);
+            <DoubleTap
+              key={item.id}
+              style={{flex: 1}}
+              singleTap={() => {
+                setPaused(!paused);
               }}
-            />
-
-            <Animated.View
-              style={{
-                position: 'absolute',
-                height: height / 3.5,
-                width: width / 8,
-                bottom: height / 6,
-                left: width - 62,
-
-                // justifyContent: 'space-between',
-                // alignItems: 'center',
-                transform: [{translateX: translateBottomIconsX}],
-              }}>
-              <Ionicons
-                name="checkmark-circle"
-                color="white"
-                size={25}
-                style={{alignSelf: 'center', color: '#4cc76c'}}
-              />
-              <OptionsMenu
-                customButton={
-                  <Entypo
-                    name="dots-three-horizontal"
-                    style={{
-                      fontSize: 30,
-                      color: 'white',
-                      // marginVertical: 4,
-                      alignSelf: 'center',
-                    }}
-                  />
-                }
-                options={['Add to playlist', 'Report Video']}
-                actions={[addToPlayList, () => reportRef.current.open()]}
+              doubleTap={() => {
+                toggleLike(item.id);
+              }}
+              delay={200}>
+              <Video
+                paused={Number(item.challenge_id) !== active || paused}
+                source={{uri: item.file}}
+                style={styles.mediaPlayer}
+                resizeMode="cover"
+                volume={0.4}
+                onReadyForDisplay={() => {
+                  handleVideoLoading(item.id);
+                }}
               />
 
-              <View
+              <Animated.View
                 style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: -2,
+                  position: 'absolute',
+                  height: height / 3.5,
+                  width: width / 8,
+                  bottom: height / 6,
+                  left: width - 62,
+
+                  // justifyContent: 'space-between',
+                  // alignItems: 'center',
+                  transform: [{translateX: translateBottomIconsX}],
                 }}>
-                <TouchableOpacity>
-                  <Entypo
-                    name="eye"
-                    size={25}
-                    style={{
-                      color: 'white',
-                      alignSelf: 'center',
-                    }}
-                  />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 9,
-                    color: 'white',
-                    fontFamily: Fonts.CenturyBold,
-                  }}>
-                  {item.downloads}
-                </Text>
-              </View>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  toggleLike(item.id);
-                }}>
+                <Ionicons
+                  name="checkmark-circle"
+                  color="white"
+                  size={25}
+                  style={{color: '#4cc76c'}}
+                />
+                <OptionsMenu
+                  customButton={
+                    <Entypo
+                      name="dots-three-horizontal"
+                      style={{
+                        fontSize: 30,
+                        color: 'white',
+                        // marginVertical: 4,
+                        // alignSelf: 'center',
+                      }}
+                    />
+                  }
+                  options={['Add to playlist', 'Report Video']}
+                  actions={[addToPlayList, () => reportRef.current.open()]}
+                />
+
                 <View
                   style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 10,
+                    // alignItems: 'center',
+                    // justifyContent: 'center',
+                    marginTop: -2,
                   }}>
-                  {item.liked ? (
-                    <LottieView
-                      source={require('../../utils/clap.json')}
+                  <TouchableOpacity>
+                    <Entypo
+                      name="eye"
+                      size={25}
                       style={{
-                        height: 37,
-                        width: 37,
-
-                        // marginRight: -22,
-                        overflow: 'hidden',
-                      }}
-                      autoPlay
-                      loop
-                    />
-                  ) : (
-                    <Image
-                      source={require('../../assets/images/clap.png')}
-                      style={{
-                        tintColor: item.liked ? primaryColor : 'white',
-                        height: 27,
-                        width: 27,
-                        marginLeft: 5,
+                        color: 'white',
+                        // alignSelf: 'center',
                       }}
                     />
-                  )}
-
+                  </TouchableOpacity>
                   <Text
                     style={{
                       fontSize: 9,
-                      // marginRight: item.liked ? -25 : 0,
-                      marginLeft: item.liked ? 0 : 4,
                       color: 'white',
                       fontFamily: Fonts.CenturyBold,
-                      marginTop: !item.liked ? 4 : 0,
                     }}>
-                    {item.claps}
+                    {item.views}
                   </Text>
                 </View>
-              </TouchableWithoutFeedback>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: 10,
-                }}>
-                <TouchableOpacity onPress={() => download(item.vid)}>
-                  <MaterialCommunityIcons
-                    name="download"
-                    style={{fontSize: 30, color: 'white'}}
-                  />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 9,
-                    marginLeft: 4,
-                    color: 'white',
-                    fontFamily: Fonts.CenturyBold,
-                  }}>
-                  {item.downloads}
-                </Text>
-              </View>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: 10,
-                }}>
-                <Entypo
-                  name="forward"
-                  style={{fontSize: 30, color: 'white'}}
+                <TouchableWithoutFeedback
                   onPress={() => {
-                    handleShare();
-                  }}
-                />
-                <Text
-                  style={{
-                    fontSize: 9,
-                    marginLeft: 4,
-                    color: 'white',
-                    fontFamily: Fonts.CenturyBold,
+                    toggleLike(item.id);
                   }}>
-                  {item.shares}
-                </Text>
-              </View>
-            </Animated.View>
+                  <View
+                    style={{
+                      // alignItems: 'center',
+                      // justifyContent: 'center',
+                      marginTop: 10,
+                    }}>
+                    {item.liked ? (
+                      <LottieView
+                        source={require('../../utils/clap.json')}
+                        style={{
+                          height: 37,
+                          width: 37,
 
-            <Animated.View
-              style={{
-                position: 'absolute',
-                bottom: height / 30,
-                // left: width / 20,
-                // width: '100%',
-                // alignItems: 'center',
-                // flexDirection: 'row',
-                transform: [{translateX: translateBottomImageStripX}],
-              }}>
-              {/* <TouchableOpacity
+                          // marginRight: -22,
+                          overflow: 'hidden',
+                        }}
+                        autoPlay
+                        loop
+                      />
+                    ) : (
+                      <Image
+                        source={require('../../assets/images/clap.png')}
+                        style={{
+                          tintColor: item.liked ? primaryColor : 'white',
+                          height: 27,
+                          width: 27,
+                          marginLeft: 5,
+                        }}
+                      />
+                    )}
+
+                    <Text
+                      style={{
+                        fontSize: 9,
+                        // marginRight: item.liked ? -25 : 0,
+                        marginLeft: item.liked ? 0 : 4,
+                        color: 'white',
+                        fontFamily: Fonts.CenturyBold,
+                        marginTop: !item.liked ? 4 : 0,
+                      }}>
+                      {item.claps}
+                    </Text>
+                  </View>
+                </TouchableWithoutFeedback>
+                <View
+                  style={{
+                    // alignItems: 'center',
+                    // justifyContent: 'center',
+                    marginTop: 10,
+                  }}>
+                  <TouchableOpacity onPress={() => download(item.vid)}>
+                    <MaterialCommunityIcons
+                      name="download"
+                      style={{fontSize: 30, color: 'white'}}
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 9,
+                      marginLeft: 4,
+                      color: 'white',
+                      fontFamily: Fonts.CenturyBold,
+                    }}>
+                    {item.downloads}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    // alignItems: 'center',
+                    // justifyContent: 'center',
+                    marginTop: 10,
+                  }}>
+                  <Entypo
+                    name="forward"
+                    style={{fontSize: 30, color: 'white'}}
+                    onPress={() => {
+                      handleShare();
+                    }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 9,
+
+                      color: 'white',
+                      fontFamily: Fonts.CenturyBold,
+                    }}>
+                    {item.shares}
+                  </Text>
+                </View>
+              </Animated.View>
+
+              <Animated.View
+                style={{
+                  position: 'absolute',
+                  bottom: height / 30,
+                  // left: width / 20,
+                  // width: '100%',
+                  // alignItems: 'center',
+                  // flexDirection: 'row',
+                  transform: [{translateX: translateBottomImageStripX}],
+                }}>
+                {/* <TouchableOpacity
                 onPress={() => {
                   setPaused(true);
                   navigation.navigate('User');
@@ -724,36 +731,36 @@ const Feed = ({navigation, route}) => {
                 />
               </TouchableOpacity> */}
 
-              <Text
-                onPress={() => {
-                  navigation.navigate('User', {uid: 57});
-                }}
-                style={{
-                  color: 'white',
-                  fontSize: width / 22,
-                  fontFamily: Fonts.CenturyBold,
-                  marginLeft: 13,
-                }}>
-                {item.name}
-              </Text>
-              <TouchableOpacity
-                style={{padding: 10}}
-                onPress={() => {
-                  navigation.navigate('Hashtag');
-                }}>
                 <Text
+                  onPress={() => {
+                    navigation.navigate('User', {uid: 57});
+                  }}
                   style={{
                     color: 'white',
-                    fontFamily: Fonts.CenturyRegular,
-                    fontSize: width / 30,
-                    marginLeft: 7,
-                    // marginVertical: 5,
+                    fontSize: width / 22,
+                    fontFamily: Fonts.CenturyBold,
+                    marginLeft: 13,
                   }}>
-                  {item.hashtag}
+                  {item.name}
                 </Text>
-              </TouchableOpacity>
-            </Animated.View>
-            {/* {item.loading && (
+                <TouchableOpacity
+                  style={{padding: 10}}
+                  onPress={() => {
+                    navigation.navigate('Hashtag');
+                  }}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontFamily: Fonts.CenturyRegular,
+                      fontSize: width / 30,
+                      marginLeft: 7,
+                      // marginVertical: 5,
+                    }}>
+                    {item.hashtag}
+                  </Text>
+                </TouchableOpacity>
+              </Animated.View>
+              {/* {item.loading && (
               <LottieView
                 source={require('../../utils/loading.json')}
                 style={{
@@ -768,8 +775,8 @@ const Feed = ({navigation, route}) => {
                 loop
               />
             )} */}
-          </DoubleTap>
-        ))}
+            </DoubleTap>
+          ))}
       </ViewPager>
 
       {/* <ViewPager
@@ -1136,5 +1143,9 @@ const Feed = ({navigation, route}) => {
     </View>
   );
 };
-
-export default Feed;
+const mapStateToProps = (state) => {
+  const {allchallenges} = state.app;
+  const {token, user} = state.auth;
+  return {token, user, allchallenges};
+};
+export default connect(mapStateToProps, {getChallenges})(Feed);

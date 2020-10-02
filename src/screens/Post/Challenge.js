@@ -72,6 +72,11 @@ const Challenge = ({route, navigation, postChallenge, token}) => {
       })
         .then((res) => {
           setLoading(false);
+          Snackbar.show({
+            text: res,
+            duration: Snackbar.LENGTH_SHORT,
+          });
+          navigation.navigate('Home');
         })
         .catch((errorData) => {
           setLoading(false);
@@ -353,6 +358,7 @@ const Challenge = ({route, navigation, postChallenge, token}) => {
           style={{width: '100%', height: 200}}
           volume={1}
           resizeMode={'cover'}
+          muted
           style={{
             backgroundColor: 'black',
             aspectRatio: 1,

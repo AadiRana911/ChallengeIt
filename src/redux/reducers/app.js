@@ -4,6 +4,7 @@ import {
   NEAR_BY,
   NOTIFICATIONS,
   MESSAGES,
+  ALL_CHALLENGES,
 } from '../actions/types';
 const initialState = {
   message: '',
@@ -12,6 +13,7 @@ const initialState = {
   nearby: null,
   notifications: null,
   messages: null,
+  allchallenges: null,
 };
 
 export const appReducer = (state = initialState, action) => {
@@ -40,6 +42,11 @@ export const appReducer = (state = initialState, action) => {
       return {
         ...state,
         messages: action.messages,
+      };
+    case ALL_CHALLENGES:
+      return {
+        ...state,
+        allchallenges: action.allchallenges,
       };
 
     default:

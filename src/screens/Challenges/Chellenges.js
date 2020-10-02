@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   Text,
   View,
@@ -47,23 +47,41 @@ import TabBar from '../../components/navigation';
 import Camera from '../Camera';
 import {BASE_URL} from '../../redux/base-url';
 import {Loading} from '../../components/Loading';
-//redux
+import {useFocusEffect} from '@react-navigation/native';
+import Geolocation from 'react-native-geolocation-service';
 //redux
 import {connect} from 'react-redux';
-import {nearbyUsers} from '../../redux/actions/app';
+import {nearbyUsers, getChallenges} from '../../redux/actions/app';
 
-const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
+const Challenges = ({
+  navigation,
+  nearbyUsers,
+  nearby,
+  token,
+  user,
+  getChallenges,
+  allchallenges,
+}) => {
   useEffect(() => {
-    setAvatarLoading(true);
-
+    // grabChallenges();
+    // allchallenges &&
+    //   setVideos(
+    //     allchallenges.map((item) => {
+    //       return {
+    //         ...item,
+    //         isPaused: true,
+    //         isMuted: false,
+    //         liked: false,
+    //         isShared: false,
+    //       };
+    //     }),
+    //   );
+    // console.log(videos);
     new Promise((rsl, rej) => {
       nearbyUsers(token, rsl, rej);
     })
-      .then((res) => {
-        setAvatarLoading(false);
-      })
+      .then((res) => {})
       .catch((errorData) => {
-        setAvatarLoading(false);
         Snackbar.show({
           text: errorData,
           duration: Snackbar.LENGTH_SHORT,
@@ -71,6 +89,12 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
       });
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      const unsubscribe = grabChallenges();
+      return () => unsubscribe;
+    }, []),
+  );
   const rbsheet = useRef(null);
   const optionSheet = useRef(null);
   const playListRef = useRef(null);
@@ -103,7 +127,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
     {id: 1, name: 'Challengers of the week', isActive: false},
     {id: 2, name: 'Challenges of the week', isActive: false},
   ]);
-
+  const [type, setType] = useState('Recent');
   const [videos, setVideos] = useState([
     {
       id: 1,
@@ -217,7 +241,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
   const toggleLike = (id) => {
     setVideos(
       videos.map((item) => {
-        if (item.id === id)
+        if (item.challenge_id === id)
           return {
             ...item,
             liked: !item.liked,
@@ -244,7 +268,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
   const handleVideoPause = (id) => {
     setVideos(
       videos.map((item) => {
-        if (item.id === id)
+        if (item.challenge_id === id)
           return {
             ...item,
             isPaused: !item.isPaused,
@@ -256,7 +280,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
   const handleVideoMute = (id) => {
     setVideos(
       videos.map((item) => {
-        if (item.id === id)
+        if (item.challenge_id === id)
           return {
             ...item,
             isMuted: !item.isMuted,
@@ -282,6 +306,53 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
       });
     }
   };
+
+  const grabChallenges = () => {
+    try {
+      Geolocation.getCurrentPosition(
+        async (position) => {
+          let {latitude, longitude} = position.coords;
+          if (latitude && longitude) {
+            const params = new FormData();
+            params.append('lat', latitude);
+            params.append('long', longitude);
+            params.append('type', type);
+            new Promise((rsl, rej) => {
+              getChallenges(params, token, rsl, rej);
+            })
+              .then((res) => {
+                allchallenges &&
+                  setVideos(
+                    allchallenges.map((item) => {
+                      return {
+                        ...item,
+                        isPaused: true,
+                        isMuted: false,
+                        liked: false,
+                        isShared: false,
+                      };
+                    }),
+                  );
+                setLoading(false);
+                console.log(res);
+              })
+              .catch((err) => {
+                setLoading(false);
+                console.log(err);
+              });
+          }
+        },
+        (error) => {
+          console.log(error);
+          // See error code charts below.
+        },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const renderPosts = ({item, index}) => {
     return (
       <View key={index} activeOpacity={0.9} style={[styles.cardStyle]}>
@@ -291,7 +362,10 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
             justifyContent: 'space-around',
             marginHorizontal: 5,
           }}>
-          <Image source={dummy} style={styles.userImgStyle} />
+          <Image
+            source={{uri: `${BASE_URL}${item.dp}`}}
+            style={styles.userImgStyle}
+          />
 
           <View
             style={{
@@ -309,7 +383,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                   width: '100%',
                 },
               ]}>
-              {item.name}{' '}
+              {item.f_name}{' '}
               <Text
                 style={[
                   // styles.mediumText,
@@ -320,8 +394,8 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                     // opacity: 0.6,
                   },
                 ]}>
-                {item.to === '' ? 'posted a Challenge at' : 'Challenged'}{' '}
-                {item.to === '' && (
+                {item.l_name === '' ? 'posted a Challenge at' : 'Challenged'}{' '}
+                {item.l_name === '' && (
                   <Text
                     onPress={() => {}}
                     style={{
@@ -343,8 +417,8 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                     marginBottom: 4,
                   },
                 ]}>
-                {item.to === '' ? `\n` : `${item.to}`}
-                {item.to !== '' && (
+                {item.l_name === '' ? `\n` : `${item.l_name}`}
+                {item.l_name !== '' && (
                   <Text
                     style={{
                       fontSize: 12,
@@ -390,7 +464,8 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                     fontFamily: Fonts.CenturyRegular,
                     color: 'gray',
                   }}>
-                  3 Km away{'   '} 4 min ago
+                  {item.away}
+                  {'   '} {item.post_date}
                 </Text>
               </View>
             </Text>
@@ -493,7 +568,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
             setsingleUser(null);
 
             navigation.navigate('Hashtag');
-            handleVideoPause(item.id);
+            handleVideoPause(item.challenge_id);
           }}>
           #Kiki Challenge
         </Text>
@@ -501,14 +576,14 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
         <View>
           <DoubleTap
             singleTap={() => {
-              handleVideoPause(item.id);
+              handleVideoPause(item.challenge_id);
             }}
             doubleTap={() => {
-              toggleLike(item.id);
+              toggleLike(item.challenge_id);
             }}
             delay={200}>
             <Video
-              source={{uri: item.uri}}
+              source={{uri: `${BASE_URL}${item.file}`}}
               paused={item.isPaused}
               resizeMode="cover"
               repeat
@@ -562,7 +637,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
-                handleVideoMute(item.id);
+                handleVideoMute(item.challenge_id);
               }}
               style={[
                 {
@@ -590,7 +665,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
               color="white"
               style={[styles.playButton]}
               onPress={() => {
-                handleVideoPause(item.id);
+                handleVideoPause(item.challenge_id);
               }}
             />
           )}
@@ -611,7 +686,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
             setsingleUser(null);
 
             navigation.navigate('ViewRes');
-            handleVideoPause(item.id);
+            handleVideoPause(item.challenge_id);
           }}>
           See Full Thread
         </Text>
@@ -669,7 +744,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                     ]}>
                     {item.claps}{' '}
                   </Text>
-                  <Text
+                  {/* <Text
                     style={[
                       styles.smallText,
 
@@ -680,7 +755,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                       },
                     ]}>
                     claps
-                  </Text>
+                  </Text> */}
                 </View>
               </View>
             </TouchableWithoutFeedback>
@@ -720,9 +795,9 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                     styles.smallText,
                     {alignSelf: 'center', opacity: 0.7, color: '#212121'},
                   ]}>
-                  {item.claps}{' '}
+                  {item.views}{' '}
                 </Text>
-                <Text
+                {/* <Text
                   style={[
                     styles.smallText,
                     {
@@ -730,7 +805,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                     },
                   ]}>
                   views
-                </Text>
+                </Text> */}
               </View>
             </TouchableOpacity>
           </View>
@@ -744,7 +819,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
               onPress={() => {
                 setsingleUser(null);
 
-                handleVideoPause(item.id);
+                handleVideoPause(item.challenge_id);
                 navigation.navigate('Camera');
               }}>
               {/* <Text style={[styles.smallText, {alignSelf: 'center'}]}></Text> */}
@@ -781,7 +856,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
             ]}>
             <TouchableOpacity onPress={handleShare}>
               <TouchableOpacity
-                onPress={() => handleShare(item.id)}
+                onPress={() => handleShare(item.challenge_id)}
                 activeOpacity={0.5}>
                 <FontAwesome
                   name="share"
@@ -798,12 +873,12 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                     styles.smallText,
                     {alignSelf: 'center', opacity: 0.7, color: '#212121'},
                   ]}>
-                  {item.claps}{' '}
+                  {item.shares}{' '}
                 </Text>
-                <Text
+                {/* <Text
                   style={[styles.smallText, {marginTop: -1, color: '#212121'}]}>
                   shares
-                </Text>
+                </Text> */}
               </View>
             </TouchableOpacity>
           </View>
@@ -815,7 +890,7 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
   const handleShare = async (id) => {
     setVideos(
       videos.map((item) => {
-        if (item.id === id)
+        if (item.challenge_id === id)
           return {
             ...item,
             isShared: !item.isShared,
@@ -853,28 +928,30 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
     );
   };
 
-  const onViewRef = useRef((viewableItmes) => {
-    if (viewableItmes.viewableItems.length > 0) {
-      setVideos(
-        videos.map((item) => {
-          item.isPaused = true;
-          if (item.id === viewableItmes.changed[0].item.id)
-            return {
-              ...item,
-              isPaused: !item.isPaused,
-              isVolumeVisible: !item.isVolumeVisible,
-            };
-          return item;
-        }),
-      );
-    }
-  });
+  // const onViewRef = useRef((viewableItmes) => {
+  //   // alert(JSON.stringify(viewableItmes));
+  //   if (viewableItmes.viewableItems.length > 0) {
+  //     setVideos(
+  //       videos.map((item) => {
+  //         item.isPaused = true;
+  //         if (item.challenge_id === viewableItmes.changed[0].item.challenge_id)
+  //           return {
+  //             ...item,
+  //             isPaused: !item.isPaused,
+  //             // isVolumeVisible: !item.isVolumeVisible,
+  //           };
+  //         return item;
+  //       }),
+  //     );
+  //     // alert('Videos', JSON.stringify(videos));
+  //   }
+  // });
 
-  const viewConfigRef = useRef({
-    itemVisiblePercentThreshold: 200,
-    minimumViewTime: 5,
-    // waitForInteraction: true,
-  });
+  // const viewConfigRef = useRef({
+  //   itemVisiblePercentThreshold: 200,
+  //   minimumViewTime: 5,
+  //   // waitForInteraction: true,
+  // });
 
   return (
     <View style={styles.mainContainer}>
@@ -934,11 +1011,11 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
         }
       />
 
-      {loading === false ? (
+      {loading ? (
         <ChallengePlaceholder type={'question'} />
       ) : (
         <FlatList
-          data={videos}
+          data={allchallenges}
           ListHeaderComponent={
             <View
               style={{
@@ -999,7 +1076,10 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
                     <TouchableOpacity
                       key={index}
                       onPress={() => {
+                        setType(item.name);
                         handleItemPress(item);
+                        setLoading(true);
+                        grabChallenges();
                       }}
                       style={{
                         margin: 5,
@@ -1037,8 +1117,8 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
           }
           keyExtractor={(item, index) => item + index.toString()}
           renderItem={renderPosts}
-          onViewableItemsChanged={onViewRef.current}
-          viewabilityConfig={viewConfigRef.current}
+          // onViewableItemsChanged={onViewRef.current}
+          // viewabilityConfig={viewConfigRef.current}
         />
       )}
       {showAvatar && (
@@ -1599,8 +1679,10 @@ const Challenges = ({navigation, nearbyUsers, nearby, token, user}) => {
   );
 };
 const mapStateToProps = (state) => {
-  const {nearby} = state.app;
+  const {nearby, allchallenges} = state.app;
   const {token, user} = state.auth;
-  return {nearby, token, user};
+  return {nearby, token, user, allchallenges};
 };
-export default connect(mapStateToProps, {nearbyUsers})(Challenges);
+export default connect(mapStateToProps, {getChallenges, nearbyUsers})(
+  Challenges,
+);

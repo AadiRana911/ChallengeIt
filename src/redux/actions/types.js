@@ -10,3 +10,4 @@ export const NEAR_BY = 'NEAR_BY';
 export const NOTIFICATIONS = 'NOTIFICATIONS';
 export const MESSAGES = 'MESSAGES';
 export const POST_CHALLENGE = 'POST_CHALLENGE';
+export const ALL_CHALLENGES = 'ALL_CHALLENGES';

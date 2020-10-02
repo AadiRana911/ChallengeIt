@@ -7,6 +7,7 @@ import {
   NOTIFICATIONS,
   MESSAGES,
   POST_CHALLENGE,
+  ALL_CHALLENGES,
 } from './types';
 
 //Local Types
@@ -293,6 +294,36 @@ export const postChallenge = (data, token, rsl, rej) => {
           rsl(res.data.message);
         } else {
           rej(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        rej(err.message);
+      });
+  };
+};
+//get Messages
+export const getChallenges = (data, token, rsl, rej) => {
+  return (dispatch) => {
+    axios(`${BASE_URL}/Authentication/allchallenge`, {
+      method: 'post',
+      data,
+      headers: {
+        auth: token,
+      },
+    })
+      .then((res) => {
+        if (res.data.status == true) {
+          dispatch({
+            type: ALL_CHALLENGES,
+            allchallenges: res.data.data,
+          });
+          rsl(res.data.message);
+        } else {
+          rej(res.data.message);
+          dispatch({
+            type: ALL_CHALLENGES,
+          });
         }
       })
       .catch((err) => {

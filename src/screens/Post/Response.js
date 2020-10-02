@@ -26,7 +26,7 @@ const Response = ({navigation, route}) => {
           name="chevron-back"
           style={{fontSize: 30}}
           onPress={() => {
-            navigation.goBack();
+            navigation.navigate('Home');
           }}
         />
       </View>
@@ -101,7 +101,8 @@ const Response = ({navigation, route}) => {
           paused={pasue}
           source={{uri: video}}
           style={styles.mediaPlayer}
-          volume={1}
+          volume={0}
+          muted
           resizeMode={'cover'}
           style={{
             aspectRatio: 1,
