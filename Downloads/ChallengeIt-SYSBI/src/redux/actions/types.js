@@ -1,0 +1,26 @@
+//AUTH
+export const REGISTER_USER = 'REGISTER_USER';
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const CHECK_EMAIL = 'CHECK_EMAIL';
+export const ALL_INTERESTS = 'ALL_INTERESTS';
+export const VISITING_PROFILE = 'VISITING_PROFILE';
+export const ADD_BIO = 'ADD_BIO';
+export const NEAR_BY = 'NEAR_BY';
+export const NOTIFICATIONS = 'NOTIFICATIONS';
+export const MESSAGES = 'MESSAGES';
+export const POST_CHALLENGE = 'POST_CHALLENGE';
+export const ALL_CHALLENGES = 'ALL_CHALLENGES';
+export const SINGLE_CHALLENGE = 'SINGLE_CHALLENGE';
+export const PLAYLISTS_NAMES = 'PLAYLISTS_NAMES';
+export const GET_CATEGORIES = 'GET_CATEGORIES';
+export const SEARCH_USER = 'SEARCH_USER';
+export const HASHTAG_CHALLENGES = 'HASHTAG_CHALLENGES';
+export const SEE_FULL_THREAD = 'SEE_FULL_THREAD';
+export const SEARCH_CHALLENGE = 'SEARCH_CHALLENGE';
+export const ADD_SEARCH = 'ADD_SEARCH';
+export const GET_DETAIL_SEARCH = 'GET_DETAIL_SEARCH';
+export const LOGOUT = 'LOGOUT';
+export const GET_CONVERSATION = 'GET_CONVERSATION';
+export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const OPEN_NOTIF = 'OPEN_NOTIF';

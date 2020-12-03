@@ -1,0 +1,186 @@
+import {StyleSheet, Dimensions} from 'react-native';
+import {primaryColor} from '../../components/colors';
+import {Fonts} from '../../utils/Fonts';
+const {width, height} = Dimensions.get('window');
+export default styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: 'white',
+
+    flex: 1,
+  },
+  smallButton: {
+    padding: 15,
+    width: '40%',
+    backgroundColor: primaryColor,
+    borderRadius: 100,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  textareaContainer: {
+    height: 140,
+    padding: 5,
+    // backgroundColor: '#F5FCFF',
+    borderWidth: 1,
+    borderRadius: 4,
+    margin: 10,
+    width: '95%',
+    borderColor: '#bfbfbf',
+  },
+  textarea: {
+    textAlignVertical: 'top', // hack android
+    height: 170,
+    fontSize: 14,
+    color: '#333',
+    fontFamily: Fonts.CenturyRegular,
+  },
+  iconStyle: {
+    height: 35,
+    width: 35,
+    borderRadius: 17.5,
+    backgroundColor: 'teal',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // opacity: 0.5,
+    alignSelf: 'center',
+    marginHorizontal: 10,
+  },
+  smallText: {
+    fontFamily: Fonts.CenturyRegular,
+    fontSize: 10,
+    alignSelf: 'center',
+  },
+  videoContainer: {
+    marginTop: height / 18,
+    backgroundColor: primaryColor,
+    // width: width - 20,
+    height: height / 2.5,
+    // alignSelf: 'center',
+  },
+  bottomContainer: {
+    // marginLeft: '4%',
+    padding: 5,
+    marginTop: 5,
+    flexDirection: 'row',
+  },
+  videoTouchableContainer: {
+    backgroundColor: primaryColor,
+    width: width,
+    height: height / 3,
+  },
+  mediaPlayer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'black',
+    alignSelf: 'center',
+    width: '100%',
+  },
+  playButton: {
+    opacity: 0.7,
+    fontSize: 70,
+    color: 'white',
+    position: 'absolute',
+    left: width / 2 - 35,
+    top: height / 6 - 35,
+  },
+  imageStyle: {
+    position: 'absolute',
+    borderRadius: 30,
+    borderWidth: width / 205.714,
+    height: width / 8,
+    width: width / 8,
+    top: height / 100,
+    left: width - width / 5.2,
+    // top: 100,
+    // left: 100,
+    borderColor: 'white',
+  },
+  screenIconContainer: {
+    top: 25,
+    flexDirection: 'row',
+    marginHorizontal: width / 20,
+    justifyContent: 'space-between',
+  },
+  userNameContainer: {
+    flexDirection: 'row',
+    left: width / 14,
+    marginTop: height / 75,
+    top: height / 100,
+    justifyContent: 'space-evenly',
+  },
+  cardStyle: {
+    flex: 0.7,
+    // marginHorizontal: 3,
+    backgroundColor: 'white',
+    // elevation: 10,
+    // shadowColor: '#BDBDBD',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowRadius: 5,
+    // shadowOpacity: 1.0,
+    // borderWidth: 1,
+    borderColor: '#fff',
+    borderRadius: 3,
+  },
+  userImgStyle: {
+    height: 45,
+    width: 45,
+    borderRadius: 22.5,
+    alignSelf: 'center',
+    margin: 5,
+  },
+  mediumText: {
+    fontSize: 12,
+    fontFamily: Fonts.CenturyRegular,
+    alignSelf: 'center',
+  },
+  smallText: {
+    fontFamily: Fonts.CenturyRegular,
+    fontSize: 10,
+    alignSelf: 'center',
+  },
+  largeText: {
+    fontFamily: Fonts.CenturyBold,
+    fontSize: 16,
+    // fontWeight: 'bold',
+  },
+  horizontalContainer: {
+    flexDirection: 'row',
+  },
+  verticalContainer: {
+    margin: 10,
+  },
+  followButtonStyle: {
+    backgroundColor: primaryColor,
+    paddingHorizontal: width / 27.8,
+    paddingVertical: 3,
+    borderRadius: 50,
+    marginRight: width / 4.57142,
+  },
+  userStatsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    top: height / 15,
+
+    backgroundColor: '#fff',
+
+    shadowColor: '#000',
+    shadowOffset: {width: 1, height: 0},
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 3,
+    borderRadius: 3,
+    borderWidth: 0.5,
+    borderColor: '#eee',
+  },
+
+  thumbnailStyle: {
+    height: width / 2.7,
+    width: width / 3,
+    margin: 1,
+  },
+});
